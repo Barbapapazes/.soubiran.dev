@@ -2,8 +2,6 @@
 const page = tv({
   slots: {
     base: 'py-12',
-    container: 'px-4 sm:px-6 lg:px-8',
-    containerInner: 'w-full max-w-[1280px] mx-auto',
     header: 'max-w-3xl mx-auto xl:max-w-none xl:grid xl:grid-cols-[256px_768px_256px]',
     headerInner: 'xl:col-start-2',
     content: 'mt-6 max-w-3xl mx-auto xl:max-w-none xl:grid xl:grid-cols-[256px_768px_256px] xl:mx-auto',
@@ -36,27 +34,25 @@ const ui = computed(() => page())
 
 <template>
   <div :class="ui.base({ class: [props.ui?.base, props.class] })">
-    <div :class="ui.container({ class: props.ui?.container })">
-      <div :class="ui.containerInner({ class: props.ui?.containerInner })">
-        <div :class="ui.header({ class: props.ui?.header })">
-          <div :class="ui.headerInner({ class: props.ui?.headerInner })">
-            <slot name="header" />
-          </div>
+    <Container>
+      <div :class="ui.header({ class: props.ui?.header })">
+        <div :class="ui.headerInner({ class: props.ui?.headerInner })">
+          <slot name="header" />
+        </div>
+      </div>
+
+      <div :class="ui.content({ class: props.ui?.content })">
+        <div :class="ui.contentInner({ class: props.ui?.contentInner })">
+          <slot />
         </div>
 
-        <div :class="ui.content({ class: props.ui?.content })">
-          <div :class="ui.contentInner({ class: props.ui?.contentInner })">
-            <slot />
-          </div>
-
-          <div :class="ui.right({ class: props.ui?.right })">
-            <div :class="ui.rightInner({ class: props.ui?.rightInner })">
-              <slot name="right" />
-            </div>
+        <div :class="ui.right({ class: props.ui?.right })">
+          <div :class="ui.rightInner({ class: props.ui?.rightInner })">
+            <slot name="right" />
           </div>
         </div>
       </div>
-    </div>
+    </Container>
 
     <slot name="bottom" />
   </div>

@@ -38,6 +38,14 @@ export default (title: string, hostname: string) => defineConfig({
         if (!path)
           return
 
+        if (path.endsWith('.vue')) {
+          route.addToMeta({
+            frontmatter: {
+              page: extractPage(path),
+            },
+          })
+        }
+
         if (path.endsWith('.md')) {
           const { data } = matter(readFileSync(path, 'utf-8'))
           route.addToMeta({

@@ -1,5 +1,11 @@
+<script lang="ts" setup>
+const route = useRoute()
+</script>
+
 <template>
   <UApp>
+    <Header v-if="route.meta.frontmatter.page !== 'ecosystem'" />
+
     <UMain>
       <RouterView />
     </UMain>
