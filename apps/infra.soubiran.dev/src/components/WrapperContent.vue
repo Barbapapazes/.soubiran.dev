@@ -9,12 +9,16 @@ interface Repository {
 
 const props = defineProps<{
   frontmatter: {
+    id: string
     title: string
     url?: string
     repository?: string | Repository
     ecosystem?: Ecosystem
+    page: string
   }
 }>()
+
+const isContentPage = computed(() => props.frontmatter.page.endsWith('show'))
 
 useHead({
   titleTemplate: '%s · Estéban Soubiran',
@@ -24,7 +28,7 @@ useHead({
 <template>
   <Page>
     <template #header>
-      <WrapperHeader
+      <PageHeader
         :title="props.frontmatter.title"
         :url="props.frontmatter.url"
         :repository="props.frontmatter.repository"
@@ -32,6 +36,10 @@ useHead({
     </template>
 
     <slot />
+
+    <template v-if="isContentPage" #right>
+      <Feedback :id="props.frontmatter.id" />
+    </template>
 
     <template #bottom>
       <Ecosystem
