@@ -11,6 +11,7 @@ interface Repository {
 
 const props = defineProps<{
   frontmatter: {
+    id: string
     title: string
     url?: string
     repository?: string | Repository
@@ -30,34 +31,49 @@ const linkClass = '[&_span]:border-b [&_span]:border-muted hover:[&_span]:border
 
 <template>
   <WrapperContainer>
-    <div>
-      <WrapperTitle :title="props.frontmatter.title" />
-      <div v-if="props.frontmatter.url || props.frontmatter.repository" class="mt-2 flex items-center gap-2 font-sofia text-sm text-muted">
-        <a
-          v-if="props.frontmatter.url"
-          :href="`${props.frontmatter.url}?utm_source=infra.soubiran.dev&utm_medium=link`"
-          :class="linkClass"
-          target="_blank"
-          rel="noopener"
-          class="inline-flex items-center gap-1"
-        >
-          <UIcon :name="link" class="size-4" />
-          <span>{{ props.frontmatter.url }}</span>
-        </a>
-        <span v-if="props.frontmatter.url && repositoryUrl"> · </span>
-        <component
-          :is="isRepositoryPrivate ? 'span' : 'a'"
-          v-if="repositoryUrl"
-          v-bind="isRepositoryPrivate ? {} : { href: repositoryUrl, target: '_blank', rel: 'noopener', class: linkClass }"
-          class="inline-flex items-center gap-1"
-        >
-          <UIcon :name="github" class="size-4" />
-          <span>{{ repositoryUrl }}</span>
-        </component>
+    <div class="xl:grid xl:grid-cols-[256px_768px_256px] xl:mx-auto">
+      <div />
+      <div>
+        <WrapperTitle :title="props.frontmatter.title" />
+        <div v-if="props.frontmatter.url || props.frontmatter.repository" class="mt-2 flex items-center gap-2 font-sofia text-sm text-muted">
+          <a
+            v-if="props.frontmatter.url"
+            :href="`${props.frontmatter.url}?utm_source=infra.soubiran.dev&utm_medium=link`"
+            :class="linkClass"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-1"
+          >
+            <UIcon :name="link" class="size-4" />
+            <span>{{ props.frontmatter.url }}</span>
+          </a>
+          <span v-if="props.frontmatter.url && repositoryUrl"> · </span>
+          <component
+            :is="isRepositoryPrivate ? 'span' : 'a'"
+            v-if="repositoryUrl"
+            v-bind="isRepositoryPrivate ? {} : { href: repositoryUrl, target: '_blank', rel: 'noopener', class: linkClass }"
+            class="inline-flex items-center gap-1"
+          >
+            <UIcon :name="github" class="size-4" />
+            <span>{{ repositoryUrl }}</span>
+          </component>
+        </div>
       </div>
     </div>
 
-    <slot />
+    <div class="pt-6 xl:grid xl:grid-cols-[256px_768px_256px] xl:mx-auto xl:items-start">
+      <div />
+
+      <div>
+        <slot />
+      </div>
+
+      <div class="pl-6 h-full hidden xl:block">
+        <div class="sticky top-4">
+          <Feedback :id="props.frontmatter.id" />
+        </div>
+      </div>
+    </div>
 
     <template #bottom>
       <Ecosystem

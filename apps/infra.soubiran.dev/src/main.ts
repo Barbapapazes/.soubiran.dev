@@ -1,5 +1,7 @@
 import { addIcon } from '@iconify/vue'
 import ui from '@nuxt/ui/vue-plugin'
+import { PiniaColada } from '@pinia/colada'
+import { createPinia } from 'pinia'
 import { ViteSSG } from 'vite-ssg'
 import { routes } from 'vue-router/auto-routes'
 import App from './App.vue'
@@ -10,6 +12,7 @@ import 'markdown-it-github-alerts/styles/github-base.css'
 import './style.css'
 import '../../../packages/ui/src/shiki.css'
 import '../../../packages/ui/src/animations.css'
+import '../../../packages/ui/src/keyframes.css'
 
 export const createApp = ViteSSG(
   App,
@@ -18,6 +21,8 @@ export const createApp = ViteSSG(
   },
   ({ app }) => {
     app.use(ui)
+    app.use(createPinia())
+    app.use(PiniaColada)
   },
 )
 

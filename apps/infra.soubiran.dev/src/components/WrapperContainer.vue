@@ -3,7 +3,6 @@ const wrapperContainer = tv({
   slots: {
     root: 'py-12',
     base: '',
-    content: 'mx-auto max-w-screen-md space-y-6',
   },
 })
 
@@ -29,9 +28,7 @@ const ui = computed(() => wrapperContainer())
 <template>
   <div :class="ui.root({ class: props.ui?.root })">
     <UContainer :class="ui.base({ class: [props.ui?.base, props.class] })">
-      <div :class="ui.content({ class: [props.ui?.content] })">
-        <slot />
-      </div>
+      <slot />
     </UContainer>
 
     <slot name="bottom" />
