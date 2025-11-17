@@ -5,5 +5,8 @@
   "assets": {
     "directory": "./dist"
   },
-  "preview_urls": false
+  "preview_urls": false,
+  "vars": {
+    "VITE_API_BASE_URL": "https://api.soubiran.dev"
+  }
 }
