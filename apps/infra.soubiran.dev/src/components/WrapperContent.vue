@@ -28,7 +28,7 @@ useHead({
 <template>
   <Page>
     <template #header>
-      <WrapperHeader
+      <PageHeader
         :title="props.frontmatter.title"
         :url="props.frontmatter.url"
         :repository="props.frontmatter.repository"
