@@ -46,7 +46,7 @@ const ui = computed(() => wrapperLinks())
       rel="noopener"
     >
       <UIcon :name="link" class="size-4" />
-      <span>{{ props.url }}</span>
+      <span>{{ props.url.replace('https://', '') }}</span>
     </a>
     <span v-if="props.url && repositoryUrl" :class="ui.separator({ class: props.ui?.separator })"> · </span>
     <component
@@ -56,7 +56,7 @@ const ui = computed(() => wrapperLinks())
       class="inline-flex items-center gap-1"
     >
       <UIcon :name="github" class="size-4" />
-      <span>{{ repositoryUrl }}</span>
+      <span>{{ repositoryUrl.replace('https://github.com/', '') }}</span>
     </component>
   </div>
 </template>

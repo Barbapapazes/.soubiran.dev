@@ -1,4 +1,10 @@
 <script lang="ts">
+const wrapperHeader = tv({
+  slots: {
+    base: '',
+  },
+})
+
 interface Repository {
   url: string
   private?: boolean
@@ -9,6 +15,7 @@ export interface WrapperHeaderProps {
   url?: string
   repository?: string | Repository
   class?: any
+  ui?: Partial<typeof wrapperHeader.slots>
 }
 export interface WrapperHeaderEmits {}
 export interface WrapperHeaderSlots {}
@@ -18,10 +25,12 @@ export interface WrapperHeaderSlots {}
 const props = defineProps<WrapperHeaderProps>()
 defineEmits<WrapperHeaderEmits>()
 defineSlots<WrapperHeaderSlots>()
+
+const ui = computed(() => wrapperHeader())
 </script>
 
 <template>
-  <div :class="props.class">
+  <div :class="ui.base({ class: [props.ui?.base, props.class] })">
     <WrapperTitle :title="props.title" />
     <WrapperLinks :url="props.url" :repository="props.repository" />
   </div>
