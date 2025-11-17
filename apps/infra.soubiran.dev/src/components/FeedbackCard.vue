@@ -151,7 +151,9 @@ const ui = computed(() => feedbackCard())
           <RadioGroupItem :id="item.value" :value="item.value" :class="ui.radioGroupItem({ class: props.ui?.radioGroupItem })">
             <RadioGroupIndicator />
           </RadioGroupItem>
-          <label :for="item.value" :class="ui.radioGroupLabel({ class: props.ui?.radioGroupLabel })">{{ item.label }}</label>
+          <UTooltip :text="item.value">
+            <label :for="item.value" :class="ui.radioGroupLabel({ class: props.ui?.radioGroupLabel })">{{ item.label }}</label>
+          </UTooltip>
         </div>
       </RadioGroupRoot>
       <UButton size="sm" label="Send" :loading="isLoading" @click="sendFeedback" />
