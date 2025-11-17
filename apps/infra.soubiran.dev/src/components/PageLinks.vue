@@ -2,7 +2,7 @@
 import link from '~icons/ph/link'
 import github from '~icons/simple-icons/github'
 
-const wrapperLinks = tv({
+const pageLinks = tv({
   slots: {
     base: 'mt-2 flex items-center gap-2 font-sofia text-sm text-muted',
     link: '[&_span]:border-b [&_span]:border-muted hover:[&_span]:border-(--ui-text-dimmed) [&_span]:transition-colors [&_span]:duration-300 inline-flex items-center gap-1',
@@ -15,25 +15,25 @@ interface Repository {
   private?: boolean
 }
 
-export interface WrapperLinksProps {
+export interface PageLinksProps {
   url?: string
   repository?: string | Repository
   class?: any
-  ui?: Partial<typeof wrapperLinks.slots>
+  ui?: Partial<typeof pageLinks.slots>
 }
-export interface WrapperLinksEmits {}
-export interface WrapperLinksSlots {}
+export interface PageLinksEmits {}
+export interface PageLinksSlots {}
 </script>
 
 <script lang="ts" setup>
-const props = defineProps<WrapperLinksProps>()
-defineEmits<WrapperLinksEmits>()
-defineSlots<WrapperLinksSlots>()
+const props = defineProps<PageLinksProps>()
+defineEmits<PageLinksEmits>()
+defineSlots<PageLinksSlots>()
 
 const isRepositoryPrivate = computed(() => typeof props.repository === 'string' ? false : props.repository?.private ?? false)
 const repositoryUrl = computed(() => typeof props.repository === 'string' ? props.repository : props.repository?.url ?? '')
 
-const ui = computed(() => wrapperLinks())
+const ui = computed(() => pageLinks())
 </script>
 
 <template>

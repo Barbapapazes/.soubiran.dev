@@ -22,12 +22,14 @@ useHead({
 </script>
 
 <template>
-  <WrapperContainer>
-    <WrapperHeader
-      :title="props.frontmatter.title"
-      :url="props.frontmatter.url"
-      :repository="props.frontmatter.repository"
-    />
+  <Page>
+    <template #header>
+      <WrapperHeader
+        :title="props.frontmatter.title"
+        :url="props.frontmatter.url"
+        :repository="props.frontmatter.repository"
+      />
+    </template>
 
     <slot />
 
@@ -41,5 +43,5 @@ useHead({
         :ui="{ root: 'w-full h-160' }"
       />
     </template>
-  </WrapperContainer>
+  </Page>
 </template>
