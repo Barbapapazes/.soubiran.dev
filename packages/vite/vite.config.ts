@@ -129,6 +129,9 @@ export default (title: string, hostname: string) => defineConfig({
         canonical(id, frontmatter, hostname)
         structuredData(id, frontmatter, title, hostname)
 
+        const page = extractPage(id)
+        frontmatter.page = page
+
         const head = defaults(frontmatter, options)
         return { head, frontmatter }
       },

@@ -14,8 +14,11 @@ const props = defineProps<{
     url?: string
     repository?: string | Repository
     ecosystem?: Ecosystem
+    page: string
   }
 }>()
+
+const isContentPage = computed(() => props.frontmatter.page.endsWith('show'))
 
 useHead({
   titleTemplate: '%s · Estéban Soubiran',
@@ -34,7 +37,7 @@ useHead({
 
     <slot />
 
-    <template #right>
+    <template v-if="isContentPage" #right>
       <Feedback :id="props.frontmatter.id" />
     </template>
 

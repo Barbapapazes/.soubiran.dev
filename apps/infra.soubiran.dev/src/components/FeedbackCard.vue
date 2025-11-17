@@ -61,7 +61,7 @@ const successfullySent = ref(false)
 const { mutate, isLoading, error } = useMutation<
   void,
   { rating: string, content: string },
-  { data: { errors: { content?: string[], rating?: string[] } } }
+  { status: number, data: { errors?: { content?: string[], rating?: string[] } } }
 >({
   mutation: ({ rating, content }) => ofetch(`/api/posts/${props.id}/feedback`, {
     method: 'POST',
@@ -79,6 +79,23 @@ const { mutate, isLoading, error } = useMutation<
 function sendFeedback() {
   mutate({ rating: rating.value, content: content.value })
 }
+
+const formattedError = computed<string | undefined>(() => {
+  if (!error.value)
+    return undefined
+
+  if (error.value.data?.errors) {
+    return error.value.data.errors.content?.[0] || error.value.data.errors.rating?.[0]
+  }
+
+  if (error.value.status === 404)
+    return 'Page not found. Cannot send feedback. It\'s us, not you!'
+
+  if (error.value.status === 503)
+    return 'Service is currently unavailable. Please try again later.'
+
+  return 'An unexpected error occurred.'
+})
 
 const ui = computed(() => feedbackCard())
 </script>
@@ -115,7 +132,7 @@ const ui = computed(() => feedbackCard())
       </div>
     </template>
 
-    <UFormField :error="error?.data.errors.content?.[0] || error?.data.errors.rating?.[0]">
+    <UFormField :error="formattedError">
       <UTextarea v-model="content" placeholder="Your feedback..." variant="soft" :class="ui.input({ class: props.ui?.input })" />
       <template #error="{ error: formFieldError }">
         <motion.div

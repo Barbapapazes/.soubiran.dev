@@ -8,9 +8,13 @@ export function toUrl(hostname: string, ...paths: string[]) {
   return joinURL(`https://${hostname}`, ...paths)
 }
 
-export type Page = 'platforms-index' | 'platforms-show' | 'websites-index' | 'websites-show'
+export type Page = 'index' | 'platforms-index' | 'platforms-show' | 'websites-index' | 'websites-show'
 export function extractPage(id: string) {
   const uri = getUri(id)
+
+  if (uri === '/') {
+    return 'index'
+  }
 
   if (uri === 'platforms') {
     return 'platforms-index'

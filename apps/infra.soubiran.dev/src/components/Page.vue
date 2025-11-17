@@ -8,7 +8,8 @@ const page = tv({
     headerInner: 'xl:col-start-2',
     content: 'mt-6 max-w-3xl mx-auto xl:max-w-none xl:grid xl:grid-cols-[256px_768px_256px] xl:mx-auto',
     contentInner: 'xl:col-start-2',
-    right: 'xl:col-start-3 xl:pl-8',
+    right: 'hidden xl:block xl:col-start-3 xl:pl-8 xl:h-full',
+    rightInner: 'sticky top-4',
   },
 })
 
@@ -49,7 +50,9 @@ const ui = computed(() => page())
           </div>
 
           <div :class="ui.right({ class: props.ui?.right })">
-            <slot name="right" />
+            <div :class="ui.rightInner({ class: props.ui?.rightInner })">
+              <slot name="right" />
+            </div>
           </div>
         </div>
       </div>
