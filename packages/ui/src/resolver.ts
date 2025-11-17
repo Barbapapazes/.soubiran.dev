@@ -3,6 +3,7 @@ import type { ComponentResolver } from 'unplugin-vue-components'
 const components: string[] = [
   'Socials',
   'ViewersCounter',
+  'Sponsors',
 ]
 
 export default function (): ComponentResolver {
