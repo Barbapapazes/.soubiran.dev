@@ -12,6 +12,9 @@ patchedDependencies:
   '@nuxt/ui':
     hash: 169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c
     path: patches/@nuxt__ui.patch
+  markdown-it-table-of-contents:
+    hash: 4291343ec8bf1f02106c647d5e4386c99db134007cf1c0c66d86d6945da624f9
+    path: patches/markdown-it-table-of-contents.patch
   unhead:
     hash: 2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d
     path: patches/unhead.patch
@@ -225,6 +228,9 @@ importers:
       markdown-it:
         specifier: npm:markdown-exit@1.0.0-beta.6
         version: markdown-exit@1.0.0-beta.6
+      markdown-it-anchor:
+        specifier: ^9.2.0
+        version: 9.2.0(@types/markdown-it@14.1.2)(markdown-exit@1.0.0-beta.6)
       markdown-it-async:
         specifier: ^2.2.0
         version: 2.2.0
@@ -237,6 +243,9 @@ importers:
       markdown-it-link-attributes:
         specifier: ^4.0.1
         version: 4.0.1
+      markdown-it-table-of-contents:
+        specifier: ^1.1.0
+        version: 1.1.0(patch_hash=4291343ec8bf1f02106c647d5e4386c99db134007cf1c0c66d86d6945da624f9)
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -2767,6 +2776,12 @@ packages:
   markdown-exit@1.0.0-beta.6:
     resolution: {integrity: sha512-ZYw/ztUMNkk8yHYV6ythIeGHx3TxTRhXFQD1xZSPX9mwc5N2x7hHW9c4QojfO9ZKaBkioyPVneX9d/Eey8ilww==}
 
+  markdown-it-anchor@9.2.0:
+    resolution: {integrity: sha512-sa2ErMQ6kKOA4l31gLGYliFQrMKkqSO0ZJgGhDHKijPf0pNFM9vghjAh3gn26pS4JDRs7Iwa9S36gxm3vgZTzg==}
+    peerDependencies:
+      '@types/markdown-it': '*'
+      markdown-it: '*'
+
   markdown-it-async@2.2.0:
     resolution: {integrity: sha512-sITME+kf799vMeO/ww/CjH6q+c05f6TLpn6VOmmWCGNqPJzSh+uFgZoMB9s0plNtW6afy63qglNAC3MhrhP/gg==}
 
@@ -2783,6 +2798,9 @@ packages:
 
   markdown-it-link-attributes@4.0.1:
     resolution: {integrity: sha512-pg5OK0jPLg62H4k7M9mRJLT61gUp9nvG0XveKYHMOOluASo9OEF13WlXrpAp2aj35LbedAy3QOCgQCw0tkLKAQ==}
+
+  markdown-it-table-of-contents@1.1.0:
+    resolution: {integrity: sha512-oeXSGohBTj+08uwdI2f/gaT3BiqNQoYR4gWEfDot3u+EBW0J+baLb+QwBnV065o0ugwJM1OiPSD3bUD8mwT/QQ==}
 
   markdown-it@14.1.0:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
@@ -6919,6 +6937,11 @@ snapshots:
       punycode.js: 2.3.1
       uc.micro: 2.1.0
 
+  markdown-it-anchor@9.2.0(@types/markdown-it@14.1.2)(markdown-exit@1.0.0-beta.6):
+    dependencies:
+      '@types/markdown-it': 14.1.2
+      markdown-it: markdown-exit@1.0.0-beta.6
+
   markdown-it-async@2.2.0:
     dependencies:
       '@types/markdown-it': 14.1.2
@@ -6937,6 +6960,8 @@ snapshots:
       markdown-it: markdown-exit@1.0.0-beta.6
 
   markdown-it-link-attributes@4.0.1: {}
+
+  markdown-it-table-of-contents@1.1.0(patch_hash=4291343ec8bf1f02106c647d5e4386c99db134007cf1c0c66d86d6945da624f9): {}
 
   markdown-it@14.1.0:
     dependencies:

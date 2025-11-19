@@ -26,7 +26,8 @@
     "patchedDependencies": {
       "@nuxt/ui": "patches/@nuxt__ui.patch",
       "vite-ssg": "patches/vite-ssg.patch",
-      "unhead": "patches/unhead.patch"
+      "unhead": "patches/unhead.patch",
+      "markdown-it-table-of-contents": "patches/markdown-it-table-of-contents.patch"
     },
     "onlyBuiltDependencies": [
       "esbuild",

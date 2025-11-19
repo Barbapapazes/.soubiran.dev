@@ -34,7 +34,7 @@ const ui = computed(() => feedback())
 
 <template>
   <UPopover :ui="{ content: 'ring-0 data-[state=open]:animate-[scale-up_100ms_ease-out]' }">
-    <UButton variant="link" color="neutral" size="sm" label="Give feedback" :icon="thumbsUp" :class="ui.base({ class: [props.ui?.base, props.class] })" />
+    <UButton variant="link" color="neutral" size="sm" label="Give feedback" :icon="thumbsUp" :class="ui.base({ class: [props.ui?.base, props.class] })" class="p-0" />
 
     <template #content>
       <FeedbackCard

@@ -7,6 +7,13 @@ interface Repository {
   private?: boolean
 }
 
+interface TableOfContentsItem {
+  level: number
+  anchor: string | null
+  text: string
+  children: TableOfContentsItem[]
+}
+
 const props = defineProps<{
   frontmatter: {
     id: string
@@ -15,6 +22,7 @@ const props = defineProps<{
     repository?: string | Repository
     ecosystem?: Ecosystem
     page: string
+    toc: TableOfContentsItem
   }
 }>()
 
@@ -38,6 +46,20 @@ useHead({
     <slot />
 
     <template v-if="isContentPage" #right>
+      <ul>
+        <li v-for="(item, index) in props.frontmatter.toc.children" :key="item.anchor || index">
+          <a
+            v-if="item.anchor"
+            :key="item.anchor"
+            :href="`#${item.anchor}`"
+          >
+            {{ item.text }}
+          </a>
+        </li>
+      </ul>
+
+      <USeparator class="my-2" />
+
       <Feedback :id="props.frontmatter.id" />
     </template>
 

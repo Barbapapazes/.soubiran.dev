@@ -15,7 +15,7 @@ import { defineConfig } from 'vite'
 import soubiranResolver from '../ui/src/resolver'
 import { assert } from './src/assert'
 import { canonical } from './src/canonical'
-import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight } from './src/markdown-it'
+import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight, tableOfContentsRule } from './src/markdown-it'
 import { og } from './src/og'
 import { apiPlugin } from './src/plugins/api'
 import { markdownPlugin } from './src/plugins/markdown'
@@ -126,6 +126,7 @@ export default (title: string, hostname: string) => defineConfig({
         githubAlerts(md)
         implicitFiguresRule(md)
         linkAttributesRule(md)
+        tableOfContentsRule(md)
         customLink(md, hostname)
         customImage(md, hostname)
         await shikiHighlight(md)
