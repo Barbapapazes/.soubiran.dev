@@ -21,6 +21,13 @@ const props = defineProps<FeedbackProps>()
 defineEmits<FeedbackEmits>()
 defineSlots<FeedbackSlots>()
 
+const route = useRoute()
+function onClick() {
+  window.umami?.track('feedback_click', {
+    page_path: route.path,
+  })
+}
+
 const content = ref('')
 const rating = ref('')
 
@@ -41,6 +48,7 @@ const ui = computed(() => feedback())
       size="sm"
       :icon="thumbsUp"
       :class="ui.base({ class: [props.ui?.base, props.class] })"
+      @click="onClick"
     />
 
     <template #content>

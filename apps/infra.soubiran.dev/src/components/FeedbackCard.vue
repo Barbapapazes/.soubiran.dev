@@ -58,6 +58,7 @@ const ratings = [
 
 const successfullySent = ref(false)
 
+const route = useRoute()
 const { mutate, isLoading, error } = useMutation<
   void,
   { rating: string, content: string },
@@ -70,6 +71,10 @@ const { mutate, isLoading, error } = useMutation<
   }),
   onSuccess: () => {
     successfullySent.value = true
+
+    window.umami?.track('feedback_submit', {
+      page_path: route.path,
+    })
 
     // Wait for the animation to finish
     setTimeout(() => emits('success'), 200)
