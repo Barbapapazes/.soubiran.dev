@@ -15,7 +15,7 @@ import { defineConfig } from 'vite'
 import soubiranResolver from '../ui/src/resolver'
 import { assert } from './src/assert'
 import { canonical } from './src/canonical'
-import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight } from './src/markdown-it'
+import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight, tableOfContentsRule } from './src/markdown-it'
 import { og } from './src/og'
 import { apiPlugin } from './src/plugins/api'
 import { markdownPlugin } from './src/plugins/markdown'
@@ -108,6 +108,17 @@ export default (title: string, hostname: string) => defineConfig({
         'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
         '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
       ],
+      transforms: {
+        before: (code: string, id: string) => {
+          const page = extractPage(id)
+
+          if (page?.endsWith('-show')) {
+            return `${code}\n\n## Ecosystem`
+          }
+
+          return code
+        },
+      },
       wrapperComponent: (id) => {
         const page = extractPage(id)
 
@@ -126,6 +137,7 @@ export default (title: string, hostname: string) => defineConfig({
         githubAlerts(md)
         implicitFiguresRule(md)
         linkAttributesRule(md)
+        tableOfContentsRule(md)
         customLink(md, hostname)
         customImage(md, hostname)
         await shikiHighlight(md)

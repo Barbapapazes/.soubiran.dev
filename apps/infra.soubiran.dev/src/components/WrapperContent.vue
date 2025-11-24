@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { TableOfContentsItem } from '@/components/TableOfContents.vue'
 import type { Ecosystem } from '@/types/ecosystem'
 import { useHead } from '@unhead/vue'
 
@@ -15,6 +16,7 @@ const props = defineProps<{
     repository?: string | Repository
     ecosystem?: Ecosystem
     page: string
+    toc: TableOfContentsItem[]
   }
 }>()
 
@@ -38,6 +40,10 @@ useHead({
     <slot />
 
     <template v-if="isContentPage" #right>
+      <TableOfContents :toc="props.frontmatter.toc" />
+
+      <USeparator class="my-2" />
+
       <Feedback :id="props.frontmatter.id" />
     </template>
 
@@ -45,7 +51,7 @@ useHead({
       <Ecosystem
         v-if="frontmatter.ecosystem"
         inline
-        class="mt-12"
+        class="mt-4"
         :name="frontmatter.title"
         :ecosystem="frontmatter.ecosystem"
         :ui="{ root: 'w-full h-160' }"
