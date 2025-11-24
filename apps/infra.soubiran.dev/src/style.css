@@ -30,6 +30,11 @@
   --color-litestream: #0053FA;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
 :root {
   --ui-primary: black;
   --ui-text-highlighted: var(--ui-color-neutral-950);
@@ -38,4 +43,27 @@
 .dark {
   --ui-primary: white;
   --ui-text-highlighted: var(--ui-color-neutral-200);
+}
+
+:is(h2, h3) {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+:is(h2, h3):hover .header-anchor {
+  opacity: 1;
+}
+
+.header-anchor {
+  opacity: 0;
+  border: 0;
+  color: var(--ui-text-dimmed);
+  transition: opacity 0.2s;
+}
+
+.header-anchor svg {
+  width: 1em;
+  height: 1em;
 }

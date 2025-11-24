@@ -1,17 +1,11 @@
 <script lang="ts" setup>
+import type { TableOfContentsItem } from '@/components/TableOfContents.vue'
 import type { Ecosystem } from '@/types/ecosystem'
 import { useHead } from '@unhead/vue'
 
 interface Repository {
   url: string
   private?: boolean
-}
-
-interface TableOfContentsItem {
-  level: number
-  anchor: string | null
-  text: string
-  children: TableOfContentsItem[]
 }
 
 const props = defineProps<{
@@ -22,7 +16,7 @@ const props = defineProps<{
     repository?: string | Repository
     ecosystem?: Ecosystem
     page: string
-    toc: TableOfContentsItem
+    toc: TableOfContentsItem[]
   }
 }>()
 
@@ -46,17 +40,7 @@ useHead({
     <slot />
 
     <template v-if="isContentPage" #right>
-      <ul>
-        <li v-for="(item, index) in props.frontmatter.toc.children" :key="item.anchor || index">
-          <a
-            v-if="item.anchor"
-            :key="item.anchor"
-            :href="`#${item.anchor}`"
-          >
-            {{ item.text }}
-          </a>
-        </li>
-      </ul>
+      <TableOfContents :toc="props.frontmatter.toc" />
 
       <USeparator class="my-2" />
 

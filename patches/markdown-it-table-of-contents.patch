@@ -1,7 +1,25 @@
 diff --git a/index.mjs b/index.mjs
-index bcf11754cbfed53d1ed7ca322cae1cefd8dd6217..8c9735280d5a372484505151f8f83c7dd3da9ce3 100644
+index bcf11754cbfed53d1ed7ca322cae1cefd8dd6217..b3962cd5810cb0563ba35a11afd6db025654ed08 100644
 --- a/index.mjs
 +++ b/index.mjs
+@@ -17,7 +17,7 @@
+  * @param {string} rawToken Raw token to extract text from
+  * @returns {string} Slugified anchor string
+  */
+-function slugify(text, rawToken) {
++export function slugify(text, rawToken) {
+ 	return encodeURIComponent(String(text).trim().toLowerCase().replace(/\s+/g, '-'));
+ };
+ 
+@@ -64,7 +64,7 @@ function transformContainerClose(/** @type {string} */ containerFooterHtml) {
+  * @param {string} rawToken Raw token to extract text from
+  * @returns {string}
+  */
+-function getTokensText(tokens, rawToken) {
++export function getTokensText(tokens, rawToken) {
+ 	return tokens
+ 		.filter(t => ['text', 'code_inline'].includes(t.type))
+ 		.map(t => t.content)
 @@ -72,7 +72,7 @@ function getTokensText(tokens, rawToken) {
  		.trim();
  }

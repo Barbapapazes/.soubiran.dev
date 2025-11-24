@@ -3,7 +3,7 @@ import thumbsUp from '~icons/ph/thumbs-up'
 
 const feedback = tv({
   slots: {
-    base: '',
+    base: 'px-0 py-1 text-dimmed text-sm',
   },
 })
 
@@ -34,7 +34,14 @@ const ui = computed(() => feedback())
 
 <template>
   <UPopover :ui="{ content: 'ring-0 data-[state=open]:animate-[scale-up_100ms_ease-out]' }">
-    <UButton variant="link" color="neutral" size="sm" label="Give feedback" :icon="thumbsUp" :class="ui.base({ class: [props.ui?.base, props.class] })" class="p-0" />
+    <UButton
+      variant="link"
+      color="neutral"
+      label="Give feedback"
+      size="sm"
+      :icon="thumbsUp"
+      :class="ui.base({ class: [props.ui?.base, props.class] })"
+    />
 
     <template #content>
       <FeedbackCard

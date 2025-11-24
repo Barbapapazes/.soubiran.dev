@@ -1,14 +1,27 @@
 import type { MarkdownItAsync } from 'markdown-it-async'
-import anchor from 'markdown-it-anchor'
 // @ts-expect-error no types available
-import { defaultOptions, findHeadlineElements, flatHeadlineItemsToNestedTree } from 'markdown-it-table-of-contents'
+import { defaultOptions, findHeadlineElements, flatHeadlineItemsToNestedTree, getTokensText, slugify } from 'markdown-it-table-of-contents'
 
 export function tableOfContentsRule(md: MarkdownItAsync) {
-  md.use(anchor, {
-    permalink: anchor.permalink.linkInsideHeader({
-      symbol: '#',
-      renderAttrs: () => ({ 'aria-hidden': 'true' }),
-    }),
+  md.use((md) => {
+    md.renderer.rules.heading_open = (tokens, idx, options, _env, self) => {
+      const token = tokens[idx]
+      if (token.tag === 'h2' || token.tag === 'h3') {
+        const inlineToken = tokens[idx + 1]
+        const textContent = getTokensText(inlineToken.children)
+        token.attrSet('id', slugify(textContent))
+        return `<Heading :level="${token.tag.slice(1)}"${self.renderAttrs(token)}>`
+      }
+      return self.renderToken(tokens, idx, options)
+    }
+
+    md.renderer.rules.heading_close = (tokens, idx, options, _env, self) => {
+      const token = tokens[idx]
+      if (token.tag === 'h2' || token.tag === 'h3') {
+        return '</Heading>'
+      }
+      return self.renderToken(tokens, idx, options)
+    }
   })
   md.use((md) => {
     // Add a core rule that runs after all parsing is complete
@@ -20,7 +33,7 @@ export function tableOfContentsRule(md: MarkdownItAsync) {
 
       // Inject the TOC tree into the frontmatter object
       state.env.frontmatter = state.env.frontmatter || {}
-      state.env.frontmatter.toc = tocTree
+      state.env.frontmatter.toc = tocTree.children || []
 
       return true
     })

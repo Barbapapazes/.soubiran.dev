@@ -13,7 +13,7 @@ patchedDependencies:
     hash: 169405e69eb68efc0747840ff80552e66470c9c5de9b4e5a22851150e5a5c45c
     path: patches/@nuxt__ui.patch
   markdown-it-table-of-contents:
-    hash: 4291343ec8bf1f02106c647d5e4386c99db134007cf1c0c66d86d6945da624f9
+    hash: bf17e463c2a0f62d05f1686e2d4c458136845ea3b2c32121b585ceededa45171
     path: patches/markdown-it-table-of-contents.patch
   unhead:
     hash: 2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d
@@ -228,9 +228,6 @@ importers:
       markdown-it:
         specifier: npm:markdown-exit@1.0.0-beta.6
         version: markdown-exit@1.0.0-beta.6
-      markdown-it-anchor:
-        specifier: ^9.2.0
-        version: 9.2.0(@types/markdown-it@14.1.2)(markdown-exit@1.0.0-beta.6)
       markdown-it-async:
         specifier: ^2.2.0
         version: 2.2.0
@@ -245,7 +242,7 @@ importers:
         version: 4.0.1
       markdown-it-table-of-contents:
         specifier: ^1.1.0
-        version: 1.1.0(patch_hash=4291343ec8bf1f02106c647d5e4386c99db134007cf1c0c66d86d6945da624f9)
+        version: 1.1.0(patch_hash=bf17e463c2a0f62d05f1686e2d4c458136845ea3b2c32121b585ceededa45171)
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -2775,12 +2772,6 @@ packages:
 
   markdown-exit@1.0.0-beta.6:
     resolution: {integrity: sha512-ZYw/ztUMNkk8yHYV6ythIeGHx3TxTRhXFQD1xZSPX9mwc5N2x7hHW9c4QojfO9ZKaBkioyPVneX9d/Eey8ilww==}
-
-  markdown-it-anchor@9.2.0:
-    resolution: {integrity: sha512-sa2ErMQ6kKOA4l31gLGYliFQrMKkqSO0ZJgGhDHKijPf0pNFM9vghjAh3gn26pS4JDRs7Iwa9S36gxm3vgZTzg==}
-    peerDependencies:
-      '@types/markdown-it': '*'
-      markdown-it: '*'
 
   markdown-it-async@2.2.0:
     resolution: {integrity: sha512-sITME+kf799vMeO/ww/CjH6q+c05f6TLpn6VOmmWCGNqPJzSh+uFgZoMB9s0plNtW6afy63qglNAC3MhrhP/gg==}
@@ -6937,11 +6928,6 @@ snapshots:
       punycode.js: 2.3.1
       uc.micro: 2.1.0
 
-  markdown-it-anchor@9.2.0(@types/markdown-it@14.1.2)(markdown-exit@1.0.0-beta.6):
-    dependencies:
-      '@types/markdown-it': 14.1.2
-      markdown-it: markdown-exit@1.0.0-beta.6
-
   markdown-it-async@2.2.0:
     dependencies:
       '@types/markdown-it': 14.1.2
@@ -6961,7 +6947,7 @@ snapshots:
 
   markdown-it-link-attributes@4.0.1: {}
 
-  markdown-it-table-of-contents@1.1.0(patch_hash=4291343ec8bf1f02106c647d5e4386c99db134007cf1c0c66d86d6945da624f9): {}
+  markdown-it-table-of-contents@1.1.0(patch_hash=bf17e463c2a0f62d05f1686e2d4c458136845ea3b2c32121b585ceededa45171): {}
 
   markdown-it@14.1.0:
     dependencies:
