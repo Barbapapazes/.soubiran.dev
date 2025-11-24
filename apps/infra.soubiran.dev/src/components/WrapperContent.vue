@@ -2,6 +2,7 @@
 import type { TableOfContentsItem } from '@/components/TableOfContents.vue'
 import type { Ecosystem } from '@/types/ecosystem'
 import { useHead } from '@unhead/vue'
+import { motion } from 'motion-v'
 
 interface Repository {
   url: string
@@ -40,11 +41,16 @@ useHead({
     <slot />
 
     <template v-if="isContentPage" #right>
-      <TableOfContents :toc="props.frontmatter.toc" />
+      <motion.div
+        :initial="{ opacity: 0 }"
+        :animate="{ opacity: 1, transition: { delay: 0.2, duration: 0.4 } }"
+      >
+        <TableOfContents :toc="props.frontmatter.toc" />
 
-      <USeparator class="my-2" />
+        <USeparator class="my-2" />
 
-      <Feedback :id="props.frontmatter.id" />
+        <Feedback :id="props.frontmatter.id" />
+      </motion.div>
     </template>
 
     <template #bottom>
