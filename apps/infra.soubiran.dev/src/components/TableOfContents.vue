@@ -4,7 +4,7 @@ const tableOfContents = tv({
     base: 'space-y-1 text-sm text-dimmed font-medium',
     title: '',
     list: 'font-sofia',
-    link: 'flex gap-1 px-0 py-1 text-dimmed hover:text-default active:text-default transition-colors focus:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-inverted rounded-md',
+    link: 'flex gap-1 px-0 py-1 text-dimmed hover:text-default active:text-default transition-colors focus:outline-none focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-inverted data-active:text-default rounded-md',
   },
 })
 
@@ -12,7 +12,7 @@ export interface TableOfContentsItem {
   level: number
   anchor: string | null
   text: string
-  children: TableOfContentsItem[]
+  children?: TableOfContentsItem[]
 }
 
 export interface TableOfContentsProps {
@@ -39,6 +39,8 @@ function track(text: string, hash: string) {
   })
 }
 
+const { activeHeadings } = useTableOfContents()
+
 const ui = computed(() => tableOfContents())
 </script>
 
@@ -52,10 +54,11 @@ const ui = computed(() => tableOfContents())
         <!-- Cannot use RouterLink as the anchor will be prefixed with the route path. -->
         <a
           v-if="item.anchor"
-          :href="`#${item.anchor}`"
+          custom
           variant="link"
           color="neutral"
-          custom
+          :href="`#${item.anchor}`"
+          :data-active="activeHeadings.includes(item.anchor || '') ? true : undefined"
           :class="ui.link({ class: props.ui?.link })"
           @click="track(item.text, item.anchor)"
         >

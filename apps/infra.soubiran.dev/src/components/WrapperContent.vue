@@ -51,7 +51,7 @@ useHead({
       <Ecosystem
         v-if="frontmatter.ecosystem"
         inline
-        class="mt-12"
+        class="mt-4"
         :name="frontmatter.title"
         :ecosystem="frontmatter.ecosystem"
         :ui="{ root: 'w-full h-160' }"

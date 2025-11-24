@@ -48,17 +48,41 @@ async function onCopy() {
 
 const as = computed(() => `h${props.level}`)
 
+const { setActive, unsetActive } = useTableOfContents()
+const target = useTemplateRef<HTMLElement>('target')
+useIntersectionObserver(
+  target,
+  ([entry]) => {
+    if (entry?.isIntersecting) {
+      setActive(props.id)
+    }
+    else {
+      unsetActive(props.id)
+    }
+  },
+  {
+    threshold: 0.1,
+  },
+)
+
 const ui = computed(() => heading())
 </script>
 
 <template>
-  <component :is="as" :id="props.id" :class="ui.base({ class: [props.ui?.base, props.class] })">
+  <component
+    :is="as"
+    :id="props.id"
+    ref="target"
+    :class="ui.base({ class: [props.ui?.base, props.class] })"
+  >
     <slot />
     <UButton
       square
       variant="link"
       size="sm"
       color="neutral"
+      aria-label="Copy link to heading"
+      tabindex="-1"
       :class="ui.copy({ class: props.ui?.copy })"
       @click="onCopy()"
     >

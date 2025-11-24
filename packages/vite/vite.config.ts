@@ -108,6 +108,17 @@ export default (title: string, hostname: string) => defineConfig({
         'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
         '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
       ],
+      transforms: {
+        before: (code: string, id: string) => {
+          const page = extractPage(id)
+
+          if (page?.endsWith('-show')) {
+            return `${code}\n\n## Ecosystem`
+          }
+
+          return code
+        },
+      },
       wrapperComponent: (id) => {
         const page = extractPage(id)
 
