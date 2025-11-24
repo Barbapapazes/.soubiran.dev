@@ -24,6 +24,10 @@ const props = defineProps<HeaderProps>()
 defineEmits<HeaderEmits>()
 defineSlots<HeaderSlots>()
 
+function track(label: string) {
+  window.umami?.track('header', { label })
+}
+
 const ui = computed(() => header())
 </script>
 
@@ -38,6 +42,7 @@ const ui = computed(() => header())
           aria-label="Home"
           :icon="house"
           :class="ui.link({ class: props.ui?.link })"
+          @click="track('Home')"
         />
       </UTooltip>
       <UTooltip text="Websites">
@@ -48,6 +53,7 @@ const ui = computed(() => header())
           aria-label="Websites"
           :icon="squaresFour"
           :class="ui.link({ class: props.ui?.link })"
+          @click="track('Websites')"
         />
       </UTooltip>
       <UTooltip text="Platforms">
@@ -58,6 +64,7 @@ const ui = computed(() => header())
           aria-label="Platforms"
           :icon="circlesFour"
           :class="ui.link({ class: props.ui?.link })"
+          @click="track('Platforms')"
         />
       </UTooltip>
       <UTooltip text="Ecosystem">
@@ -68,6 +75,7 @@ const ui = computed(() => header())
           aria-label="Ecosystem"
           :icon="graph"
           :class="ui.link({ class: props.ui?.link })"
+          @click="track('Ecosystem')"
         />
       </UTooltip>
     </header>
