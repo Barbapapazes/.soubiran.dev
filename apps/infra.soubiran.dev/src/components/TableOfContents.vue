@@ -52,7 +52,6 @@ const ui = computed(() => tableOfContents())
         <!-- Cannot use RouterLink as the anchor will be prefixed with the route path. -->
         <a
           v-if="item.anchor"
-          :key="item.anchor"
           :href="`#${item.anchor}`"
           variant="link"
           color="neutral"
