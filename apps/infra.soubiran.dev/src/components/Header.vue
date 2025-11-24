@@ -24,8 +24,12 @@ const props = defineProps<HeaderProps>()
 defineEmits<HeaderEmits>()
 defineSlots<HeaderSlots>()
 
+const route = useRoute()
 function track(label: string) {
-  window.umami?.track('header', { label })
+  window.umami?.track('header_click', {
+    page_path: route.path,
+    label,
+  })
 }
 
 const ui = computed(() => header())

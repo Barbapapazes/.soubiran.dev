@@ -32,7 +32,7 @@ defineSlots<TableOfContentsSlots>()
 const route = useRoute()
 
 function track(text: string, hash: string) {
-  window.umami?.track('table_of_contents', {
+  window.umami?.track('table_of_contents_click', {
     page_path: route.path,
     toc_text: text,
     toc_hash: hash,
