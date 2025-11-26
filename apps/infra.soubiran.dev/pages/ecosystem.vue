@@ -1,10 +1,28 @@
-<script lang="ts" setup>
+<script lang="ts">
 import type { EcosystemItem } from '@/types/ecosystem'
+import { motion } from 'motion-v'
 import circlesFour from '~icons/ph/circles-four-duotone'
 import graph from '~icons/ph/graph-duotone'
 import house from '~icons/ph/house-duotone'
 import squaresFour from '~icons/ph/squares-four-duotone'
 import Ecosystem from '@/components/Ecosystem/Ecosystem.vue'
+
+const ecosystemTV = tv({
+  slots: {
+    base: '',
+    link: 'p-0 text-dimmed',
+  },
+})
+</script>
+
+<script lang="ts" setup>
+const route = useRoute()
+function track(label: string) {
+  window.umami?.track('ecosystem_header_click', {
+    page_path: route.path,
+    label,
+  })
+}
 
 const router = useRouter()
 const ecosystem = router.getRoutes()
@@ -14,6 +32,8 @@ const ecosystem = router.getRoutes()
     name: route.meta.frontmatter.title,
     ecosystem: route.meta.frontmatter.ecosystem!,
   } satisfies EcosystemItem))
+
+const ui = computed(() => ecosystemTV())
 </script>
 
 <template>
@@ -23,7 +43,11 @@ const ecosystem = router.getRoutes()
       :ecosystem="ecosystem"
       :ui="{ root: 'w-full h-full' }"
     />
-    <header class="fixed top-4 right-4 z-10 flex flex-row gap-4 items-center bg-white bg-opacity-90 shadow-sm backdrop-blur-sm dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2">
+    <motion.header
+      :initial="{ opacity: 0 }"
+      :animate="{ opacity: 1, transition: { delay: 0.2, duration: 0.4 } }"
+      class="fixed top-4 right-4 z-10 flex flex-row gap-4 items-center bg-white bg-opacity-90 shadow-sm backdrop-blur-sm dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2"
+    >
       <UTooltip text="Home">
         <UButton
           to="/"
@@ -31,7 +55,8 @@ const ecosystem = router.getRoutes()
           color="neutral"
           aria-label="Home"
           :icon="house"
-          class="p-0 text-dimmed"
+          :class="ui.link()"
+          @click="track('Home')"
         />
       </UTooltip>
       <UTooltip text="Websites">
@@ -41,7 +66,8 @@ const ecosystem = router.getRoutes()
           color="neutral"
           aria-label="Websites"
           :icon="squaresFour"
-          class="p-0 text-dimmed"
+          :class="ui.link()"
+          @click="track('Websites')"
         />
       </UTooltip>
       <UTooltip text="Platforms">
@@ -51,7 +77,8 @@ const ecosystem = router.getRoutes()
           color="neutral"
           aria-label="Platforms"
           :icon="circlesFour"
-          class="p-0 text-dimmed"
+          :class="ui.link()"
+          @click="track('Platforms')"
         />
       </UTooltip>
       <UTooltip text="Ecosystem">
@@ -61,9 +88,10 @@ const ecosystem = router.getRoutes()
           color="neutral"
           aria-label="Ecosystem"
           :icon="graph"
-          class="p-0 text-dimmed"
+          :class="ui.link()"
+          @click="track('Ecosystem')"
         />
       </UTooltip>
-    </header>
+    </motion.header>
   </div>
 </template>
