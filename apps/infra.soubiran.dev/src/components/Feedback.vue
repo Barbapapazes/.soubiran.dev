@@ -3,7 +3,7 @@ import thumbsUp from '~icons/ph/thumbs-up'
 
 const feedback = tv({
   slots: {
-    base: '',
+    base: 'px-0 py-1 text-dimmed text-sm',
   },
 })
 
@@ -21,6 +21,13 @@ const props = defineProps<FeedbackProps>()
 defineEmits<FeedbackEmits>()
 defineSlots<FeedbackSlots>()
 
+const route = useRoute()
+function onClick() {
+  window.umami?.track('feedback_click', {
+    page_path: route.path,
+  })
+}
+
 const content = ref('')
 const rating = ref('')
 
@@ -34,7 +41,15 @@ const ui = computed(() => feedback())
 
 <template>
   <UPopover :ui="{ content: 'ring-0 data-[state=open]:animate-[scale-up_100ms_ease-out]' }">
-    <UButton variant="link" color="neutral" size="sm" label="Give feedback" :icon="thumbsUp" :class="ui.base({ class: [props.ui?.base, props.class] })" />
+    <UButton
+      variant="link"
+      color="neutral"
+      label="Give feedback"
+      size="sm"
+      :icon="thumbsUp"
+      :class="ui.base({ class: [props.ui?.base, props.class] })"
+      @click="onClick"
+    />
 
     <template #content>
       <FeedbackCard

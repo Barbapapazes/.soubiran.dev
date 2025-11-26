@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.22.0",
+  "packageManager": "pnpm@10.23.0",
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix",
@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
-    "@tsconfig/node-lts": "^22.0.3",
+    "@tsconfig/node-lts": "^22.0.4",
     "@types/node": "^24.10.1",
     "@unpic/pixels": "^1.3.0",
     "ansis": "^4.2.0",
@@ -26,7 +26,8 @@
     "patchedDependencies": {
       "@nuxt/ui": "patches/@nuxt__ui.patch",
       "vite-ssg": "patches/vite-ssg.patch",
-      "unhead": "patches/unhead.patch"
+      "unhead": "patches/unhead.patch",
+      "markdown-it-table-of-contents": "patches/markdown-it-table-of-contents.patch"
     },
     "onlyBuiltDependencies": [
       "esbuild",

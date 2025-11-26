@@ -1,0 +1,83 @@
+diff --git a/index.mjs b/index.mjs
+index bcf11754cbfed53d1ed7ca322cae1cefd8dd6217..b3962cd5810cb0563ba35a11afd6db025654ed08 100644
+--- a/index.mjs
++++ b/index.mjs
+@@ -17,7 +17,7 @@
+  * @param {string} rawToken Raw token to extract text from
+  * @returns {string} Slugified anchor string
+  */
+-function slugify(text, rawToken) {
++export function slugify(text, rawToken) {
+ 	return encodeURIComponent(String(text).trim().toLowerCase().replace(/\s+/g, '-'));
+ };
+ 
+@@ -64,7 +64,7 @@ function transformContainerClose(/** @type {string} */ containerFooterHtml) {
+  * @param {string} rawToken Raw token to extract text from
+  * @returns {string}
+  */
+-function getTokensText(tokens, rawToken) {
++export function getTokensText(tokens, rawToken) {
+ 	return tokens
+ 		.filter(t => ['text', 'code_inline'].includes(t.type))
+ 		.map(t => t.content)
+@@ -72,7 +72,7 @@ function getTokensText(tokens, rawToken) {
+ 		.trim();
+ }
+ 
+-const defaultOptions = {
++export const defaultOptions = {
+ 	includeLevel: [1, 2],
+ 	containerClass: 'table-of-contents',
+ 	slugify,
+@@ -104,7 +104,6 @@ const defaultOptions = {
+ * @property {string} text Text of link
+ * @property {string | null} anchor Target of link
+ * @property {Array<TocItem>} children Sub-items for this list item
+-* @property {TocItem | null} parent Parent this item belongs to
+ */
+ 
+ // --- TOC builder ---
+@@ -116,7 +115,7 @@ const defaultOptions = {
+ * @param {*} options Plugin options
+ * @returns {Array<HeadlineItem>}
+ */
+-function findHeadlineElements(levels, tokens, options) {
++export function findHeadlineElements(levels, tokens, options) {
+ 	/** @type {HeadlineItem[]} */
+ 	const headings = [];
+ 
+@@ -199,7 +198,7 @@ function getMinLevel(headlineItems) {
+ * @returns {TocItem}
+ */
+ function addListItem(level, text, anchor, rootNode) {
+-	const listItem = { level, text, anchor, children: [], parent: rootNode };
++	const listItem = { level, text, anchor, children: [] };
+ 	rootNode.children.push(listItem);
+ 	return listItem;
+ }
+@@ -209,10 +208,10 @@ function addListItem(level, text, anchor, rootNode) {
+ * @param {Array<HeadlineItem>} headlineItems
+ * @returns {TocItem} Tree of TOC items
+ */
+-function flatHeadlineItemsToNestedTree(headlineItems) {
++export function flatHeadlineItemsToNestedTree(headlineItems) {
+ 	// create a root node with no text that holds the entire TOC. this won't be rendered, but only its children
+ 	/** @type {TocItem} */
+-	const toc = { level: getMinLevel(headlineItems) - 1, anchor: null, text: '', children: [], parent: null };
++	const toc = { level: getMinLevel(headlineItems) - 1, anchor: null, text: '', children: [] };
+ 	// pointer that tracks the last root item of the current list
+ 	let currentRootNode = toc;
+ 	// pointer that tracks the last item (to turn it into a new root node if necessary)
+@@ -236,9 +235,9 @@ function flatHeadlineItemsToNestedTree(headlineItems) {
+ 		// if level is smaller, set current list to currentlist.parent
+ 		else if (headlineItem.level < prevListItem.level) {
+ 			for (let i = 0; i < prevListItem.level - headlineItem.level; i++) {
+-				if (currentRootNode.parent) {
+-					currentRootNode = currentRootNode.parent;
+-				}
++				// if (currentRootNode.parent) {
++				// 	currentRootNode = currentRootNode.parent;
++				// }
+ 			}
+ 			prevListItem = addListItem(headlineItem.level, headlineItem.text, headlineItem.anchor, currentRootNode);
+ 		}
