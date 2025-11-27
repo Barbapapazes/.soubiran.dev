@@ -95,6 +95,7 @@ export default (title: string, hostname: string) => defineConfig({
     markdown({
       headEnabled: true,
       wrapperClasses: [
+        'slide-enter-content',
         'max-w-none',
         'prose prose-neutral dark:prose-invert',
         'prose-headings:text-default prose-h2:text-[1.125em] prose-h2:mb-[0.5em] prose-h3:text-[1em]',

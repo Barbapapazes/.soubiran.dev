@@ -1,10 +1,17 @@
 <script lang="ts" setup>
+import { motion } from 'motion-v'
+
 const route = useRoute()
 </script>
 
 <template>
   <UApp>
-    <Header v-if="route.meta.frontmatter.page !== 'ecosystem'" />
+    <motion.div
+      :initial="{ opacity: 0 }"
+      :animate="{ opacity: 1, transition: { delay: 0.8, duration: 0.6 } }"
+    >
+      <Header v-if="route.meta.frontmatter.page !== 'ecosystem'" />
+    </motion.div>
 
     <UMain>
       <RouterView />
