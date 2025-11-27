@@ -43,55 +43,57 @@ const ui = computed(() => ecosystemTV())
       :ecosystem="ecosystem"
       :ui="{ root: 'w-full h-full' }"
     />
-    <motion.header
+    <motion.div
       :initial="{ opacity: 0 }"
       :animate="{ opacity: 1, transition: { delay: 0.2, duration: 0.4 } }"
-      class="fixed top-4 right-4 z-10 flex flex-row gap-4 items-center bg-white bg-opacity-90 shadow-sm backdrop-blur-sm dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2"
+      class="fixed top-4 right-4 z-10"
     >
-      <UTooltip text="Home">
-        <UButton
-          to="/"
-          variant="link"
-          color="neutral"
-          aria-label="Home"
-          :icon="house"
-          :class="ui.link()"
-          @click="track('Home')"
-        />
-      </UTooltip>
-      <UTooltip text="Websites">
-        <UButton
-          to="/websites"
-          variant="link"
-          color="neutral"
-          aria-label="Websites"
-          :icon="squaresFour"
-          :class="ui.link()"
-          @click="track('Websites')"
-        />
-      </UTooltip>
-      <UTooltip text="Platforms">
-        <UButton
-          to="/platforms"
-          variant="link"
-          color="neutral"
-          aria-label="Platforms"
-          :icon="circlesFour"
-          :class="ui.link()"
-          @click="track('Platforms')"
-        />
-      </UTooltip>
-      <UTooltip text="Ecosystem">
-        <UButton
-          to="/ecosystem"
-          variant="link"
-          color="neutral"
-          aria-label="Ecosystem"
-          :icon="graph"
-          :class="ui.link()"
-          @click="track('Ecosystem')"
-        />
-      </UTooltip>
-    </motion.header>
+      <UCard as="header" :ui="{ body: 'flex flex-row gap-4 px-3 py-2 sm:px-3 sm:py-2' }">
+        <UTooltip text="Home">
+          <UButton
+            to="/"
+            variant="link"
+            color="neutral"
+            aria-label="Home"
+            :icon="house"
+            :class="ui.link()"
+            @click="track('Home')"
+          />
+        </UTooltip>
+        <UTooltip text="Websites">
+          <UButton
+            to="/websites"
+            variant="link"
+            color="neutral"
+            aria-label="Websites"
+            :icon="squaresFour"
+            :class="ui.link()"
+            @click="track('Websites')"
+          />
+        </UTooltip>
+        <UTooltip text="Platforms">
+          <UButton
+            to="/platforms"
+            variant="link"
+            color="neutral"
+            aria-label="Platforms"
+            :icon="circlesFour"
+            :class="ui.link()"
+            @click="track('Platforms')"
+          />
+        </UTooltip>
+        <UTooltip text="Ecosystem">
+          <UButton
+            to="/ecosystem"
+            variant="link"
+            color="neutral"
+            aria-label="Ecosystem"
+            :icon="graph"
+            :class="ui.link()"
+            @click="track('Ecosystem')"
+          />
+        </UTooltip>
+      </UCard>
+    </motion.div>
   </div>
 </template>
