@@ -6,26 +6,33 @@ import { person } from './person'
 import { webpage } from './webpage'
 import { website } from './website'
 
-export function structuredData(id: string, frontmatter: Record<string, any>, name: string, hostname: string) {
+interface StructuredDataOptions {
+  name: string
+  hostname: string
+  extractPage: (id: string) => string | null
+}
+
+export function structuredData(id: string, frontmatter: Record<string, any>, options: StructuredDataOptions) {
+  const { name, hostname, extractPage } = options
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [] as Record<string, any>[],
   }
 
-  const options = {
+  const structuredDataOptions = {
     name,
     hostname,
     url: toUrl(hostname),
   }
 
-  const personData = person(options)
-  const websiteData = website({ person: personData }, options)
+  const personData = person(structuredDataOptions)
+  const websiteData = website({ person: personData }, structuredDataOptions)
   const webpageData = webpage(id, { website: websiteData }, {
     title: frontmatter.title,
     description: frontmatter.description,
     datePublished: frontmatter.date ? new Date(frontmatter.date) : undefined,
     keywords: frontmatter.tags,
-  }, options)
+  }, structuredDataOptions)
 
   const page = extractPage(id)
   if (page === 'platforms-show' || page === 'websites-show') {
@@ -36,7 +43,7 @@ export function structuredData(id: string, frontmatter: Record<string, any>, nam
         title: frontmatter.title,
         description: frontmatter.description,
       },
-      options,
+      structuredDataOptions,
     )
 
     graph['@graph'].push(articleData.data)
@@ -56,7 +63,7 @@ export function structuredData(id: string, frontmatter: Record<string, any>, nam
         title: frontmatter.title,
       },
     ]
-    const breadcrumbData = breadcrumb(id, breadcrumbItems, options)
+    const breadcrumbData = breadcrumb(id, breadcrumbItems, structuredDataOptions)
 
     graph['@graph'].push(breadcrumbData.data)
     webpageData.setBreadcrumb(breadcrumbData)

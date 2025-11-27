@@ -115,8 +115,8 @@ export default (title: string, hostname: string, options: Options) => defineConf
         'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
         '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
       ],
-      transforms: options?.markdown?.transforms,
-      wrapperComponent: options?.markdown?.wrapperComponent,
+      transforms: options.markdown?.transforms,
+      wrapperComponent: options.markdown?.wrapperComponent,
       async markdownItSetup(md) {
         githubAlerts(md)
         implicitFiguresRule(md)
@@ -131,7 +131,11 @@ export default (title: string, hostname: string, options: Options) => defineConf
         assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
-        structuredData(id, frontmatter, title, hostname)
+        structuredData(id, frontmatter, {
+          name: title,
+          hostname,
+          extractPage: options.extractPage,
+        })
 
         const page = options.extractPage(id)
         frontmatter.page = page
