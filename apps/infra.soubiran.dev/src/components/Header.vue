@@ -3,6 +3,11 @@ import circlesFour from '~icons/ph/circles-four-duotone'
 import graph from '~icons/ph/graph-duotone'
 import house from '~icons/ph/house-duotone'
 import squaresFour from '~icons/ph/squares-four-duotone'
+import discord from '~icons/simple-icons/discord'
+import github from '~icons/simple-icons/github'
+import linkedin from '~icons/simple-icons/linkedin'
+import twitch from '~icons/simple-icons/twitch'
+import x from '~icons/simple-icons/x'
 
 const header = tv({
   slots: {
@@ -77,6 +82,72 @@ const ui = computed(() => header())
           :icon="graph"
           :class="ui.link({ class: props.ui?.link })"
           @click="trackClick('Ecosystem')"
+        />
+      </UTooltip>
+      <USeparator orientation="vertical" class="h-5" />
+      <UTooltip text="GitHub">
+        <UButton
+          href="https://github.com/barbapapazes"
+          target="_blank"
+          variant="link"
+          color="neutral"
+          aria-label="GitHub"
+          :icon="github"
+          :class="ui.link({ class: props.ui?.link })"
+          :ui="{ leadingIcon: 'size-4' }"
+          @click="trackClick('GitHub')"
+        />
+      </UTooltip>
+      <UTooltip text="LinkedIn">
+        <UButton
+          href="https://www.linkedin.com/in/esteban25/"
+          target="_blank"
+          variant="link"
+          color="neutral"
+          aria-label="LinkedIn"
+          :icon="linkedin"
+          :class="ui.link({ class: props.ui?.link })"
+          :ui="{ leadingIcon: 'size-4' }"
+          @click="trackClick('LinkedIn')"
+        />
+      </UTooltip>
+      <UTooltip text="X">
+        <UButton
+          href="https://x.com/soubiran_"
+          target="_blank"
+          variant="link"
+          color="neutral"
+          aria-label="X"
+          :icon="x"
+          :class="ui.link({ class: props.ui?.link })"
+          :ui="{ leadingIcon: 'size-4' }"
+          @click="trackClick('X')"
+        />
+      </UTooltip>
+      <UTooltip text="Twitch">
+        <UButton
+          href="https://www.twitch.tv/barbapapazes"
+          target="_blank"
+          variant="link"
+          color="neutral"
+          aria-label="Twitch"
+          :icon="twitch"
+          :class="ui.link({ class: props.ui?.link })"
+          :ui="{ leadingIcon: 'size-4' }"
+          @click="trackClick('Twitch')"
+        />
+      </UTooltip>
+      <UTooltip text="Discord">
+        <UButton
+          href="https://discord.gg/q2ghCGUuFR"
+          target="_blank"
+          variant="link"
+          color="neutral"
+          aria-label="Discord"
+          :icon="discord"
+          :class="ui.link({ class: props.ui?.link })"
+          :ui="{ leadingIcon: 'size-4' }"
+          @click="trackClick('Discord')"
         />
       </UTooltip>
     </header>
