@@ -1,5 +1,5 @@
 import type { BreadcrumbItem } from './breadcrumb'
-import { extractPage, toUrl } from '../utils'
+import { toUrl } from '../utils'
 import { article } from './article'
 import { breadcrumb } from './breadcrumb'
 import { person } from './person'

@@ -1,3 +1,4 @@
+import type { Options as MarkdownOptions } from 'unplugin-vue-markdown/types'
 /// <reference types="vite-ssg" />
 import type { UserConfig } from 'vite'
 import { readFileSync } from 'node:fs'
@@ -24,11 +25,15 @@ import { metaPlugin } from './src/plugins/meta'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
 import { structuredData } from './src/structured-data'
-import { extractPage } from './src/utils'
+
+interface Options {
+  extractPage: (id: string) => string | null
+  markdown?: MarkdownOptions
+}
 
 const config: UserConfig = {}
 
-export default (title: string, hostname: string) => defineConfig({
+export default (title: string, hostname: string, options: Options) => defineConfig({
   plugins: [
     vueRouter({
       extensions: ['.vue', '.md'],
@@ -42,7 +47,7 @@ export default (title: string, hostname: string) => defineConfig({
         if (path.endsWith('.vue')) {
           route.addToMeta({
             frontmatter: {
-              page: extractPage(path),
+              page: options.extractPage(path),
             },
           })
         }
@@ -110,31 +115,8 @@ export default (title: string, hostname: string) => defineConfig({
         'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
         '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
       ],
-      transforms: {
-        before: (code: string, id: string) => {
-          const page = extractPage(id)
-
-          if (page?.endsWith('-show')) {
-            return `${code}\n\n## Ecosystem`
-          }
-
-          return code
-        },
-      },
-      wrapperComponent: (id) => {
-        const page = extractPage(id)
-
-        if (page === 'platforms-index') {
-          return 'WrapperPlatforms'
-        }
-
-        if (page === 'websites-index') {
-          return 'WrapperWebsites'
-        }
-
-        return 'WrapperContent'
-      },
-
+      transforms: options?.markdown?.transforms,
+      wrapperComponent: options?.markdown?.wrapperComponent,
       async markdownItSetup(md) {
         githubAlerts(md)
         implicitFiguresRule(md)
@@ -145,16 +127,16 @@ export default (title: string, hostname: string) => defineConfig({
         await shikiHighlight(md)
       },
 
-      frontmatterPreprocess(frontmatter, options, id, defaults) {
+      frontmatterPreprocess(frontmatter, frontmatterOptions, id, defaults) {
         assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
         structuredData(id, frontmatter, title, hostname)
 
-        const page = extractPage(id)
+        const page = options.extractPage(id)
         frontmatter.page = page
 
-        const head = defaults(frontmatter, options)
+        const head = defaults(frontmatter, frontmatterOptions)
         return { head, frontmatter }
       },
     }),
