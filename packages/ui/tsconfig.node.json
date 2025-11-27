@@ -23,6 +23,7 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
-    "src/resolver.ts"
+    "src/resolver.ts",
+    "src/imports.ts"
   ]
 }

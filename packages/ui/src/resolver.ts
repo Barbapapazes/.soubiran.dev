@@ -4,6 +4,8 @@ const components: string[] = [
   'Socials',
   'ViewersCounter',
   'Sponsors',
+  'Feedback',
+  'FeedbackCard',
 ]
 
 export default function (): ComponentResolver {

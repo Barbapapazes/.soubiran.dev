@@ -1,5 +1,8 @@
 <script lang="ts">
+import { tv } from 'tailwind-variants'
+import { computed, ref } from 'vue'
 import thumbsUp from '~icons/ph/thumbs-up'
+import useUmami from '../composables/useUmami.js'
 
 const feedback = tv({
   slots: {

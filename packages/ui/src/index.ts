@@ -1,3 +1,6 @@
+export { default as Feedback } from './components/Feedback.vue'
+export { default as FeedbackCard } from './components/FeedbackCard.vue'
 export { default as Socials } from './components/Socials.vue'
 export { default as Sponsors } from './components/Sponsors.vue'
 export { default as ViewersCounter } from './components/ViewersCounter.vue'
+export { default as useUmami } from './composables/useUmami.js'

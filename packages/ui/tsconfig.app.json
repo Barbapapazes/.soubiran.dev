@@ -16,6 +16,8 @@
   },
   "include": [
     "src/index.ts",
-    "src/components/*.vue"
+    "src/umami.d.ts",
+    "src/components/*.vue",
+    "src/composables/*.ts"
   ]
 }

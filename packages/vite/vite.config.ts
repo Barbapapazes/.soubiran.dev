@@ -12,6 +12,7 @@ import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
+import soubiranComposablesImports from '../ui/src/imports'
 import soubiranResolver from '../ui/src/resolver'
 import { assert } from './src/assert'
 import { canonical } from './src/canonical'
@@ -74,8 +75,8 @@ export default (title: string, hostname: string) => defineConfig({
             from: 'tailwind-variants',
             imports: ['tv'],
           },
+          soubiranComposablesImports,
         ],
-
       },
       components: {
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
