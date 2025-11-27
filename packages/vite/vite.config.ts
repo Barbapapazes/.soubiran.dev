@@ -1,6 +1,9 @@
 import type { Options as MarkdownOptions } from 'unplugin-vue-markdown/types'
 /// <reference types="vite-ssg" />
 import type { UserConfig } from 'vite'
+import type { AssertFn } from './src/assert'
+import type { StructuredDataPageConfig } from './src/structured-data'
+import type { PersonOptions } from './src/structured-data/person'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -15,7 +18,7 @@ import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 import soubiranComposablesImports from '../ui/src/imports'
 import soubiranResolver from '../ui/src/resolver'
-import { assert } from './src/assert'
+import { createAssert } from './src/assert'
 import { canonical } from './src/canonical'
 import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight, tableOfContentsRule } from './src/markdown-it'
 import { og } from './src/og'
@@ -26,9 +29,17 @@ import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
 import { structuredData } from './src/structured-data'
 
+export type { StructuredDataPageConfig } from './src/structured-data'
+export type { BreadcrumbItem } from './src/structured-data/breadcrumb'
+export type { PersonOptions } from './src/structured-data/person'
+
 interface Options {
   extractPage: (id: string) => string | null
   markdown?: MarkdownOptions
+  person: PersonOptions
+  getPageConfig: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
+  assert?: AssertFn
+  apiCategories?: string[]
 }
 
 const config: UserConfig = {}
@@ -128,13 +139,16 @@ export default (title: string, hostname: string, options: Options) => defineConf
       },
 
       frontmatterPreprocess(frontmatter, frontmatterOptions, id, defaults) {
+        const assert = createAssert(options.assert)
         assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
         structuredData(id, frontmatter, {
           name: title,
           hostname,
+          person: options.person,
           extractPage: options.extractPage,
+          getPageConfig: options.getPageConfig,
         })
 
         const page = options.extractPage(id)
@@ -168,7 +182,7 @@ export default (title: string, hostname: string, options: Options) => defineConf
       autoInstall: true,
     }),
 
-    apiPlugin(),
+    apiPlugin(options.apiCategories),
     markdownPlugin(),
     metaPlugin(hostname),
 
