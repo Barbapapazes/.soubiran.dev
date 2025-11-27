@@ -16,12 +16,9 @@ const ecosystemTV = tv({
 </script>
 
 <script lang="ts" setup>
-const route = useRoute()
-function track(label: string) {
-  window.umami?.track('ecosystem_header_click', {
-    page_path: route.path,
-    label,
-  })
+const { track } = useUmami()
+function trackClick(label: string) {
+  track('ecosystem_header_click', { label })
 }
 
 const router = useRouter()
@@ -57,7 +54,7 @@ const ui = computed(() => ecosystemTV())
             aria-label="Home"
             :icon="house"
             :class="ui.link()"
-            @click="track('Home')"
+            @click="trackClick('Home')"
           />
         </UTooltip>
         <UTooltip text="Websites">
@@ -68,7 +65,7 @@ const ui = computed(() => ecosystemTV())
             aria-label="Websites"
             :icon="squaresFour"
             :class="ui.link()"
-            @click="track('Websites')"
+            @click="trackClick('Websites')"
           />
         </UTooltip>
         <UTooltip text="Platforms">
@@ -79,7 +76,7 @@ const ui = computed(() => ecosystemTV())
             aria-label="Platforms"
             :icon="circlesFour"
             :class="ui.link()"
-            @click="track('Platforms')"
+            @click="trackClick('Platforms')"
           />
         </UTooltip>
         <UTooltip text="Ecosystem">
@@ -90,7 +87,7 @@ const ui = computed(() => ecosystemTV())
             aria-label="Ecosystem"
             :icon="graph"
             :class="ui.link()"
-            @click="track('Ecosystem')"
+            @click="trackClick('Ecosystem')"
           />
         </UTooltip>
       </UCard>

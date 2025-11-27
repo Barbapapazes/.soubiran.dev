@@ -21,11 +21,9 @@ const props = defineProps<FeedbackProps>()
 defineEmits<FeedbackEmits>()
 defineSlots<FeedbackSlots>()
 
-const route = useRoute()
+const { track } = useUmami()
 function onClick() {
-  window.umami?.track('feedback_click', {
-    page_path: route.path,
-  })
+  track('feedback_click')
 }
 
 const content = ref('')

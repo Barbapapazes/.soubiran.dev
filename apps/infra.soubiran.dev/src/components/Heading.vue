@@ -26,7 +26,7 @@ const props = defineProps<HeadingProps>()
 defineEmits<HeadingEmits>()
 defineSlots<HeadingSlots>()
 
-const route = useRoute()
+const { track } = useUmami()
 const router = useRouter()
 const { copied, copy: copyToClipboard } = useClipboard()
 async function onCopy() {
@@ -39,8 +39,7 @@ async function onCopy() {
 
   await copyToClipboard(window.location.href)
 
-  window.umami?.track('heading_copy_link', {
-    page_path: route.path,
+  track('heading_copy_link', {
     heading_id: props.id,
     heading_level: props.level,
   })

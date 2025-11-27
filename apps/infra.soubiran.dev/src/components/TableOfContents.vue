@@ -29,11 +29,9 @@ const props = defineProps<TableOfContentsProps>()
 defineEmits<TableOfContentsEmits>()
 defineSlots<TableOfContentsSlots>()
 
-const route = useRoute()
-
-function track(text: string, hash: string) {
-  window.umami?.track('table_of_contents_click', {
-    page_path: route.path,
+const { track } = useUmami()
+function trackClick(text: string, hash: string) {
+  track('table_of_contents_click', {
     toc_text: text,
     toc_hash: hash,
   })
@@ -60,7 +58,7 @@ const ui = computed(() => tableOfContents())
           :href="`#${item.anchor}`"
           :data-active="activeHeadings.includes(item.anchor || '') ? true : undefined"
           :class="ui.link({ class: props.ui?.link })"
-          @click="track(item.text, item.anchor)"
+          @click="trackClick(item.text, item.anchor)"
         >
           <span>{{ index + 1 }}.</span>
           {{ item.text }}
