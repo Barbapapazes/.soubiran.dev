@@ -33,67 +33,73 @@ export default soubiran(name, hostname, {
       return 'WrapperContent'
     },
   },
-  person: {
-    name: 'Estéban Soubiran',
-    sameAs: [
-      'https://x.com/soubiran_',
-      'https://www.linkedin.com/in/esteban25',
-      'https://www.twitch.tv/barbapapazes',
-      'https://www.youtube.com/@barbapapazes',
-      'https://github.com/barbapapazes',
-      'https://soubiran.dev',
-      'https://esteban-soubiran.site',
-      'https://barbapapazes.dev',
-    ],
-  },
-  getPageConfig: (page, frontmatter): StructuredDataPageConfig => {
-    if (page === 'platforms-show' || page === 'websites-show') {
-      const breadcrumbItems: BreadcrumbItem[] = [
-        {
-          title: name,
-          type: 'WebSite',
-          url: toUrl(hostname),
-        },
-        {
-          title: page === 'platforms-show' ? 'Platforms' : 'Websites',
-          type: 'WebPage',
-          url: toUrl(hostname, page === 'platforms-show' ? 'platforms' : 'websites'),
-        },
-        {
-          title: frontmatter.title,
-        },
-      ]
+  seo: {
+    person: {
+      name: 'Estéban Soubiran',
+      sameAs: [
+        'https://x.com/soubiran_',
+        'https://www.linkedin.com/in/esteban25',
+        'https://www.twitch.tv/barbapapazes',
+        'https://www.youtube.com/@barbapapazes',
+        'https://github.com/barbapapazes',
+        'https://soubiran.dev',
+        'https://esteban-soubiran.site',
+        'https://barbapapazes.dev',
+      ],
+    },
+    assert: {
+      rules: (id, frontmatter) => {
+        // Check if this is a platform or website page (not index pages)
+        const isPlatformOrWebsite = (id.includes('/platforms/') || id.includes('/websites/'))
+          && !id.endsWith('index.md')
 
-      return {
-        type: 'article',
-        breadcrumbItems,
-      }
-    }
+        // Validate url field for platform/website pages
+        if (isPlatformOrWebsite && !frontmatter.url) {
+          throw new Error(
+            `Missing required field 'url' in frontmatter for file: ${id}`,
+          )
+        }
 
-    if (page === 'platforms-index' || page === 'websites-index') {
-      return { type: 'collection' }
-    }
+        // Validate repository field for platform/website pages
+        if (isPlatformOrWebsite && !frontmatter.repository) {
+          throw new Error(
+            `Missing required field 'repository' in frontmatter for file: ${id}`,
+          )
+        }
+      },
+    },
+    structuredData: {
+      pageConfig: (page, frontmatter): StructuredDataPageConfig => {
+        if (page === 'platforms-show' || page === 'websites-show') {
+          const breadcrumbItems: BreadcrumbItem[] = [
+            {
+              title: name,
+              type: 'WebSite',
+              url: toUrl(hostname),
+            },
+            {
+              title: page === 'platforms-show' ? 'Platforms' : 'Websites',
+              type: 'WebPage',
+              url: toUrl(hostname, page === 'platforms-show' ? 'platforms' : 'websites'),
+            },
+            {
+              title: frontmatter.title,
+            },
+          ]
 
-    return { type: 'default' }
-  },
-  assert: (id, frontmatter) => {
-    // Check if this is a platform or website page (not index pages)
-    const isPlatformOrWebsite = (id.includes('/platforms/') || id.includes('/websites/'))
-      && !id.endsWith('index.md')
+          return {
+            type: 'article',
+            breadcrumbItems,
+          }
+        }
 
-    // Validate url field for platform/website pages
-    if (isPlatformOrWebsite && !frontmatter.url) {
-      throw new Error(
-        `Missing required field 'url' in frontmatter for file: ${id}`,
-      )
-    }
+        if (page === 'platforms-index' || page === 'websites-index') {
+          return { type: 'collection' }
+        }
 
-    // Validate repository field for platform/website pages
-    if (isPlatformOrWebsite && !frontmatter.repository) {
-      throw new Error(
-        `Missing required field 'repository' in frontmatter for file: ${id}`,
-      )
-    }
+        return { type: 'default' }
+      },
+    },
   },
   apiCategories: ['websites', 'platforms'],
 })

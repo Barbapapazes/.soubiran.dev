@@ -36,9 +36,15 @@ export type { PersonOptions } from './src/structured-data/person'
 interface Options {
   extractPage: (id: string) => string | null
   markdown?: MarkdownOptions
-  person: PersonOptions
-  getPageConfig: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
-  assert?: AssertFn
+  seo: {
+    person: PersonOptions
+    assert: {
+      rules: AssertFn
+    }
+    structuredData: {
+      pageConfig: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
+    }
+  }
   apiCategories?: string[]
 }
 
@@ -139,16 +145,16 @@ export default (title: string, hostname: string, options: Options) => defineConf
       },
 
       frontmatterPreprocess(frontmatter, frontmatterOptions, id, defaults) {
-        const assert = createAssert(options.assert)
+        const assert = createAssert(options.seo.assert.rules)
         assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
         structuredData(id, frontmatter, {
           name: title,
           hostname,
-          person: options.person,
+          person: options.seo.person,
           extractPage: options.extractPage,
-          getPageConfig: options.getPageConfig,
+          getPageConfig: options.seo.structuredData.pageConfig,
         })
 
         const page = options.extractPage(id)
