@@ -34,6 +34,7 @@
     "@iconify-json/ph": "^1.2.2",
     "@iconify-json/simple-icons": "^1.2.59",
     "@playwright/test": "^1.56.1",
+    "@rviscomi/capo.js": "^2.0.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^24.10.1",
     "@vue/tsconfig": "^0.8.1",

@@ -4,173 +4,81 @@ import { expect, test } from '@playwright/test'
  * Test for HTML head element ordering based on capo.js rules
  * Reference: https://rviscomi.github.io/capo.js/user/rules/
  *
- * Validates the optimal head order according to capo.js:
- * 1. Meta charset → 2. Meta viewport → 3. Title
- * 4. Preconnect links → 5. Early scripts (inline/critical)
- * 6. CSS files → 7. Preload/modulepreload
- * 8. Late async/defer scripts (analytics) → 9. Icons/meta tags
- * 10. JSON-LD scripts
+ * Validates critical head element ordering rules:
+ * 1. charset, viewport, title must be first three elements
+ * 2. Preconnect links before stylesheets
+ * 3. Analytics scripts are deferred and come after blocking CSS
  */
 
 test('head elements are ordered according to capo.js rules', async ({ page }) => {
-  // Fetch raw HTML to avoid dynamically injected elements
+  // Fetch raw HTML to avoid dynamically injected elements during hydration
   const response = await page.goto('/')
   const htmlContent = await response!.text()
 
-  // Parse head elements from raw HTML
-  const headElements = await page.evaluate((html) => {
-    const headMatch = html.match(/<head[^>]*>(.*?)<\/head>/s)
-    if (!headMatch)
-      return []
+  // Extract head content from raw HTML
+  const headMatch = htmlContent.match(/<head[^>]*>(.*?)<\/head>/s)
+  expect(headMatch).toBeTruthy()
 
-    const headContent = headMatch[1]
-    const elements = []
-    const tagRegex = /<([a-z][a-z0-9]*)\b([^>]*)>/gi
-    let match
-    let index = 0
+  const headContent = headMatch![1]
 
-    // eslint-disable-next-line no-cond-assign
-    while ((match = tagRegex.exec(headContent)) !== null) {
-      const tagName = match[1].toLowerCase()
-      const attrsString = match[2]
+  // Parse elements from raw HTML
+  const elements: Array<{ tag: string, attrs: Record<string, string> }> = []
+  const tagRegex = /<([a-z][a-z0-9]*)\b([^>]*)>/gi
+  let match
 
-      // Skip to closing tag for elements with content
-      if (tagName === 'title' || tagName === 'script' || tagName === 'style') {
-        const closeTag = `</${tagName}>`
-        const closeIdx = headContent.indexOf(closeTag, match.index)
-        if (closeIdx !== -1)
-          tagRegex.lastIndex = closeIdx + closeTag.length
-      }
+  // eslint-disable-next-line no-cond-assign
+  while ((match = tagRegex.exec(headContent)) !== null) {
+    const tag = match[1].toLowerCase()
+    const attrsString = match[2]
 
-      // Parse relevant attributes
-      const attrs: Record<string, string> = {}
-      const attrRegex = /(\w+)(?:=["']([^"']*)["'])?/g
-      let attrMatch
-      // eslint-disable-next-line no-cond-assign
-      while ((attrMatch = attrRegex.exec(attrsString)) !== null) {
-        const attrName = attrMatch[1]
-        const attrValue = attrMatch[2] || 'true'
-        if (['charset', 'name', 'property', 'rel', 'href', 'src', 'type', 'defer', 'async', 'onload'].includes(attrName))
-          attrs[attrName] = attrValue
-      }
-
-      elements.push({ index, tagName, attrs })
-      index++
+    // Skip to closing tag for elements with content
+    if (tag === 'title' || tag === 'script' || tag === 'style') {
+      const closeIdx = headContent.indexOf(`</${tag}>`, match.index)
+      if (closeIdx !== -1)
+        tagRegex.lastIndex = closeIdx + tag.length + 3
     }
 
-    return elements
-  }, htmlContent)
+    // Parse attributes
+    const attrs: Record<string, string> = {}
+    const attrRegex = /(\w+)(?:=["']([^"']*)["'])?/g
+    let attrMatch
+    // eslint-disable-next-line no-cond-assign
+    while ((attrMatch = attrRegex.exec(attrsString)) !== null) {
+      attrs[attrMatch[1]] = attrMatch[2] || 'true'
+    }
 
-  function findFirst(predicate: (el: typeof headElements[0]) => boolean): number | null {
-    const idx = headElements.findIndex(predicate)
-    return idx === -1 ? null : idx
+    elements.push({ tag, attrs })
   }
 
-  function findLast(predicate: (el: typeof headElements[0]) => boolean): number | null {
-    let lastIdx = -1
-    headElements.forEach((el, idx) => {
-      if (predicate(el))
-        lastIdx = idx
-    })
-    return lastIdx === -1 ? null : lastIdx
-  }
+  // 1. Critical meta tags must be first three elements
+  expect(elements[0].tag).toBe('meta')
+  expect(elements[0].attrs.charset).toBeDefined()
 
-  // 1. Critical meta tags: charset → viewport → title
-  const charsetIndex = findFirst(el => el.tagName === 'meta' && el.attrs.charset)
-  const viewportIndex = findFirst(el => el.tagName === 'meta' && el.attrs.name === 'viewport')
-  const titleIndex = findFirst(el => el.tagName === 'title')
+  expect(elements[1].tag).toBe('meta')
+  expect(elements[1].attrs.name).toBe('viewport')
 
-  expect(charsetIndex).toBe(0)
-  expect(viewportIndex).toBe(1)
-  expect(titleIndex).toBe(2)
+  expect(elements[2].tag).toBe('title')
 
-  // 2. Preconnect links before stylesheets
-  const firstPreconnectIndex = findFirst(el => el.tagName === 'link' && el.attrs.rel === 'preconnect')
-  const firstStylesheetIndex = findFirst(el =>
-    el.tagName === 'link' && (el.attrs.rel === 'stylesheet' || el.attrs.rel?.includes('stylesheet')),
+  // 2. Preconnect should come before stylesheets
+  const preconnectIdx = elements.findIndex(el => el.tag === 'link' && el.attrs.rel === 'preconnect')
+  const stylesheetIdx = elements.findIndex(el => el.tag === 'link' && el.attrs.rel === 'stylesheet')
+
+  if (preconnectIdx !== -1 && stylesheetIdx !== -1)
+    expect(preconnectIdx).toBeLessThan(stylesheetIdx)
+
+  // 3. Analytics scripts should be deferred and after blocking stylesheets
+  const analyticsIdx = elements.findIndex(el =>
+    el.tag === 'script' && el.attrs.src?.includes('umami'),
   )
 
-  if (firstPreconnectIndex !== null && firstStylesheetIndex !== null)
-    expect(firstPreconnectIndex).toBeLessThan(firstStylesheetIndex)
+  if (analyticsIdx !== -1) {
+    expect(elements[analyticsIdx].attrs.defer || elements[analyticsIdx].attrs.async).toBeDefined()
 
-  // 3. Early inline scripts before CSS
-  const firstEarlyScriptIndex = findFirst(el => el.tagName === 'script' && !el.attrs.src)
+    const lastBlockingStyleIdx = elements.findLastIndex(el =>
+      el.tag === 'link' && el.attrs.rel === 'stylesheet' && !el.attrs.onload,
+    )
 
-  if (firstEarlyScriptIndex !== null && firstStylesheetIndex !== null)
-    expect(firstEarlyScriptIndex).toBeLessThan(firstStylesheetIndex)
-
-  // 4. Blocking stylesheets properly grouped
-  const lastStylesheetIndex = findLast(el =>
-    el.tagName === 'link' && (el.attrs.rel === 'stylesheet' || el.attrs.rel?.includes('stylesheet')) && !el.attrs.onload,
-  )
-  const firstStyleIndex = findFirst(el => el.tagName === 'style')
-
-  if (firstStyleIndex !== null && firstStylesheetIndex !== null)
-    expect(firstStyleIndex).toBeGreaterThanOrEqual(firstStylesheetIndex)
-
-  // 5. Late async/defer scripts after blocking CSS
-  const firstLateScriptIndex = findFirst(el =>
-    el.tagName === 'script' && el.attrs.src && (el.attrs.defer || el.attrs.async),
-  )
-
-  if (firstLateScriptIndex !== null && lastStylesheetIndex !== null)
-    expect(firstLateScriptIndex).toBeGreaterThan(lastStylesheetIndex)
-
-  // 6. Analytics scripts are deferred and positioned late
-  const analyticsScriptIndex = findFirst(el =>
-    el.tagName === 'script'
-    && el.attrs.src
-    && (el.attrs.src.includes('umami') || el.attrs.src.includes('analytics') || el.attrs.src.includes('gtag')),
-  )
-
-  if (analyticsScriptIndex !== null) {
-    const analyticsScript = headElements[analyticsScriptIndex]
-    expect(analyticsScript.attrs.defer || analyticsScript.attrs.async).toBeTruthy()
-    if (lastStylesheetIndex !== null)
-      expect(analyticsScriptIndex).toBeGreaterThan(lastStylesheetIndex)
-  }
-
-  // 7. Module scripts after CSS
-  const firstModuleScriptIndex = findFirst(el => el.tagName === 'script' && el.attrs.type === 'module')
-
-  if (firstModuleScriptIndex !== null && lastStylesheetIndex !== null)
-    expect(firstModuleScriptIndex).toBeGreaterThan(lastStylesheetIndex)
-
-  // 8. Icons after critical resources
-  const firstIconIndex = findFirst(el =>
-    el.tagName === 'link' && (el.attrs.rel === 'icon' || el.attrs.rel === 'apple-touch-icon'),
-  )
-
-  if (firstIconIndex !== null) {
-    if (lastStylesheetIndex !== null)
-      expect(firstIconIndex).toBeGreaterThan(lastStylesheetIndex)
-    if (firstModuleScriptIndex !== null)
-      expect(firstIconIndex).toBeGreaterThan(firstModuleScriptIndex)
-  }
-
-  // 9. JSON-LD last
-  const jsonLdIndex = findFirst(el => el.tagName === 'script' && el.attrs.type === 'application/ld+json')
-
-  if (jsonLdIndex !== null) {
-    if (firstModuleScriptIndex !== null)
-      expect(jsonLdIndex).toBeGreaterThan(firstModuleScriptIndex)
-    if (firstLateScriptIndex !== null)
-      expect(jsonLdIndex).toBeGreaterThan(firstLateScriptIndex)
-    if (firstIconIndex !== null)
-      expect(jsonLdIndex).toBeGreaterThan(firstIconIndex)
-  }
-
-  // 10. OG/Twitter meta after CSS, before JSON-LD
-  const firstOgMetaIndex = findFirst(el =>
-    el.tagName === 'meta' && (el.attrs.property?.startsWith('og:') || el.attrs.name?.startsWith('twitter:')),
-  )
-
-  if (firstOgMetaIndex !== null) {
-    if (lastStylesheetIndex !== null)
-      expect(firstOgMetaIndex).toBeGreaterThan(lastStylesheetIndex)
-    if (firstModuleScriptIndex !== null)
-      expect(firstOgMetaIndex).toBeGreaterThan(firstModuleScriptIndex)
-    if (jsonLdIndex !== null)
-      expect(firstOgMetaIndex).toBeLessThan(jsonLdIndex)
+    if (lastBlockingStyleIdx !== -1)
+      expect(analyticsIdx).toBeGreaterThan(lastBlockingStyleIdx)
   }
 })

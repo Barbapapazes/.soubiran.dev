@@ -126,6 +126,9 @@ importers:
       '@playwright/test':
         specifier: ^1.56.1
         version: 1.56.1
+      '@rviscomi/capo.js':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.1.17)
@@ -1120,6 +1123,9 @@ packages:
 
   '@rolldown/pluginutils@1.0.0-beta.50':
     resolution: {integrity: sha512-5e76wQiQVeL1ICOZVUg4LSOVYg9jyhGCin+icYozhsUzM+fHE7kddi1bdiE0jwVqTfkjba3jUFbEkoC9WkdvyA==}
+
+  '@rviscomi/capo.js@2.0.0':
+    resolution: {integrity: sha512-xXdEM1L/IPgQ0Nlc4CcXJyxFD8xSOfKVPqyq51gR/zJUd9/gq2JLrGQ8TMQ9TzuCJ2LW58jlJ7/NfXEwpB21vA==}
 
   '@shikijs/core@3.15.0':
     resolution: {integrity: sha512-8TOG6yG557q+fMsSVa8nkEDOZNTSxjbbR8l6lF2gyr6Np+jrPlslqDxQkN6rMXCECQ3isNPZAGszAfYoJOPGlg==}
@@ -4773,6 +4779,8 @@ snapshots:
   '@rolldown/pluginutils@1.0.0-beta.45': {}
 
   '@rolldown/pluginutils@1.0.0-beta.50': {}
+
+  '@rviscomi/capo.js@2.0.0': {}
 
   '@shikijs/core@3.15.0':
     dependencies:
