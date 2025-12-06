@@ -124,7 +124,8 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
   )
 
   if (analyticsScriptIndex < Infinity) {
-    expect(headElements[analyticsScriptIndex].attrs.defer || headElements[analyticsScriptIndex].attrs.async).toBeTruthy()
+    const analyticsScript = headElements[analyticsScriptIndex]
+    expect(analyticsScript.attrs.defer || analyticsScript.attrs.async).toBeTruthy()
     if (lastStylesheetIndex > -Infinity)
       expect(analyticsScriptIndex).toBeGreaterThan(lastStylesheetIndex)
   }
