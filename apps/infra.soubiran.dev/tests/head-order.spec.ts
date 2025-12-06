@@ -61,18 +61,18 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
     return elements
   }, htmlContent)
 
-  function findFirst(predicate: (el: typeof headElements[0]) => boolean): number {
+  function findFirst(predicate: (el: typeof headElements[0]) => boolean): number | null {
     const idx = headElements.findIndex(predicate)
-    return idx === -1 ? Infinity : idx
+    return idx === -1 ? null : idx
   }
 
-  function findLast(predicate: (el: typeof headElements[0]) => boolean): number {
+  function findLast(predicate: (el: typeof headElements[0]) => boolean): number | null {
     let lastIdx = -1
     headElements.forEach((el, idx) => {
       if (predicate(el))
         lastIdx = idx
     })
-    return lastIdx === -1 ? -Infinity : lastIdx
+    return lastIdx === -1 ? null : lastIdx
   }
 
   // 1. Critical meta tags: charset → viewport → title
@@ -90,13 +90,13 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
     el.tagName === 'link' && (el.attrs.rel === 'stylesheet' || el.attrs.rel?.includes('stylesheet')),
   )
 
-  if (firstPreconnectIndex < Infinity && firstStylesheetIndex < Infinity)
+  if (firstPreconnectIndex !== null && firstStylesheetIndex !== null)
     expect(firstPreconnectIndex).toBeLessThan(firstStylesheetIndex)
 
   // 3. Early inline scripts before CSS
   const firstEarlyScriptIndex = findFirst(el => el.tagName === 'script' && !el.attrs.src)
 
-  if (firstEarlyScriptIndex < Infinity && firstStylesheetIndex < Infinity)
+  if (firstEarlyScriptIndex !== null && firstStylesheetIndex !== null)
     expect(firstEarlyScriptIndex).toBeLessThan(firstStylesheetIndex)
 
   // 4. Blocking stylesheets properly grouped
@@ -105,7 +105,7 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
   )
   const firstStyleIndex = findFirst(el => el.tagName === 'style')
 
-  if (firstStyleIndex < Infinity && firstStylesheetIndex < Infinity)
+  if (firstStyleIndex !== null && firstStylesheetIndex !== null)
     expect(firstStyleIndex).toBeGreaterThanOrEqual(firstStylesheetIndex)
 
   // 5. Late async/defer scripts after blocking CSS
@@ -113,7 +113,7 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
     el.tagName === 'script' && el.attrs.src && (el.attrs.defer || el.attrs.async),
   )
 
-  if (firstLateScriptIndex < Infinity && lastStylesheetIndex > -Infinity)
+  if (firstLateScriptIndex !== null && lastStylesheetIndex !== null)
     expect(firstLateScriptIndex).toBeGreaterThan(lastStylesheetIndex)
 
   // 6. Analytics scripts are deferred and positioned late
@@ -123,17 +123,17 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
     && (el.attrs.src.includes('umami') || el.attrs.src.includes('analytics') || el.attrs.src.includes('gtag')),
   )
 
-  if (analyticsScriptIndex < Infinity) {
+  if (analyticsScriptIndex !== null) {
     const analyticsScript = headElements[analyticsScriptIndex]
     expect(analyticsScript.attrs.defer || analyticsScript.attrs.async).toBeTruthy()
-    if (lastStylesheetIndex > -Infinity)
+    if (lastStylesheetIndex !== null)
       expect(analyticsScriptIndex).toBeGreaterThan(lastStylesheetIndex)
   }
 
   // 7. Module scripts after CSS
   const firstModuleScriptIndex = findFirst(el => el.tagName === 'script' && el.attrs.type === 'module')
 
-  if (firstModuleScriptIndex < Infinity && lastStylesheetIndex > -Infinity)
+  if (firstModuleScriptIndex !== null && lastStylesheetIndex !== null)
     expect(firstModuleScriptIndex).toBeGreaterThan(lastStylesheetIndex)
 
   // 8. Icons after critical resources
@@ -141,22 +141,22 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
     el.tagName === 'link' && (el.attrs.rel === 'icon' || el.attrs.rel === 'apple-touch-icon'),
   )
 
-  if (firstIconIndex < Infinity) {
-    if (lastStylesheetIndex > -Infinity)
+  if (firstIconIndex !== null) {
+    if (lastStylesheetIndex !== null)
       expect(firstIconIndex).toBeGreaterThan(lastStylesheetIndex)
-    if (firstModuleScriptIndex < Infinity)
+    if (firstModuleScriptIndex !== null)
       expect(firstIconIndex).toBeGreaterThan(firstModuleScriptIndex)
   }
 
   // 9. JSON-LD last
   const jsonLdIndex = findFirst(el => el.tagName === 'script' && el.attrs.type === 'application/ld+json')
 
-  if (jsonLdIndex < Infinity) {
-    if (firstModuleScriptIndex < Infinity)
+  if (jsonLdIndex !== null) {
+    if (firstModuleScriptIndex !== null)
       expect(jsonLdIndex).toBeGreaterThan(firstModuleScriptIndex)
-    if (firstLateScriptIndex < Infinity)
+    if (firstLateScriptIndex !== null)
       expect(jsonLdIndex).toBeGreaterThan(firstLateScriptIndex)
-    if (firstIconIndex < Infinity)
+    if (firstIconIndex !== null)
       expect(jsonLdIndex).toBeGreaterThan(firstIconIndex)
   }
 
@@ -165,12 +165,12 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
     el.tagName === 'meta' && (el.attrs.property?.startsWith('og:') || el.attrs.name?.startsWith('twitter:')),
   )
 
-  if (firstOgMetaIndex < Infinity) {
-    if (lastStylesheetIndex > -Infinity)
+  if (firstOgMetaIndex !== null) {
+    if (lastStylesheetIndex !== null)
       expect(firstOgMetaIndex).toBeGreaterThan(lastStylesheetIndex)
-    if (firstModuleScriptIndex < Infinity)
+    if (firstModuleScriptIndex !== null)
       expect(firstOgMetaIndex).toBeGreaterThan(firstModuleScriptIndex)
-    if (jsonLdIndex < Infinity)
+    if (jsonLdIndex !== null)
       expect(firstOgMetaIndex).toBeLessThan(jsonLdIndex)
   }
 })
