@@ -72,7 +72,9 @@ test('head elements are ordered according to capo.js rules', async ({ page }) =>
   )
 
   if (analyticsIdx !== -1) {
-    expect(elements[analyticsIdx].attrs.defer || elements[analyticsIdx].attrs.async).toBeDefined()
+    // Verify script is deferred or async
+    const hasAsync = elements[analyticsIdx].attrs.defer !== undefined || elements[analyticsIdx].attrs.async !== undefined
+    expect(hasAsync).toBe(true)
 
     const lastBlockingStyleIdx = elements.findLastIndex(el =>
       el.tag === 'link' && el.attrs.rel === 'stylesheet' && !el.attrs.onload,
