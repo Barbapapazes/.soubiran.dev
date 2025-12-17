@@ -1,4 +1,9 @@
 <script lang="ts">
+import { tv } from 'tailwind-variants'
+import { computed } from 'vue'
+import useTableOfContents from '../composables/useTableOfContents'
+import useUmami from '../composables/useUmami'
+
 const tableOfContents = tv({
   slots: {
     base: 'space-y-1 text-sm text-dimmed font-medium',

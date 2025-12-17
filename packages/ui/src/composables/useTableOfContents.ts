@@ -1,3 +1,6 @@
+import { createSharedComposable } from '@vueuse/core'
+import { readonly, ref } from 'vue'
+
 export function _useTableOfContents() {
   const activeHeadings = ref<string[]>([])
 
@@ -17,4 +20,4 @@ export function _useTableOfContents() {
   }
 }
 
-export const useTableOfContents = createSharedComposable(_useTableOfContents)
+export default createSharedComposable(_useTableOfContents)

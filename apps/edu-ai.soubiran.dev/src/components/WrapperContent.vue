@@ -1,23 +1,14 @@
 <script lang="ts" setup>
 import type { TableOfContentsItem } from '../../../../packages/ui/src/components/TableOfContents.vue'
-import type { Ecosystem } from '@/types/ecosystem'
 import { useHead } from '@unhead/vue'
 import { motion } from 'motion-v'
-
-interface Repository {
-  url: string
-  private?: boolean
-}
 
 const props = defineProps<{
   frontmatter: {
     id: string
     title: string
-    url?: string
-    repository?: string | Repository
-    ecosystem?: Ecosystem
-    page: string
     toc: TableOfContentsItem[]
+    page: string
   }
 }>()
 
@@ -33,11 +24,7 @@ useHead({
     <template #header>
       <PageHeader
         :title="props.frontmatter.title"
-      >
-        <template #after>
-          <PageLinks :url="props.frontmatter.url" :repository="props.frontmatter.repository" />
-        </template>
-      </PageHeader>
+      />
     </template>
 
     <slot />
@@ -53,17 +40,6 @@ useHead({
 
         <Feedback :id="props.frontmatter.id" />
       </motion.div>
-    </template>
-
-    <template #bottom>
-      <Ecosystem
-        v-if="frontmatter.ecosystem"
-        inline
-        class="mt-4"
-        :name="frontmatter.title"
-        :ecosystem="frontmatter.ecosystem"
-        :ui="{ root: 'w-full h-160' }"
-      />
     </template>
   </Page>
 </template>

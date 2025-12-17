@@ -1,4 +1,7 @@
 <script lang="ts">
+import { tv } from 'tailwind-variants'
+import { computed } from 'vue'
+
 const page = tv({
   slots: {
     base: 'py-12',

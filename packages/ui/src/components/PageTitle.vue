@@ -1,4 +1,7 @@
 <script lang="ts">
+import { tv } from 'tailwind-variants'
+import { computed } from 'vue'
+
 const pageTitle = tv({
   slots: {
     base: 'text-xl font-bold text-highlighted',

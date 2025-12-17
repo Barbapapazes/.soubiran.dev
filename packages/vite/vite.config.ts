@@ -61,24 +61,24 @@ interface Options {
     /**
      * Custom validation rules for frontmatter fields.
      */
-    assert: {
+    assert?: {
       /**
        * Validation rules function for frontmatter.
        */
-      rules: AssertFn
+      rules?: AssertFn
     }
 
     /**
      * Structured data generation configuration.
      */
-    structuredData: {
+    structuredData?: {
       /**
        * Callback to determine page type and configuration for structured data generation.
        * @param page - The page name or null.
        * @param frontmatter - The frontmatter data for the page.
        * @returns Structured data configuration for the page.
        */
-      pageConfig: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
+      pageConfig?: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
     }
   }
 
@@ -172,7 +172,7 @@ export default (title: string, hostname: string, options: Options) => defineConf
         'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
         '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
       ],
-      transforms: options.markdown?.transforms,
+      transforms: options.markdown?.transforms ?? {},
       wrapperComponent: options.markdown?.wrapperComponent,
       async markdownItSetup(md) {
         githubAlerts(md)
@@ -185,7 +185,7 @@ export default (title: string, hostname: string, options: Options) => defineConf
       },
 
       frontmatterPreprocess(frontmatter, frontmatterOptions, id, defaults) {
-        const assert = createAssert(options.seo.assert.rules)
+        const assert = createAssert(options.seo.assert?.rules)
         assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
@@ -194,7 +194,7 @@ export default (title: string, hostname: string, options: Options) => defineConf
           hostname,
           person: options.seo.person,
           extractPage: options.extractPage,
-          getPageConfig: options.seo.structuredData.pageConfig,
+          getPageConfig: options.seo.structuredData?.pageConfig,
         })
 
         const page = options.extractPage(id)

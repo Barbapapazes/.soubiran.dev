@@ -17,7 +17,7 @@ interface StructuredDataOptions {
   hostname: string
   person: PersonOptions
   extractPage: (id: string) => string | null
-  getPageConfig: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
+  getPageConfig?: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
 }
 
 export function structuredData(id: string, frontmatter: Record<string, any>, options: StructuredDataOptions) {
@@ -43,9 +43,9 @@ export function structuredData(id: string, frontmatter: Record<string, any>, opt
   }, structuredDataOptions)
 
   const page = extractPage(id)
-  const pageConfig = getPageConfig(page, frontmatter)
+  const pageConfig = getPageConfig?.(page, frontmatter)
 
-  if (pageConfig.type === 'article') {
+  if (pageConfig?.type === 'article') {
     const articleData = article(
       id,
       { person: personData, webpage: webpageData },
@@ -64,7 +64,7 @@ export function structuredData(id: string, frontmatter: Record<string, any>, opt
       webpageData.setBreadcrumb(breadcrumbData)
     }
   }
-  else if (pageConfig.type === 'collection') {
+  else if (pageConfig?.type === 'collection') {
     webpageData.setCollection()
   }
 

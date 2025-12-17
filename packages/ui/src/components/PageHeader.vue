@@ -1,24 +1,22 @@
 <script lang="ts">
+import { tv } from 'tailwind-variants'
+import { computed } from 'vue'
+
 const pageHeader = tv({
   slots: {
     base: '',
   },
 })
 
-interface Repository {
-  url: string
-  private?: boolean
-}
-
 export interface PageHeaderProps {
   title: string
-  url?: string
-  repository?: string | Repository
   class?: any
   ui?: Partial<typeof pageHeader.slots>
 }
 export interface PageHeaderEmits {}
-export interface PageHeaderSlots {}
+export interface PageHeaderSlots {
+  after: (props: any) => any
+}
 </script>
 
 <script lang="ts" setup>
@@ -32,6 +30,6 @@ const ui = computed(() => pageHeader())
 <template>
   <div :class="ui.base({ class: [props.ui?.base, props.class] })">
     <PageTitle :title="props.title" />
-    <PageLinks :url="props.url" :repository="props.repository" />
+    <slot name="after" />
   </div>
 </template>

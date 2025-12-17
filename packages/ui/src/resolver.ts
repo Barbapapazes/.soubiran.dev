@@ -1,11 +1,17 @@
 import type { ComponentResolver } from 'unplugin-vue-components'
 
 const components: string[] = [
+  'Page',
+  'Header',
   'Socials',
-  'ViewersCounter',
   'Sponsors',
   'Feedback',
+  'Container',
+  'PageTitle',
+  'PageHeader',
   'FeedbackCard',
+  'ViewersCounter',
+  'TableOfContents',
 ]
 
 export default function (): ComponentResolver {

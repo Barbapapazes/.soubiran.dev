@@ -1,13 +1,13 @@
 <script lang="ts">
-import circlesFour from '~icons/ph/circles-four-duotone'
-import graph from '~icons/ph/graph-duotone'
-import house from '~icons/ph/house-duotone'
-import squaresFour from '~icons/ph/squares-four-duotone'
+import type { Component } from 'vue'
+import { tv } from 'tailwind-variants'
+import { computed } from 'vue'
 import discord from '~icons/simple-icons/discord'
 import github from '~icons/simple-icons/github'
 import linkedin from '~icons/simple-icons/linkedin'
 import twitch from '~icons/simple-icons/twitch'
 import x from '~icons/simple-icons/x'
+import useUmami from '../composables/useUmami'
 
 const header = tv({
   slots: {
@@ -17,6 +17,11 @@ const header = tv({
 })
 
 export interface HeaderProps {
+  links: {
+    icon: Component
+    label: string
+    to: string
+  }[]
   class?: any
   ui?: Partial<typeof header.slots>
 }
@@ -40,48 +45,19 @@ const ui = computed(() => header())
 <template>
   <Container :ui="{ inner: 'max-w-5xl' }">
     <header :class="ui.base({ class: [props.ui?.base, props.class] })">
-      <UTooltip text="Home">
+      <UTooltip
+        v-for="link of props.links"
+        :key="link.label"
+        :text="link.label"
+      >
         <UButton
-          to="/"
           variant="link"
           color="neutral"
-          aria-label="Home"
-          :icon="house"
+          :to="link.to"
+          :aria-label="link.label"
+          :icon="link.icon"
           :class="ui.link({ class: props.ui?.link })"
-          @click="trackClick('Home')"
-        />
-      </UTooltip>
-      <UTooltip text="Websites">
-        <UButton
-          to="/websites"
-          variant="link"
-          color="neutral"
-          aria-label="Websites"
-          :icon="squaresFour"
-          :class="ui.link({ class: props.ui?.link })"
-          @click="trackClick('Websites')"
-        />
-      </UTooltip>
-      <UTooltip text="Platforms">
-        <UButton
-          to="/platforms"
-          variant="link"
-          color="neutral"
-          aria-label="Platforms"
-          :icon="circlesFour"
-          :class="ui.link({ class: props.ui?.link })"
-          @click="trackClick('Platforms')"
-        />
-      </UTooltip>
-      <UTooltip text="Ecosystem">
-        <UButton
-          to="/ecosystem"
-          variant="link"
-          color="neutral"
-          aria-label="Ecosystem"
-          :icon="graph"
-          :class="ui.link({ class: props.ui?.link })"
-          @click="trackClick('Ecosystem')"
+          @click="trackClick(link.label)"
         />
       </UTooltip>
       <USeparator orientation="vertical" class="h-5" />

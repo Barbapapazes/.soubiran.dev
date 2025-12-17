@@ -1,0 +1,3 @@
+User-agent: *
+
+Sitemap: https://edu-ai.soubiran.dev/sitemap.xml

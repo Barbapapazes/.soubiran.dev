@@ -1,4 +1,7 @@
 <script lang="ts">
+import { tv } from 'tailwind-variants'
+import { computed } from 'vue'
+
 const container = tv({
   slots: {
     base: 'px-4 sm:px-6 lg:px-8',
