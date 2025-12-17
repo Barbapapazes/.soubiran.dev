@@ -2,7 +2,7 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "@nuxt/ui": "^4.2.0",
+    "@nuxt/ui": "^4.3.0",
     "@shikijs/markdown-it": "^3.15.0",
     "@types/markdown-it": "^14.1.2",
     "@types/markdown-it-link-attributes": "^3.0.5",
