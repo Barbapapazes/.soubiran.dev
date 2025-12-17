@@ -52,13 +52,11 @@ function processMarkdownFile(filePath: string, category: string): Record<string,
 /**
  * Generates the pages API JSON files in dist/api directory
  */
-async function api(config: ResolvedConfig) {
+async function api(config: ResolvedConfig, categories: string[]) {
   const pagesDir = resolve(cwd(), 'pages')
   const distDir = resolve(cwd(), config.build.outDir)
 
-  const names = ['websites', 'platforms']
-
-  for (const name of names) {
+  for (const name of categories) {
     const dir = join(pagesDir, name)
 
     const processedFiles = scanMarkdownFiles(dir).map(file => processMarkdownFile(file, name))
@@ -73,7 +71,7 @@ async function api(config: ResolvedConfig) {
   }
 }
 
-export function apiPlugin(): Plugin {
+export function apiPlugin(categories: string[] = []): Plugin {
   let config: ResolvedConfig
 
   return {
@@ -86,10 +84,14 @@ export function apiPlugin(): Plugin {
         return
       }
 
+      if (categories.length === 0) {
+        return
+      }
+
       const time = new Date()
       config.logger.info(yellow('Generate API files'))
 
-      api(config)
+      api(config, categories)
 
       config.logger.info(green(`✓ generated in ${new Date().getTime() - time.getTime()}ms`))
     },
