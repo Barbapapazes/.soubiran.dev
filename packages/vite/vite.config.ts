@@ -91,6 +91,12 @@ interface Options {
 const config: UserConfig = {}
 
 export default (title: string, hostname: string, options: Options) => defineConfig({
+  // define: {
+  //   __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: true,
+  // },
+  // build: {
+  //   minify: false,
+  // },
   plugins: [
     vueRouter({
       extensions: ['.vue', '.md'],
@@ -250,14 +256,9 @@ export default (title: string, hostname: string, options: Options) => defineConf
   optimizeDeps: {
     include: [
       'vue',
-      'scule',
       'vue-router',
       '@unhead/vue',
       'partysocket',
-      '@iconify/vue',
-      '@dagrejs/dagre',
-      '@vue-flow/core',
-      '@vue-flow/background',
     ],
   },
 

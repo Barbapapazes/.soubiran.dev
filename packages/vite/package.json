@@ -30,7 +30,7 @@
     "unplugin-vue-router": "^0.16.2",
     "vite": "npm:rolldown-vite@7.1.20",
     "vite-ssg": "^28.2.2",
-    "vue-router": "^4.6.3"
+    "vue-router": "4.6.3"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",

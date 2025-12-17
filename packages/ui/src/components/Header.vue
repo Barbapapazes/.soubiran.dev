@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Component } from 'vue'
+import type { FunctionalComponent, SVGAttributes } from 'vue'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import discord from '~icons/simple-icons/discord'
@@ -18,7 +18,7 @@ const header = tv({
 
 export interface HeaderProps {
   links: {
-    icon: Component
+    icon: FunctionalComponent<SVGAttributes>
     label: string
     to: string
   }[]

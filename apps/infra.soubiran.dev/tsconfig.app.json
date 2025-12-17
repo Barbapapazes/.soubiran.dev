@@ -25,7 +25,6 @@
   "include": [
     "pages/**/*.vue",
     "src/**/*.ts",
-    "src/**/*.tsx",
     "src/**/*.vue",
     "src/env.d.ts",
     "src/typed-router.d.ts",
