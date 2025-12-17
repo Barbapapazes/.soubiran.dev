@@ -1,5 +1,9 @@
+import type { Options as MarkdownOptions } from 'unplugin-vue-markdown/types'
 /// <reference types="vite-ssg" />
 import type { UserConfig } from 'vite'
+import type { AssertFn } from './src/assert'
+import type { StructuredDataPageConfig } from './src/structured-data'
+import type { PersonOptions } from './src/structured-data/person'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -14,7 +18,7 @@ import vueRouter from 'unplugin-vue-router/vite'
 import { defineConfig } from 'vite'
 import soubiranComposablesImports from '../ui/src/imports'
 import soubiranResolver from '../ui/src/resolver'
-import { assert } from './src/assert'
+import { createAssert } from './src/assert'
 import { canonical } from './src/canonical'
 import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight, tableOfContentsRule } from './src/markdown-it'
 import { og } from './src/og'
@@ -24,11 +28,69 @@ import { metaPlugin } from './src/plugins/meta'
 import { resolveAll } from './src/promise'
 import { routes, sitemap } from './src/sitemap'
 import { structuredData } from './src/structured-data'
-import { extractPage } from './src/utils'
+
+export type { StructuredDataPageConfig } from './src/structured-data'
+export type { BreadcrumbItem } from './src/structured-data/breadcrumb'
+export type { PersonOptions } from './src/structured-data/person'
+
+/**
+ * Main configuration interface for the infrastructure status app.
+ */
+interface Options {
+  /**
+   * Extracts the page identifier from a given file path or id.
+   * @param id - The file path or identifier.
+   * @returns The extracted page name, or null if not found.
+   */
+  extractPage: (id: string) => string | null
+
+  /**
+   * Markdown rendering options for unplugin-vue-markdown.
+   */
+  markdown?: MarkdownOptions
+
+  /**
+   * SEO and structured data configuration.
+   */
+  seo: {
+    /**
+     * Person information for Schema.org structured data.
+     */
+    person: PersonOptions
+
+    /**
+     * Custom validation rules for frontmatter fields.
+     */
+    assert: {
+      /**
+       * Validation rules function for frontmatter.
+       */
+      rules: AssertFn
+    }
+
+    /**
+     * Structured data generation configuration.
+     */
+    structuredData: {
+      /**
+       * Callback to determine page type and configuration for structured data generation.
+       * @param page - The page name or null.
+       * @param frontmatter - The frontmatter data for the page.
+       * @returns Structured data configuration for the page.
+       */
+      pageConfig: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
+    }
+  }
+
+  /**
+   * Categories to generate API JSON files for (e.g., ['websites', 'platforms']).
+   */
+  apiCategories?: string[]
+}
 
 const config: UserConfig = {}
 
-export default (title: string, hostname: string) => defineConfig({
+export default (title: string, hostname: string, options: Options) => defineConfig({
   plugins: [
     vueRouter({
       extensions: ['.vue', '.md'],
@@ -42,7 +104,7 @@ export default (title: string, hostname: string) => defineConfig({
         if (path.endsWith('.vue')) {
           route.addToMeta({
             frontmatter: {
-              page: extractPage(path),
+              page: options.extractPage(path),
             },
           })
         }
@@ -110,31 +172,8 @@ export default (title: string, hostname: string) => defineConfig({
         'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
         '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
       ],
-      transforms: {
-        before: (code: string, id: string) => {
-          const page = extractPage(id)
-
-          if (page?.endsWith('-show')) {
-            return `${code}\n\n## Ecosystem`
-          }
-
-          return code
-        },
-      },
-      wrapperComponent: (id) => {
-        const page = extractPage(id)
-
-        if (page === 'platforms-index') {
-          return 'WrapperPlatforms'
-        }
-
-        if (page === 'websites-index') {
-          return 'WrapperWebsites'
-        }
-
-        return 'WrapperContent'
-      },
-
+      transforms: options.markdown?.transforms,
+      wrapperComponent: options.markdown?.wrapperComponent,
       async markdownItSetup(md) {
         githubAlerts(md)
         implicitFiguresRule(md)
@@ -145,16 +184,23 @@ export default (title: string, hostname: string) => defineConfig({
         await shikiHighlight(md)
       },
 
-      frontmatterPreprocess(frontmatter, options, id, defaults) {
+      frontmatterPreprocess(frontmatter, frontmatterOptions, id, defaults) {
+        const assert = createAssert(options.seo.assert.rules)
         assert(id, frontmatter)
         og(id, frontmatter, hostname)
         canonical(id, frontmatter, hostname)
-        structuredData(id, frontmatter, title, hostname)
+        structuredData(id, frontmatter, {
+          name: title,
+          hostname,
+          person: options.seo.person,
+          extractPage: options.extractPage,
+          getPageConfig: options.seo.structuredData.pageConfig,
+        })
 
-        const page = extractPage(id)
+        const page = options.extractPage(id)
         frontmatter.page = page
 
-        const head = defaults(frontmatter, options)
+        const head = defaults(frontmatter, frontmatterOptions)
         return { head, frontmatter }
       },
     }),
@@ -182,7 +228,7 @@ export default (title: string, hostname: string) => defineConfig({
       autoInstall: true,
     }),
 
-    apiPlugin(),
+    apiPlugin(options.apiCategories),
     markdownPlugin(),
     metaPlugin(hostname),
 
