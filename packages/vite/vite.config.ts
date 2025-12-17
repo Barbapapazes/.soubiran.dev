@@ -33,18 +33,58 @@ export type { StructuredDataPageConfig } from './src/structured-data'
 export type { BreadcrumbItem } from './src/structured-data/breadcrumb'
 export type { PersonOptions } from './src/structured-data/person'
 
+/**
+ * Main configuration interface for the infrastructure status app.
+ */
 interface Options {
+  /**
+   * Extracts the page identifier from a given file path or id.
+   * @param id - The file path or identifier.
+   * @returns The extracted page name, or null if not found.
+   */
   extractPage: (id: string) => string | null
+
+  /**
+   * Markdown rendering options for unplugin-vue-markdown.
+   */
   markdown?: MarkdownOptions
+
+  /**
+   * SEO and structured data configuration.
+   */
   seo: {
+    /**
+     * Person information for Schema.org structured data.
+     */
     person: PersonOptions
+
+    /**
+     * Custom validation rules for frontmatter fields.
+     */
     assert: {
+      /**
+       * Validation rules function for frontmatter.
+       */
       rules: AssertFn
     }
+
+    /**
+     * Structured data generation configuration.
+     */
     structuredData: {
+      /**
+       * Callback to determine page type and configuration for structured data generation.
+       * @param page - The page name or null.
+       * @param frontmatter - The frontmatter data for the page.
+       * @returns Structured data configuration for the page.
+       */
       pageConfig: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
     }
   }
+
+  /**
+   * Categories to generate API JSON files for (e.g., ['websites', 'platforms']).
+   */
   apiCategories?: string[]
 }
 
