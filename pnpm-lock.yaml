@@ -4,6 +4,84 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@iconify-json/ph':
+      specifier: ^1.2.2
+      version: 1.2.2
+    '@iconify-json/simple-icons':
+      specifier: ^1.2.63
+      version: 1.2.63
+    '@nuxt/ui':
+      specifier: ^4.3.0
+      version: 4.3.0
+    '@pinia/colada':
+      specifier: ^0.19.1
+      version: 0.19.1
+    '@tailwindcss/typography':
+      specifier: ^0.5.19
+      version: 0.5.19
+    '@types/node':
+      specifier: ^25.0.3
+      version: 25.0.3
+    '@unhead/vue':
+      specifier: ^2.0.19
+      version: 2.0.19
+    '@unpic/pixels':
+      specifier: ^1.3.0
+      version: 1.3.0
+    '@vue/tsconfig':
+      specifier: ^0.8.1
+      version: 0.8.1
+    '@vueuse/core':
+      specifier: ^13.9.0
+      version: 13.9.0
+    ansis:
+      specifier: ^4.2.0
+      version: 4.2.0
+    markdown-it-github-alerts:
+      specifier: ^1.0.0
+      version: 1.0.0
+    motion-v:
+      specifier: ^1.7.4
+      version: 1.7.4
+    ofetch:
+      specifier: ^1.5.1
+      version: 1.5.1
+    partysocket:
+      specifier: ^1.1.6
+      version: 1.1.6
+    pinia:
+      specifier: ^3.0.4
+      version: 3.0.4
+    reka-ui:
+      specifier: ^2.6.0
+      version: 2.6.1
+    tailwind-variants:
+      specifier: ^3.2.2
+      version: 3.2.2
+    tailwindcss:
+      specifier: ^4.1.18
+      version: 4.1.18
+    typescript:
+      specifier: ~5.9.3
+      version: 5.9.3
+    unplugin-icons:
+      specifier: ^22.5.0
+      version: 22.5.0
+    vite-ssg:
+      specifier: ^28.2.2
+      version: 28.2.2
+    vue:
+      specifier: ^3.5.25
+      version: 3.5.25
+    vue-router:
+      specifier: 4.6.3
+      version: 4.6.3
+    vue-tsc:
+      specifier: ^3.1.4
+      version: 3.1.8
+
 overrides:
   markdown-it: npm:markdown-exit@1.0.0-beta.6
   vite: npm:rolldown-vite@7.1.20
@@ -33,13 +111,13 @@ importers:
         specifier: ^22.0.4
         version: 22.0.4
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: 'catalog:'
+        version: 25.0.3
       '@unpic/pixels':
-        specifier: ^1.3.0
+        specifier: 'catalog:'
         version: 1.3.0
       ansis:
-        specifier: ^4.2.0
+        specifier: 'catalog:'
         version: 4.2.0
       blurhash:
         specifier: ^2.0.5
@@ -51,83 +129,83 @@ importers:
         specifier: ^19.9.0
         version: 19.9.0
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   apps/edu-ai.soubiran.dev:
     dependencies:
       '@nuxt/ui':
-        specifier: ^4.3.0
+        specifier: 'catalog:'
         version: 4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)
       '@pinia/colada':
-        specifier: ^0.19.1
+        specifier: 'catalog:'
         version: 0.19.1(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       '@unhead/vue':
-        specifier: ^2.0.19
+        specifier: 'catalog:'
         version: 2.0.19(vue@3.5.25(typescript@5.9.3))
       '@unpic/pixels':
-        specifier: ^1.3.0
+        specifier: 'catalog:'
         version: 1.3.0
       '@vueuse/core':
-        specifier: ^13.9.0
+        specifier: 'catalog:'
         version: 13.9.0(vue@3.5.25(typescript@5.9.3))
       markdown-it-github-alerts:
-        specifier: ^1.0.0
+        specifier: 'catalog:'
         version: 1.0.0(markdown-it@14.1.0)
       motion-v:
-        specifier: ^1.7.4
+        specifier: 'catalog:'
         version: 1.7.4(@vueuse/core@13.9.0(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       ofetch:
-        specifier: ^1.5.1
+        specifier: 'catalog:'
         version: 1.5.1
       partysocket:
-        specifier: ^1.1.6
+        specifier: 'catalog:'
         version: 1.1.6
       pinia:
-        specifier: ^3.0.4
+        specifier: 'catalog:'
         version: 3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
       tailwind-variants:
-        specifier: ^3.2.2
+        specifier: 'catalog:'
         version: 3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.18)
       vue:
-        specifier: ^3.5.25
+        specifier: 'catalog:'
         version: 3.5.25(typescript@5.9.3)
     devDependencies:
       '@iconify-json/ph':
-        specifier: ^1.2.2
+        specifier: 'catalog:'
         version: 1.2.2
       '@iconify-json/simple-icons':
-        specifier: ^1.2.63
+        specifier: 'catalog:'
         version: 1.2.63
       '@tailwindcss/typography':
-        specifier: ^0.5.19
+        specifier: 'catalog:'
         version: 0.5.19(tailwindcss@4.1.18)
       '@types/node':
-        specifier: ^25.0.3
+        specifier: 'catalog:'
         version: 25.0.3
       '@vue/tsconfig':
-        specifier: ^0.8.1
+        specifier: 'catalog:'
         version: 0.8.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
       tailwindcss:
-        specifier: ^4.1.18
+        specifier: 'catalog:'
         version: 4.1.18
       typescript:
-        specifier: ~5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       unplugin-icons:
-        specifier: ^22.5.0
+        specifier: 'catalog:'
         version: 22.5.0(@vue/compiler-sfc@3.5.25)
       vite:
         specifier: npm:rolldown-vite@7.1.20
         version: rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vite-ssg:
-        specifier: ^28.2.2
+        specifier: 'catalog:'
         version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       vue-router:
-        specifier: 4.6.3
+        specifier: 'catalog:'
         version: 4.6.3(vue@3.5.25(typescript@5.9.3))
       vue-tsc:
-        specifier: ^3.1.4
+        specifier: 'catalog:'
         version: 3.1.8(typescript@5.9.3)
 
   apps/infra.soubiran.dev:
@@ -139,16 +217,16 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(vue@3.5.25(typescript@5.9.3))
       '@nuxt/ui':
-        specifier: ^4.2.0
-        version: 4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)
+        specifier: 'catalog:'
+        version: 4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)
       '@pinia/colada':
-        specifier: ^0.17.8
-        version: 0.17.9(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
+        specifier: 'catalog:'
+        version: 0.19.1(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       '@unhead/vue':
-        specifier: ^2.0.19
+        specifier: 'catalog:'
         version: 2.0.19(vue@3.5.25(typescript@5.9.3))
       '@unpic/pixels':
-        specifier: ^1.3.0
+        specifier: 'catalog:'
         version: 1.3.0
       '@vue-flow/background':
         specifier: ^1.3.2
@@ -157,135 +235,135 @@ importers:
         specifier: ^1.47.0
         version: 1.47.0(vue@3.5.25(typescript@5.9.3))
       '@vueuse/core':
-        specifier: ^13.9.0
+        specifier: 'catalog:'
         version: 13.9.0(vue@3.5.25(typescript@5.9.3))
       markdown-it-github-alerts:
-        specifier: ^1.0.0
+        specifier: 'catalog:'
         version: 1.0.0(markdown-it@14.1.0)
       motion-v:
-        specifier: ^1.7.4
+        specifier: 'catalog:'
         version: 1.7.4(@vueuse/core@13.9.0(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       ofetch:
-        specifier: ^1.5.1
+        specifier: 'catalog:'
         version: 1.5.1
       partysocket:
-        specifier: ^1.1.6
+        specifier: 'catalog:'
         version: 1.1.6
       pinia:
-        specifier: ^3.0.4
+        specifier: 'catalog:'
         version: 3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
       reka-ui:
-        specifier: ^2.6.0
+        specifier: 'catalog:'
         version: 2.6.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
       scule:
         specifier: ^1.3.0
         version: 1.3.0
       tailwind-variants:
-        specifier: ^3.1.1
+        specifier: 'catalog:'
         version: 3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.18)
       vue:
-        specifier: ^3.5.24
+        specifier: 'catalog:'
         version: 3.5.25(typescript@5.9.3)
     devDependencies:
       '@iconify-json/logos':
         specifier: ^1.2.10
         version: 1.2.10
       '@iconify-json/ph':
-        specifier: ^1.2.2
+        specifier: 'catalog:'
         version: 1.2.2
       '@iconify-json/simple-icons':
-        specifier: ^1.2.59
+        specifier: 'catalog:'
         version: 1.2.63
       '@playwright/test':
         specifier: ^1.56.1
         version: 1.56.1
       '@tailwindcss/typography':
-        specifier: ^0.5.19
+        specifier: 'catalog:'
         version: 0.5.19(tailwindcss@4.1.18)
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: 'catalog:'
+        version: 25.0.3
       '@vue/tsconfig':
-        specifier: ^0.8.1
+        specifier: 'catalog:'
         version: 0.8.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
       tailwindcss:
-        specifier: ^4.1.17
+        specifier: 'catalog:'
         version: 4.1.18
       typescript:
-        specifier: ~5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       unplugin-icons:
-        specifier: ^22.5.0
+        specifier: 'catalog:'
         version: 22.5.0(@vue/compiler-sfc@3.5.25)
       vite:
         specifier: npm:rolldown-vite@7.1.20
-        version: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+        version: rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vite-ssg:
-        specifier: ^28.2.2
-        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
+        specifier: 'catalog:'
+        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       vue-router:
-        specifier: 4.6.3
+        specifier: 'catalog:'
         version: 4.6.3(vue@3.5.25(typescript@5.9.3))
       vue-tsc:
-        specifier: ^3.1.4
+        specifier: 'catalog:'
         version: 3.1.8(typescript@5.9.3)
 
   packages/ui:
     dependencies:
       '@nuxt/ui':
-        specifier: ^4.2.0
-        version: 4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)
+        specifier: 'catalog:'
+        version: 4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)
       '@pinia/colada':
-        specifier: ^0.17.9
-        version: 0.17.9(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
+        specifier: 'catalog:'
+        version: 0.19.1(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: 'catalog:'
+        version: 25.0.3
       '@vue/tsconfig':
-        specifier: ^0.8.1
+        specifier: 'catalog:'
         version: 0.8.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
       '@vueuse/core':
-        specifier: ^13.9.0
+        specifier: 'catalog:'
         version: 13.9.0(vue@3.5.25(typescript@5.9.3))
       motion-v:
-        specifier: ^1.7.4
+        specifier: 'catalog:'
         version: 1.7.4(@vueuse/core@13.9.0(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       ofetch:
-        specifier: ^1.5.1
+        specifier: 'catalog:'
         version: 1.5.1
       partysocket:
-        specifier: ^1.1.6
+        specifier: 'catalog:'
         version: 1.1.6
       reka-ui:
-        specifier: ^2.6.0
+        specifier: 'catalog:'
         version: 2.6.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
       tailwind-variants:
-        specifier: ^3.1.1
+        specifier: 'catalog:'
         version: 3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.18)
       typescript:
-        specifier: ~5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       unplugin-icons:
-        specifier: ^22.5.0
+        specifier: 'catalog:'
         version: 22.5.0(@vue/compiler-sfc@3.5.25)
       unplugin-vue-components:
         specifier: ^30.0.0
         version: 30.0.0(@babel/parser@7.28.5)(@nuxt/kit@4.2.2)(vue@3.5.25(typescript@5.9.3))
       vite:
         specifier: npm:rolldown-vite@7.1.20
-        version: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+        version: rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vue:
-        specifier: ^3.5.24
+        specifier: 'catalog:'
         version: 3.5.25(typescript@5.9.3)
       vue-router:
-        specifier: 4.6.3
+        specifier: 'catalog:'
         version: 4.6.3(vue@3.5.25(typescript@5.9.3))
 
   packages/vite:
     dependencies:
       '@nuxt/ui':
-        specifier: ^4.2.0
-        version: 4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)
+        specifier: 'catalog:'
+        version: 4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)
       '@shikijs/markdown-it':
         specifier: ^3.15.0
         version: 3.15.0(markdown-it-async@2.2.0)
@@ -296,19 +374,19 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
+        specifier: 'catalog:'
+        version: 25.0.3
       '@unhead/vue':
-        specifier: ^2.0.19
+        specifier: 'catalog:'
         version: 2.0.19(vue@3.5.25(typescript@5.9.3))
       '@unpic/placeholder':
         specifier: ^0.1.2
         version: 0.1.2
       '@vitejs/plugin-vue':
         specifier: ^6.0.2
-        version: 6.0.2(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.25(typescript@5.9.3))
+        version: 6.0.2(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.25(typescript@5.9.3))
       ansis:
-        specifier: ^4.2.0
+        specifier: 'catalog:'
         version: 4.2.0
       fs-extra:
         specifier: ^11.3.2
@@ -323,7 +401,7 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
       markdown-it-github-alerts:
-        specifier: ^1.0.0
+        specifier: 'catalog:'
         version: 1.0.0(markdown-exit@1.0.0-beta.6)
       markdown-it-image-figures:
         specifier: ^2.1.1
@@ -344,7 +422,7 @@ importers:
         specifier: ^8.0.2
         version: 8.0.2
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       ufo:
         specifier: ^1.6.1
@@ -354,28 +432,28 @@ importers:
         version: 2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d)
       unplugin-fonts:
         specifier: ^1.4.0
-        version: 1.4.0(@nuxt/kit@4.2.2)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
+        version: 1.4.0(@nuxt/kit@4.2.2)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
       unplugin-vue-markdown:
         specifier: ^29.2.0
-        version: 29.2.0(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
+        version: 29.2.0(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
       unplugin-vue-router:
         specifier: ^0.16.2
         version: 0.16.2(@vue/compiler-sfc@3.5.25)(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       vite:
         specifier: npm:rolldown-vite@7.1.20
-        version: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+        version: rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vite-ssg:
-        specifier: ^28.2.2
-        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
+        specifier: 'catalog:'
+        version: 28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       vue-router:
-        specifier: 4.6.3
+        specifier: 'catalog:'
         version: 4.6.3(vue@3.5.25(typescript@5.9.3))
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
       unplugin-icons:
-        specifier: ^22.5.0
+        specifier: 'catalog:'
         version: 22.5.0(@vue/compiler-sfc@3.5.25)
 
 packages:
@@ -1070,12 +1148,6 @@ packages:
   '@oxc-project/types@0.95.0':
     resolution: {integrity: sha512-vACy7vhpMPhjEJhULNxrdR0D943TkA/MigMpJCHmBHvMXxRStRi/dPtTlfQ3uDwWSzRpT8z+7ImjZVf8JWBocQ==}
 
-  '@pinia/colada@0.17.9':
-    resolution: {integrity: sha512-AW3+816HMFCpwfEBinmPksNoqHW8PxVKR+iQLTg2qo7lvsVOI9M4KqUFefr9ZBIUAMItd7Tx5HO8tdB0aHJ62A==}
-    peerDependencies:
-      pinia: ^2.2.6 || ^3.0.0
-      vue: ^3.5.17
-
   '@pinia/colada@0.19.1':
     resolution: {integrity: sha512-n1+TKgvGHR1Umz6Nzy5MYmow8b3xVuaFlxR8A7q5yioi/5hGLME4Wh/6WT/9Z8BP+1a9lI7cvmniRQUbPOdNig==}
     peerDependencies:
@@ -1611,9 +1683,6 @@ packages:
 
   '@types/node@17.0.45':
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
-
-  '@types/node@24.10.1':
-    resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
 
   '@types/node@25.0.3':
     resolution: {integrity: sha512-W609buLVRVmeW693xKfzHeIV6nJGGz98uCPfeXI1ELMLXVeKYZ9m15fAMSaUPBHYLGFsVRcMmSCksQOrZV9BYA==}
@@ -4825,14 +4894,6 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@nuxt/devtools-kit@3.1.1(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
-    dependencies:
-      '@nuxt/kit': 4.2.2
-      execa: 8.0.1
-      vite: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
-    transitivePeerDependencies:
-      - magicast
-
   '@nuxt/devtools-kit@3.1.1(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
       '@nuxt/kit': 4.2.2
@@ -4840,52 +4901,6 @@ snapshots:
       vite: rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
     transitivePeerDependencies:
       - magicast
-
-  '@nuxt/fonts@0.12.1(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
-    dependencies:
-      '@nuxt/devtools-kit': 3.1.1(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
-      '@nuxt/kit': 4.2.2
-      consola: 3.4.2
-      css-tree: 3.1.0
-      defu: 6.1.4
-      esbuild: 0.25.12
-      fontaine: 0.7.0
-      fontless: 0.1.0(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
-      h3: 1.15.4
-      jiti: 2.6.1
-      magic-regexp: 0.10.0
-      magic-string: 0.30.21
-      node-fetch-native: 1.6.7
-      ohash: 2.0.11
-      pathe: 2.0.3
-      sirv: 3.0.2
-      tinyglobby: 0.2.15
-      ufo: 1.6.1
-      unifont: 0.6.0
-      unplugin: 2.3.11
-      unstorage: 1.17.3
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@deno/kv'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@upstash/redis'
-      - '@vercel/blob'
-      - '@vercel/functions'
-      - '@vercel/kv'
-      - aws4fetch
-      - db0
-      - idb-keyval
-      - ioredis
-      - magicast
-      - uploadthing
-      - vite
 
   '@nuxt/fonts@0.12.1(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
@@ -4932,27 +4947,6 @@ snapshots:
       - magicast
       - uploadthing
       - vite
-
-  '@nuxt/icon@2.1.1(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.25(typescript@5.9.3))':
-    dependencies:
-      '@iconify/collections': 1.0.630
-      '@iconify/types': 2.0.0
-      '@iconify/utils': 3.1.0
-      '@iconify/vue': 5.0.0(vue@3.5.25(typescript@5.9.3))
-      '@nuxt/devtools-kit': 3.1.1(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
-      '@nuxt/kit': 4.2.2
-      consola: 3.4.2
-      local-pkg: 1.1.2
-      mlly: 1.8.0
-      ohash: 2.0.11
-      pathe: 2.0.3
-      picomatch: 4.0.3
-      std-env: 3.10.0
-      tinyglobby: 0.2.15
-    transitivePeerDependencies:
-      - magicast
-      - vite
-      - vue
 
   '@nuxt/icon@2.1.1(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.25(typescript@5.9.3))':
     dependencies:
@@ -5033,114 +5027,6 @@ snapshots:
       pathe: 2.0.3
       pkg-types: 2.3.0
       std-env: 3.10.0
-
-  ? '@nuxt/ui@4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)'
-  : dependencies:
-      '@iconify/vue': 5.0.0(vue@3.5.25(typescript@5.9.3))
-      '@internationalized/date': 3.10.1
-      '@internationalized/number': 3.6.5
-      '@nuxt/fonts': 0.12.1(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
-      '@nuxt/icon': 2.1.1(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.25(typescript@5.9.3))
-      '@nuxt/kit': 4.2.2
-      '@nuxt/schema': 4.2.2
-      '@nuxtjs/color-mode': 3.5.2
-      '@standard-schema/spec': 1.1.0
-      '@tailwindcss/postcss': 4.1.18
-      '@tailwindcss/vite': 4.1.18(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))
-      '@tanstack/vue-table': 8.21.3(vue@3.5.25(typescript@5.9.3))
-      '@tanstack/vue-virtual': 3.13.13(vue@3.5.25(typescript@5.9.3))
-      '@tiptap/core': 3.13.0(@tiptap/pm@3.13.0)
-      '@tiptap/extension-bubble-menu': 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)
-      '@tiptap/extension-drag-handle-vue-3': 3.13.0(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/pm@3.13.0)(@tiptap/vue-3@3.13.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
-      '@tiptap/extension-floating-menu': 3.13.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)
-      '@tiptap/extension-horizontal-rule': 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)
-      '@tiptap/extension-image': 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))
-      '@tiptap/extension-mention': 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/suggestion@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))
-      '@tiptap/extension-placeholder': 3.13.0(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))
-      '@tiptap/markdown': 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)
-      '@tiptap/pm': 3.13.0
-      '@tiptap/starter-kit': 3.13.0
-      '@tiptap/suggestion': 3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)
-      '@tiptap/vue-3': 3.13.0(@floating-ui/dom@1.7.4)(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(vue@3.5.25(typescript@5.9.3))
-      '@unhead/vue': 2.0.19(vue@3.5.25(typescript@5.9.3))
-      '@vueuse/core': 14.1.0(vue@3.5.25(typescript@5.9.3))
-      '@vueuse/integrations': 14.1.0(change-case@5.4.4)(fuse.js@7.1.0)(vue@3.5.25(typescript@5.9.3))
-      colortranslator: 5.0.0
-      consola: 3.4.2
-      defu: 6.1.4
-      embla-carousel-auto-height: 8.6.0(embla-carousel@8.6.0)
-      embla-carousel-auto-scroll: 8.6.0(embla-carousel@8.6.0)
-      embla-carousel-autoplay: 8.6.0(embla-carousel@8.6.0)
-      embla-carousel-class-names: 8.6.0(embla-carousel@8.6.0)
-      embla-carousel-fade: 8.6.0(embla-carousel@8.6.0)
-      embla-carousel-vue: 8.6.0(vue@3.5.25(typescript@5.9.3))
-      embla-carousel-wheel-gestures: 8.1.0(embla-carousel@8.6.0)
-      fuse.js: 7.1.0
-      hookable: 5.5.3
-      knitwork: 1.3.0
-      magic-string: 0.30.21
-      mlly: 1.8.0
-      motion-v: 1.7.4(@vueuse/core@14.1.0(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
-      ohash: 2.0.11
-      pathe: 2.0.3
-      reka-ui: 2.6.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
-      scule: 1.3.0
-      tailwind-merge: 3.4.0
-      tailwind-variants: 3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.18)
-      tailwindcss: 4.1.18
-      tinyglobby: 0.2.15
-      typescript: 5.9.3
-      unplugin: 2.3.11
-      unplugin-auto-import: 20.3.0(@nuxt/kit@4.2.2)(@vueuse/core@14.1.0(vue@3.5.25(typescript@5.9.3)))
-      unplugin-vue-components: 30.0.0(@babel/parser@7.28.5)(@nuxt/kit@4.2.2)(vue@3.5.25(typescript@5.9.3))
-      vaul-vue: 0.4.1(reka-ui@2.6.1(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
-      vue-component-type-helpers: 3.1.5
-    optionalDependencies:
-      vue-router: 4.6.3(vue@3.5.25(typescript@5.9.3))
-      zod: 4.1.12
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@babel/parser'
-      - '@capacitor/preferences'
-      - '@deno/kv'
-      - '@emotion/is-prop-valid'
-      - '@floating-ui/dom'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@tiptap/extension-drag-handle'
-      - '@tiptap/extensions'
-      - '@upstash/redis'
-      - '@vercel/blob'
-      - '@vercel/functions'
-      - '@vercel/kv'
-      - '@vue/composition-api'
-      - async-validator
-      - aws4fetch
-      - axios
-      - change-case
-      - db0
-      - drauu
-      - embla-carousel
-      - focus-trap
-      - idb-keyval
-      - ioredis
-      - jwt-decode
-      - magicast
-      - nprogress
-      - qrcode
-      - react
-      - react-dom
-      - sortablejs
-      - supports-color
-      - universal-cookie
-      - uploadthing
-      - vite
-      - vue
 
   ? '@nuxt/ui@4.3.0(patch_hash=adf614b8d055c1b579c455b3f43bab2e4fc7b51c2dc4e69beec4cf367a03cb57)(@babel/parser@7.28.5)(@floating-ui/dom@1.7.4)(@tiptap/extension-drag-handle@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/extension-collaboration@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28))(yjs@13.6.28))(@tiptap/extension-node-range@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0)(@tiptap/y-tiptap@3.0.1(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.4)(y-protocols@1.0.7(yjs@13.6.28))(yjs@13.6.28)))(@tiptap/extensions@3.13.0(@tiptap/core@3.13.0(@tiptap/pm@3.13.0))(@tiptap/pm@3.13.0))(change-case@5.4.4)(embla-carousel@8.6.0)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@4.1.12)'
   : dependencies:
@@ -5262,12 +5148,6 @@ snapshots:
   '@oxc-project/runtime@0.95.0': {}
 
   '@oxc-project/types@0.95.0': {}
-
-  '@pinia/colada@0.17.9(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))':
-    dependencies:
-      '@vue/devtools-api': 8.0.5
-      pinia: 3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3))
-      vue: 3.5.25(typescript@5.9.3)
 
   '@pinia/colada@0.19.1(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))':
     dependencies:
@@ -5468,13 +5348,6 @@ snapshots:
     dependencies:
       postcss-selector-parser: 6.0.10
       tailwindcss: 4.1.18
-
-  '@tailwindcss/vite@4.1.18(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
-    dependencies:
-      '@tailwindcss/node': 4.1.18
-      '@tailwindcss/oxide': 4.1.18
-      tailwindcss: 4.1.18
-      vite: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
 
   '@tailwindcss/vite@4.1.18(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))':
     dependencies:
@@ -5776,10 +5649,6 @@ snapshots:
 
   '@types/node@17.0.45': {}
 
-  '@types/node@24.10.1':
-    dependencies:
-      undici-types: 7.16.0
-
   '@types/node@25.0.3':
     dependencies:
       undici-types: 7.16.0
@@ -5913,10 +5782,10 @@ snapshots:
     dependencies:
       blurhash: 2.0.5
 
-  '@vitejs/plugin-vue@6.0.2(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.25(typescript@5.9.3))':
+  '@vitejs/plugin-vue@6.0.2(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(vue@3.5.25(typescript@5.9.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.50
-      vite: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
       vue: 3.5.25(typescript@5.9.3)
 
   '@vitest/eslint-plugin@1.4.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)':
@@ -6915,44 +6784,6 @@ snapshots:
       tiny-inflate: 1.0.3
       unicode-properties: 1.4.1
       unicode-trie: 2.0.0
-
-  fontless@0.1.0(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)):
-    dependencies:
-      consola: 3.4.2
-      css-tree: 3.1.0
-      defu: 6.1.4
-      esbuild: 0.25.12
-      fontaine: 0.7.0
-      jiti: 2.6.1
-      lightningcss: 1.30.2
-      magic-string: 0.30.21
-      ohash: 2.0.11
-      pathe: 2.0.3
-      ufo: 1.6.1
-      unifont: 0.6.0
-      unstorage: 1.17.3
-    optionalDependencies:
-      vite: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@deno/kv'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@upstash/redis'
-      - '@vercel/blob'
-      - '@vercel/functions'
-      - '@vercel/kv'
-      - aws4fetch
-      - db0
-      - idb-keyval
-      - ioredis
-      - uploadthing
 
   fontless@0.1.0(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)):
     dependencies:
@@ -8179,24 +8010,6 @@ snapshots:
 
   rfdc@1.4.1: {}
 
-  rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1):
-    dependencies:
-      '@oxc-project/runtime': 0.95.0
-      fdir: 6.5.0(picomatch@4.0.3)
-      lightningcss: 1.30.2
-      picomatch: 4.0.3
-      postcss: 8.5.6
-      rolldown: 1.0.0-beta.45
-      tinyglobby: 0.2.15
-    optionalDependencies:
-      '@types/node': 24.10.1
-      esbuild: 0.25.12
-      fsevents: 2.3.3
-      jiti: 2.6.1
-      terser: 5.44.0
-      tsx: 4.20.6
-      yaml: 2.8.1
-
   rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1):
     dependencies:
       '@oxc-project/runtime': 0.95.0
@@ -8585,11 +8398,11 @@ snapshots:
       '@nuxt/kit': 4.2.2
       '@vueuse/core': 14.1.0(vue@3.5.25(typescript@5.9.3))
 
-  unplugin-fonts@1.4.0(@nuxt/kit@4.2.2)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)):
+  unplugin-fonts@1.4.0(@nuxt/kit@4.2.2)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)):
     dependencies:
       fast-glob: 3.3.3
       unplugin: 2.3.5
-      vite: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
     optionalDependencies:
       '@nuxt/kit': 4.2.2
 
@@ -8627,7 +8440,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  unplugin-vue-markdown@29.2.0(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)):
+  unplugin-vue-markdown@29.2.0(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)):
     dependencies:
       '@mdit-vue/plugin-component': 3.0.2
       '@mdit-vue/plugin-frontmatter': 3.0.2
@@ -8637,7 +8450,7 @@ snapshots:
       markdown-it-async: 2.2.0
       unplugin: 2.3.11
       unplugin-utils: 0.3.1
-      vite: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
+      vite: rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
 
   unplugin-vue-router@0.16.2(@vue/compiler-sfc@3.5.25)(typescript@5.9.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3)):
     dependencies:
@@ -8726,28 +8539,6 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
-
-  vite-ssg@28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3)):
-    dependencies:
-      '@unhead/dom': 2.0.19(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))
-      '@unhead/vue': 2.0.19(vue@3.5.25(typescript@5.9.3))
-      ansis: 4.2.0
-      cac: 6.7.14
-      html-minifier-terser: 7.2.0
-      html5parser: 2.0.2
-      jsdom: 27.0.1(postcss@8.5.6)
-      vite: rolldown-vite@7.1.20(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1)
-      vue: 3.5.25(typescript@5.9.3)
-    optionalDependencies:
-      prettier: 3.6.2
-      vue-router: 4.6.3(vue@3.5.25(typescript@5.9.3))
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - postcss
-      - supports-color
-      - unhead
-      - utf-8-validate
 
   vite-ssg@28.2.2(patch_hash=67153965be886d615bdb09dbc18f0e91609679db9b3d346f870a2cd827a5bb6b)(postcss@8.5.6)(prettier@3.6.2)(rolldown-vite@7.1.20(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.1))(unhead@2.0.19(patch_hash=2b3d4029a467d0af8fb156e102e8941cf95a20232da8a38e89108869565ba07d))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3)):
     dependencies:
