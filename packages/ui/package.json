@@ -14,7 +14,7 @@
     "tailwind-variants": "catalog:",
     "typescript": "catalog:",
     "unplugin-icons": "catalog:",
-    "unplugin-vue-components": "^30.0.0",
+    "unplugin-vue-components": "catalog:",
     "vite": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"

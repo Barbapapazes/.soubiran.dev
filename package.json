@@ -8,14 +8,14 @@
     "generate:media-metadata": "node .scripts/generate-media-metadata.ts"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.2.0",
-    "@tsconfig/node-lts": "^22.0.4",
+    "@antfu/eslint-config": "catalog:",
+    "@tsconfig/node-lts": "catalog:",
     "@types/node": "catalog:",
     "@unpic/pixels": "catalog:",
     "ansis": "catalog:",
-    "blurhash": "^2.0.5",
-    "eslint": "^9.39.1",
-    "taze": "^19.9.0",
+    "blurhash": "catalog:",
+    "eslint": "catalog:",
+    "taze": "catalog:",
     "typescript": "catalog:"
   },
   "pnpm": {
