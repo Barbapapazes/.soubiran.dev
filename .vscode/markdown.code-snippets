@@ -2,7 +2,7 @@
 	"New Infra Page": {
 		"isFileTemplate": true,
 		"scope": "markdown",
-		"description": "Create a new markdown file for infra.soubiran.dev with front matter",
+		"description": "Create a new markdown file for infra.soubiran.dev with a frontmatter",
 		"prefix": "new:md:infra",
 		"body": [
 			"---",
@@ -12,6 +12,21 @@
 			"url: ",
 			"repository: ",
 			"ecosystem: ",
+			"---",
+			"",
+			"$0"
+		]
+	},
+	"New Web Page": {
+		"isFileTemplate": true,
+		"scope": "markdown",
+		"description": "Create a new markdown file for web.soubiran.dev with a frontmatter",
+		"prefix": "new:md:web",
+		"body": [
+			"---",
+			"id: $UUID",
+			"title: $1",
+			"description: ",
 			"---",
 			"",
 			"$0"

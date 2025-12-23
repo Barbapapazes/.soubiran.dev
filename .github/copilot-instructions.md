@@ -48,6 +48,24 @@ pnpm run test:ui      # Run Playwright tests with UI
 - Use **2 spaces** for indentation
 - Avoid semicolons (per ESLint config)
 
+## Writing Style (Documentation & Notes)
+
+- **Format**: Concise, note-taking style. Use bullet points freely.
+- **Tone**: Informal but technical. Direct and to the point.
+- **Audience**: Can be both beginners and experienced developers. Make sure explanations are clear.
+- **Language**: English.
+- **Comparisons**: Use analogies to JavaScript/Node.js ecosystem where helpful (e.g., "Maven is like npm").
+- **Structure**:
+  - Use headers for topics.
+  - Include code snippets for examples.
+  - Use GitHub alerts (e.g., `> [!NOTE]`) for note asides. `> [!WARNING]` for cautions. `> [!TIP]` for tips. `> [!IMPORTANT]` for important notes. `> [!CAUTION]` for cautions.
+  - Use line code highlighting using `// [!code +]`, `// [!code -]` for diffs, and `// [!code highlight]` for highlights, when showing code changes or important lines.
+- **Casing**: Headers in Title Case, body text in sentence case.
+- **Code Blocks**: Add, where it makes sense, the file name using the format:
+  ```lang [filename]
+  // code here
+  ```
+
 ## Development Workflow
 
 1. **Always install dependencies first**: Run `pnpm install` from the root
