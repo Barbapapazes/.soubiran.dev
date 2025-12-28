@@ -1,0 +1,780 @@
+For the engineering team
+what is the convention to name service and repository methods? do we have to add the entity name?
+does a service take an entity as parameter or just the fields needed to perform the operation? -> dto seems a better idea as it avoid passing an entity that does not have to be known by the controller (separation of concerns) (does dto goes into the domain folder?) (and the repository should take the entity as parameter?) (or should we use a mapper to convert the "request" to entity in the service layer?) (je crois que pour y répondre, il faut se poser la question de si on utilise un servcie dans un service, est-ce qu'on veut utiliser l'entité ou le dto?) (et le dto, il appartient au domain ou à la présentation?) (dans la présentation, il y a des request et des response dto)
+je ne comprends pas comment organiser mes fichiers, tu trouves absoulment tout et son contraire sur internet, je suis complètement perdu (d'autant que ça pose ensuite la question des entrées et des sorties de ces packages)
+mock vs fake, which one to use when?
+is the container used when testing? Or should we create the instances manually? (mock or fake)
+AAA or Given When Then pattern in testing, which one to use when?
+what should we put in the domain folder?
+junit5 ou junit6?
+
+
+what does `::Class` means in Kotlin?
+
+=> need to continue to tests the to-do application to have a better understanding of these concepts and to complete my notes
+
+
+---
+
+mock vs fake (which one to use when)?
+    Mock
+        A test double focused on behavior verification. You assert how it is used (calls, arguments, call order).
+            Use mocks when:
+                You want to verify interactions between components.
+                The dependency has side effects (HTTP calls, emails, payments).
+                You need to simulate errors, timeouts, retries, or rare edge cases.
+                You are writing unit tests with strict isolation.
+    Fake
+        A lightweight working implementation with simplified logic (often in-memory). You assert what it produces.
+            Use fakes when:
+                You want realistic behavior without external dependencies.
+                You care about state and results, not call details.
+                You are writing integration or service-level tests.
+                You want tests that survive refactors.
+=> needs to be redefiend using my understanding and works
+How to choose (practical rules)
+    Test intent first
+        “Did X call Y correctly?” → Mock
+        “Does this feature work end-to-end?” → Fake
+    Avoid mocking your own domain
+        Prefer fakes for repositories, services, and business logic you control.
+        Mock boundaries (HTTP, filesystem, third-party APIs).
+    Refactor safety
+        If changing internals breaks tests → too many mocks.
+        Prefer fakes to keep tests resilient.
+    Layered approach
+        Unit tests → mocks at boundaries.
+        Service tests → fakes.
+        E2E tests → real implementations.
+
+| Question you’re asking                | Use  |
+|---------------------------------------|------|
+| Was this dependency called correctly? | Mock |
+| Does the system behave correctly?     | Fake |
+| Will this test survive refactors?     | Fake |
+| Do I need strict isolation?           | Mock |
+
+Rule of thumb
+    Mocks for boundaries (external systems)
+    Fakes for collaborators you own
+
+testing with AAA (Arrange, Act, Assert) pattern
+vs
+Given When Then pattern
+-> need to be defined to understand the difference and their use cases
+
+----
+
+Dependency Injection using Koin
+
+Dependency Injection (DI) is a design pattern used to implement Inversion of Control (IoC) for resolving dependencies. It relies on a container to provide instances of classes and manage their lifecycle. A container is a key-value store where the key is typically an interface or a string identifier, and the value is the concrete implementation or a factory function to create the instance of the class depending on external factor like a configuration.
+
+1. Code reusability and decoupling
+2. Easier refactoring
+3. Simplified testing
+
+```kotlin
+import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
+import org.koin.mp.KoinPlatform
+
+// Bind interfaces to implementations within the container
+val appModule = module {
+    singleOf(::InMemoryTaskRepository) { bind<TaskRepository>() }
+    singleOf(::TaskServiceImpl) { bind<TaskService>() }
+    singleOf(::TaskCommandImpl) { bind<TaskCommand>() }
+}
+
+// Create the runtime container
+startKoin {
+    modules(appModule)
+}
+
+// Retrieve instances from the container
+val taskCommand = KoinPlatform.getKoin().get<TaskCommand>()
+```
+
+> [!NOTE]
+> `singleOf` and `bind` are specific Koin DSL functions
+
+---
+
+## MokK
+
+// use the notes from TESTING_GUIDE to complete this section
+
+```kotlin
+@Test
+fun calculateAddsValues() {
+    val doc1 = mockk<Dependency1>()
+    val doc2 = mockk<Dependency2>()
+
+    every { doc1.value1 } returns 5
+    every { doc2.value2 } returns "6"
+
+    val sut = SystemUnderTest(doc1, doc2)
+
+    assertEquals(11, sut.calculate())
+}
+```
+
+it's not more complicated than that! Possibility to use matchers like `any()`, `eq()`, `less()`, `greater()` to specify more complex behavior for `every` calls. Used to returns a different value based on the argument passed to the mock function.
+
+```kotlin
+every { mock.call(more(5)) } returns 1
+every { mock.call(or(less(5), eq(5))) } returns -1
+```
+
+> [!NOTE]
+> `returns` is an infix function, not a language keyword. `every { ... } returns ...` is more readable than `every { ... }.returns(...)`.
+
+Behavior verification checks that mocked Dependent-On Components were called. This checks should be placed at the end of the test, after checking System Under Test. This is done using the `verify` function that makes sure that the expected calls were made to the mock objects. (objects can be mocked but never called. The test will pass even if the behavior is not the expected one). Sometimes, you wnat to verify the order or that only specific calls were made. It's possible with `verifyAll`, `verifyOrder` and `verifySequence`.
+
+there is a behavior verification idea that is really important to understand when testing.
+
+**Test Double** as the generic term for any kind of pretend object used in place of a real object for testing purposes
+
+Dummy objects are passed around but never actually used. Usually they are just used to fill parameter lists.
+Fake objects actually have working implementations, but usually take some shortcut which makes them not suitable for production (an in memory database is a good example).
+Stubs provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test.
+Spies are stubs that also record some information based on how they were called. One form of this might be an email service that records how many messages it was sent.
+Mocks are what we are talking about here: objects pre-programmed with expectations which form a specification of the calls they are expected to receive.
+
+## references
+
+https://martinfowler.com/articles/mocksArentStubs.html#TheDifferenceBetweenMocksAndStubs
+https://blog.kotlin-academy.com/mocking-is-not-rocket-science-basics-ae55d0aadf2b
+https://blog.kotlin-academy.com/mocking-is-not-rocket-science-expected-behavior-and-behavior-verification-3862dd0e0f03
+https://blog.kotlin-academy.com/mocking-is-not-rocket-science-mockk-features-e5d55d735a98
+https://marco-cattaneo.medium.com/kotlin-unit-testing-with-mockk-91d52aea2852
+
+---
+
+bootstrap l'ide et projet vierge en kotlin
+(faire un projet de contact manager)
+
+qu'est ce que rest ? il faut avoir une petite phrase
+
+l'enjeu, c'est de passer à l'échelle mais tout seul (mdrr facile à dire)
+(là, dans le processus de création, c'est chaotique mais super formateur et c'est se demander où est sa valeur)
+
+first, google to know what to ask to ai, then ai to have a deeper explanantion
+
+
+video youtube pour avoir la syntax de base et apprendre à lire du kotlin
+
+potentiellement, il faudrait un agent qui en fonction des réponses au quizz, réadapte le contenu déjà présent, ou en tout cas, analyze les manques et les points à améliorer (voir avec le teacher agent pour améliorer ensuite le contenu)
+
+ensuite, demander des idées de projets, shopping list avec save et restore dans un json (i/o, comment on gère)
+et ensuite, demander une review à un agent kotlin expert là dedans
+
+
+mettre le contenu du fichier TESTING_GUIDE dans web.soubiran.dev
+faire un agent spécialiste ? faire un agent organizer ? faire un agent ochestrateur ? faire une web ui ?
+faire un explainer ?
+
+-> moyen de s'amuser mais il faut véritablement apporter de la valeur
+
+potentiellement, tout ća, fait un talk en meetup
+
+il faut clarifier les frontières
+domain -> entity
+http -> dto -> controller -> dto -> service -> entity -> repository
+
+c'est quoi les conventions de nommage des méthodes dans les services? Est-ce qu'on met le nom de l'entité dedans ? est-ce qu'on met des verbes d'action ?
+
+---
+
+
+Explaination (brief):
+- Write unit tests for `ShoppingListServiceImpl` with a mocked `StorageService`.
+- Use MockK and JUnit 5. Mock `loadShoppingList()` responses and verify `saveShoppingList()` is called with expected lists.
+- Assert the service internal `getShoppingList()` reflects adds/removals.
+- Place tests in `src/test/kotlin/service/impl/ShoppingListServiceImplTest.kt`.
+
+Test file:
+```kotlin
+// src/test/kotlin/service/impl/ShoppingListServiceImplTest.kt
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import io.takima.domain.ShoppingItem
+import io.takima.service.StorageService
+import io.takima.service.impl.ShoppingListServiceImpl
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+
+class ShoppingListServiceImplTest {
+    private val storage = mockk<StorageService>(relaxed = true)
+    private val service = ShoppingListServiceImpl(storage)
+
+    private fun item(id: String = "id", name: String = "name") =
+        ShoppingItem(id = id, name = name)
+
+    @Test
+    fun `getShoppingList initially empty`() {
+        assertTrue(service.getShoppingList().isEmpty())
+    }
+
+    @Test
+    fun `addShoppingItem adds to in-memory list and saves combined storage list`() {
+        val existing = listOf(item("a", "apple"))
+        every { storage.loadShoppingList() } returns existing
+
+        val toAdd = item("b", "banana")
+        service.addShoppingItem(toAdd)
+
+        // in-memory list updated
+        val mem = service.getShoppingList()
+        assertEquals(1, mem.size)
+        assertTrue(mem.contains(toAdd))
+
+        // verify load was called and save called with combined list
+        verify(exactly = 1) { storage.loadShoppingList() }
+        verify(exactly = 1) { storage.saveShoppingList(existing + toAdd) }
+    }
+
+    @Test
+    fun `removeShoppingItem removes from in-memory list and updates storage`() {
+        // prepare storage to return a list containing the item
+        val stored = mutableListOf(item("x", "x-item"), item("y", "y-item"))
+        every { storage.loadShoppingList() } returns stored.toList()
+
+        val toRemove = item("r", "remove-me")
+        // add to internal list using service API (this will call load and save once)
+        service.addShoppingItem(toRemove)
+        assertTrue(service.getShoppingList().contains(toRemove))
+
+        // now adjust mocked load to reflect stored list prior to removal
+        every { storage.loadShoppingList() } returns (stored + toRemove).toList()
+
+        service.removeShoppingItem(toRemove)
+
+        // in-memory list no longer contains the removed item
+        assertFalse(service.getShoppingList().contains(toRemove))
+
+        // verify save called with the storage list without the removed item
+        verify { storage.saveShoppingList((stored + toRemove).filter { it != toRemove }) }
+    }
+}
+```
+
+Notes:
+- Add Gradle dependencies if missing: `testImplementation "io.mockk:mockk:1.13.5"` and `testImplementation "org.junit.jupiter:junit-jupiter:5.9.3"`.
+- Use real `ShoppingItem` from the project; adjust helper `item()` if constructor differs.
+
+
+test sample
+
+
+```kotlin
+/**
+ * Test file for the Todo Application
+ *
+ * This file demonstrates unit testing in Kotlin using JUnit 5
+ *
+ * Key testing concepts covered:
+ * - Test fixtures (setup/teardown)
+ * - Assertions
+ * - Test organization
+ * - Edge cases
+ * - Test naming conventions
+ */
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+
+/**
+ * Main test class for TodoApp
+ *
+ * @DisplayName provides a human-readable name for the test class This appears in test reports and
+ * IDE test runners
+ */
+@DisplayName("TodoApp Tests")
+class TodoTest {
+
+  // lateinit var means "I'll initialize this later, before using it"
+  // Used here because we want a fresh TodoApp instance for each test
+  private lateinit var app: TodoApp
+
+  /**
+   * @BeforeEach runs before each test method
+   *
+   * This ensures each test starts with a clean state This is important for test isolation - tests
+   * shouldn't affect each other
+   */
+  @BeforeEach
+  fun setUp() {
+    app = TodoApp()
+  }
+
+  // ========================================
+  // Tests for Data Class
+  // ========================================
+
+  /**
+   * @Nested allows grouping related tests together This improves test organization and readability
+   */
+  @Nested
+  @DisplayName("Todo Data Class Tests")
+  inner class TodoDataClassTests {
+
+    @Test
+    @DisplayName("Todo should be created with correct properties")
+    fun testTodoCreation() {
+      // Arrange: Set up test data
+      val id = 1
+      val title = "Buy groceries"
+      val completed = false
+
+      // Act: Perform the action we're testing
+      val todo = Todo(id, title, completed)
+
+      // Assert: Verify the results
+      // assertEquals(expected, actual, optionalMessage)
+      assertEquals(id, todo.id, "Todo ID should match")
+      assertEquals(title, todo.title, "Todo title should match")
+      assertEquals(completed, todo.completed, "Todo completion status should match")
+    }
+
+    @Test
+    @DisplayName("Todo should default to incomplete")
+    fun testTodoDefaultCompletion() {
+      // Test that the default parameter works correctly
+      val todo = Todo(1, "Test task")
+
+      // assertFalse checks that a condition is false
+      assertFalse(todo.completed, "New todos should be incomplete by default")
+    }
+
+    @Test
+    @DisplayName("Todo copy() should create modified instance")
+    fun testTodoCopy() {
+      // Test the data class copy() function
+      val original = Todo(1, "Original task", false)
+
+      // Create a copy with completed = true
+      val modified = original.copy(completed = true)
+
+      // Verify the copy has the new value
+      assertTrue(modified.completed, "Copied todo should be marked as completed")
+
+      // Verify the copy has the same other properties
+      assertEquals(original.id, modified.id, "ID should remain the same")
+      assertEquals(original.title, modified.title, "Title should remain the same")
+
+      // Verify the original is unchanged
+      assertFalse(original.completed, "Original todo should remain unchanged")
+    }
+
+    @Test
+    @DisplayName("Todo equals() should work correctly")
+    fun testTodoEquality() {
+      // Data classes automatically implement equals()
+      // Two instances with same property values are equal
+      val todo1 = Todo(1, "Task", false)
+      val todo2 = Todo(1, "Task", false)
+      val todo3 = Todo(2, "Task", false)
+
+      assertEquals(todo1, todo2, "Todos with same properties should be equal")
+      assertNotEquals(todo1, todo3, "Todos with different IDs should not be equal")
+    }
+  }
+
+  // ========================================
+  // Tests for Adding Todos
+  // ========================================
+
+  @Nested
+  @DisplayName("Add Todo Tests")
+  inner class AddTodoTests {
+
+    @Test
+    @DisplayName("Adding a todo should increase list size")
+    fun testAddTodoIncreasesSize() {
+      // Initially empty
+      assertEquals(0, app.getTodos().size, "Initial todo list should be empty")
+
+      // Add one todo
+      app.addTodoDirectly("First task")
+      assertEquals(1, app.getTodos().size, "List should have 1 todo after adding one")
+
+      // Add another
+      app.addTodoDirectly("Second task")
+      assertEquals(2, app.getTodos().size, "List should have 2 todos after adding two")
+    }
+
+    @Test
+    @DisplayName("Added todo should have correct properties")
+    fun testAddedTodoProperties() {
+      val title = "Test Task"
+      val todo = app.addTodoDirectly(title)
+
+      // Verify the todo has the correct properties
+      assertEquals(title, todo.title, "Todo should have the provided title")
+      assertFalse(todo.completed, "New todo should be incomplete")
+      assertTrue(todo.id > 0, "Todo should have a positive ID")
+    }
+
+    @Test
+    @DisplayName("Each todo should have a unique ID")
+    fun testUniqueTodoIds() {
+      val todo1 = app.addTodoDirectly("First")
+      val todo2 = app.addTodoDirectly("Second")
+      val todo3 = app.addTodoDirectly("Third")
+
+      // All IDs should be different
+      assertNotEquals(todo1.id, todo2.id, "First and second todos should have different IDs")
+      assertNotEquals(todo2.id, todo3.id, "Second and third todos should have different IDs")
+      assertNotEquals(todo1.id, todo3.id, "First and third todos should have different IDs")
+
+      // IDs should be sequential
+      assertEquals(todo1.id + 1, todo2.id, "IDs should be sequential")
+      assertEquals(todo2.id + 1, todo3.id, "IDs should be sequential")
+    }
+
+    @Test
+    @DisplayName("Whitespace in title should be trimmed")
+    fun testTitleTrimming() {
+      val todo = app.addTodoDirectly("  Task with spaces  ")
+      assertEquals("Task with spaces", todo.title, "Title should be trimmed")
+    }
+  }
+
+  // ========================================
+  // Tests for Listing Todos
+  // ========================================
+
+  @Nested
+  @DisplayName("List Todos Tests")
+  inner class ListTodosTests {
+
+    @Test
+    @DisplayName("getTodos() should return empty list initially")
+    fun testInitiallyEmpty() {
+      val todos = app.getTodos()
+
+      // assertTrue checks that a condition is true
+      assertTrue(todos.isEmpty(), "Initial todo list should be empty")
+    }
+
+    @Test
+    @DisplayName("getTodos() should return all added todos")
+    fun testGetAllTodos() {
+      // Add multiple todos
+      app.addTodoDirectly("Task 1")
+      app.addTodoDirectly("Task 2")
+      app.addTodoDirectly("Task 3")
+
+      val todos = app.getTodos()
+
+      assertEquals(3, todos.size, "Should return all 3 todos")
+    }
+
+    @Test
+    @DisplayName("getTodos() should return a copy, not the original list")
+    fun testGetTodosReturnsCopy() {
+      app.addTodoDirectly("Task 1")
+
+      // Get the list
+      val todos = app.getTodos()
+      val originalSize = todos.size
+
+      // Try to modify the returned list (this should work without affecting app)
+      val mutableTodos = todos.toMutableList()
+      mutableTodos.add(Todo(999, "Fake task"))
+
+      // The app's list should be unchanged
+      assertEquals(
+              originalSize,
+              app.getTodos().size,
+              "Modifying returned list should not affect app's internal list"
+      )
+    }
+  }
+
+  // ========================================
+  // Tests for Completing Todos
+  // ========================================
+
+  @Nested
+  @DisplayName("Complete Todo Tests")
+  inner class CompleteTodoTests {
+
+    @Test
+    @DisplayName("Completing a todo should set completed to true")
+    fun testCompleteTodo() {
+      // Add a todo
+      val todo = app.addTodoDirectly("Task to complete")
+      assertFalse(todo.completed, "Todo should start incomplete")
+
+      // Complete it
+      val success = app.completeTodoById(todo.id)
+
+      // Verify it succeeded
+      assertTrue(success, "Completing todo should return true")
+
+      // Verify it's now completed
+      val updatedTodo = app.getTodos().first { it.id == todo.id }
+      assertTrue(updatedTodo.completed, "Todo should be marked as completed")
+    }
+
+    @Test
+    @DisplayName("Completing non-existent todo should return false")
+    fun testCompleteNonExistentTodo() {
+      val success = app.completeTodoById(999)
+      assertFalse(success, "Completing non-existent todo should return false")
+    }
+
+    @Test
+    @DisplayName("Completing already completed todo should return false")
+    fun testCompleteAlreadyCompletedTodo() {
+      // Add and complete a todo
+      val todo = app.addTodoDirectly("Task")
+      app.completeTodoById(todo.id)
+
+      // Try to complete it again
+      val success = app.completeTodoById(todo.id)
+      assertFalse(success, "Completing already completed todo should return false")
+    }
+
+    @Test
+    @DisplayName("Completing one todo should not affect others")
+    fun testCompleteOnlyAffectsTargetTodo() {
+      val todo1 = app.addTodoDirectly("Task 1")
+      val todo2 = app.addTodoDirectly("Task 2")
+      val todo3 = app.addTodoDirectly("Task 3")
+
+      // Complete only the second one
+      app.completeTodoById(todo2.id)
+
+      val todos = app.getTodos()
+      assertFalse(
+              todos.first { it.id == todo1.id }.completed,
+              "First todo should remain incomplete"
+      )
+      assertTrue(todos.first { it.id == todo2.id }.completed, "Second todo should be completed")
+      assertFalse(
+              todos.first { it.id == todo3.id }.completed,
+              "Third todo should remain incomplete"
+      )
+    }
+  }
+
+  // ========================================
+  // Tests for Deleting Todos
+  // ========================================
+
+  @Nested
+  @DisplayName("Delete Todo Tests")
+  inner class DeleteTodoTests {
+
+    @Test
+    @DisplayName("Deleting a todo should remove it from list")
+    fun testDeleteTodo() {
+      val todo = app.addTodoDirectly("Task to delete")
+      assertEquals(1, app.getTodos().size, "Should have 1 todo")
+
+      val success = app.deleteTodoById(todo.id)
+
+      assertTrue(success, "Deleting existing todo should return true")
+      assertEquals(0, app.getTodos().size, "Todo list should be empty after deletion")
+    }
+
+    @Test
+    @DisplayName("Deleting non-existent todo should return false")
+    fun testDeleteNonExistentTodo() {
+      val success = app.deleteTodoById(999)
+      assertFalse(success, "Deleting non-existent todo should return false")
+    }
+
+    @Test
+    @DisplayName("Deleting one todo should not affect others")
+    fun testDeleteOnlyAffectsTargetTodo() {
+      val todo1 = app.addTodoDirectly("Task 1")
+      val todo2 = app.addTodoDirectly("Task 2")
+      val todo3 = app.addTodoDirectly("Task 3")
+
+      // Delete the second one
+      app.deleteTodoById(todo2.id)
+
+      val todos = app.getTodos()
+      assertEquals(2, todos.size, "Should have 2 todos remaining")
+
+      // Verify the right one was deleted
+      assertNotNull(todos.firstOrNull { it.id == todo1.id }, "First todo should still exist")
+      assertNull(todos.firstOrNull { it.id == todo2.id }, "Second todo should be deleted")
+      assertNotNull(todos.firstOrNull { it.id == todo3.id }, "Third todo should still exist")
+    }
+
+    @Test
+    @DisplayName("Can delete all todos one by one")
+    fun testDeleteAllTodos() {
+      val todo1 = app.addTodoDirectly("Task 1")
+      val todo2 = app.addTodoDirectly("Task 2")
+      val todo3 = app.addTodoDirectly("Task 3")
+
+      app.deleteTodoById(todo1.id)
+      assertEquals(2, app.getTodos().size)
+
+      app.deleteTodoById(todo2.id)
+      assertEquals(1, app.getTodos().size)
+
+      app.deleteTodoById(todo3.id)
+      assertEquals(0, app.getTodos().size)
+      assertTrue(app.getTodos().isEmpty(), "All todos should be deleted")
+    }
+  }
+
+  // ========================================
+  // Tests for Clear Functionality
+  // ========================================
+
+  @Nested
+  @DisplayName("Clear Todos Tests")
+  inner class ClearTodosTests {
+
+    @Test
+    @DisplayName("Clear should remove all todos")
+    fun testClearAllTodos() {
+      // Add several todos
+      app.addTodoDirectly("Task 1")
+      app.addTodoDirectly("Task 2")
+      app.addTodoDirectly("Task 3")
+
+      assertEquals(3, app.getTodos().size, "Should have 3 todos")
+
+      // Clear all
+      app.clearTodos()
+
+      assertEquals(0, app.getTodos().size, "Should have no todos after clear")
+      assertTrue(app.getTodos().isEmpty(), "Todo list should be empty")
+    }
+
+    @Test
+    @DisplayName("Clear on empty list should work without errors")
+    fun testClearEmptyList() {
+      // This should not throw an exception
+      // assertDoesNotThrow is used when we want to verify no exception occurs
+      assertDoesNotThrow { app.clearTodos() }
+
+      assertTrue(app.getTodos().isEmpty(), "List should still be empty")
+    }
+  }
+
+  // ========================================
+  // Integration Tests
+  // ========================================
+
+  @Nested
+  @DisplayName("Integration Tests")
+  inner class IntegrationTests {
+
+    @Test
+    @DisplayName("Complete workflow: add, complete, and delete")
+    fun testCompleteWorkflow() {
+      // Add todos
+      val todo1 = app.addTodoDirectly("Buy milk")
+      val todo2 = app.addTodoDirectly("Write code")
+      val todo3 = app.addTodoDirectly("Exercise")
+
+      // Verify all added
+      assertEquals(3, app.getTodos().size)
+
+      // Complete one
+      app.completeTodoById(todo2.id)
+      val todos = app.getTodos()
+      assertTrue(todos.first { it.id == todo2.id }.completed)
+
+      // Delete one
+      app.deleteTodoById(todo1.id)
+      assertEquals(2, app.getTodos().size)
+
+      // Verify final state
+      val finalTodos = app.getTodos()
+      assertEquals(2, finalTodos.size)
+      assertNull(finalTodos.firstOrNull { it.id == todo1.id }, "Deleted todo should not exist")
+      assertTrue(
+              finalTodos.first { it.id == todo2.id }.completed,
+              "Completed todo should still be completed"
+      )
+      assertFalse(
+              finalTodos.first { it.id == todo3.id }.completed,
+              "Untouched todo should remain incomplete"
+      )
+    }
+
+    @Test
+    @DisplayName("IDs should remain unique even after deletions")
+    fun testIdsPersistAfterDeletion() {
+      // Add and delete a todo
+      val todo1 = app.addTodoDirectly("First")
+      app.deleteTodoById(todo1.id)
+
+      // Add another - it should have a new, higher ID
+      val todo2 = app.addTodoDirectly("Second")
+
+      assertTrue(todo2.id > todo1.id, "New todo should have higher ID than deleted one")
+    }
+  }
+
+  // ========================================
+  // Edge Cases and Error Handling
+  // ========================================
+
+  @Nested
+  @DisplayName("Edge Cases")
+  inner class EdgeCaseTests {
+
+    @Test
+    @DisplayName("Todo with empty title (after trimming)")
+    fun testEmptyTitleAfterTrimming() {
+      // The app's addTodoDirectly doesn't validate, but this tests the data model
+      val todo = app.addTodoDirectly("   ")
+      assertEquals("", todo.title, "Title should be empty string after trimming spaces")
+    }
+
+    @Test
+    @DisplayName("Todo with very long title")
+    fun testLongTitle() {
+      val longTitle = "A".repeat(1000)
+      val todo = app.addTodoDirectly(longTitle)
+      assertEquals(longTitle, todo.title, "Should handle long titles")
+    }
+
+    @Test
+    @DisplayName("Todo with special characters")
+    fun testSpecialCharacters() {
+      val specialTitle = "Buy groceries 🛒 @ store (50% off!) #sale"
+      val todo = app.addTodoDirectly(specialTitle)
+      assertEquals(specialTitle, todo.title, "Should handle special characters and emojis")
+    }
+
+    @Test
+    @DisplayName("Multiple operations on same todo")
+    fun testMultipleOperationsOnSameTodo() {
+      val todo = app.addTodoDirectly("Task")
+
+      // Complete it
+      assertTrue(app.completeTodoById(todo.id))
+
+      // Try to complete again (should fail)
+      assertFalse(app.completeTodoById(todo.id))
+
+      // Delete it
+      assertTrue(app.deleteTodoById(todo.id))
+
+      // Try to delete again (should fail - already gone)
+      assertFalse(app.deleteTodoById(todo.id))
+
+      // Try to complete after deletion (should fail)
+      assertFalse(app.completeTodoById(todo.id))
+    }
+  }
+}
+
+```

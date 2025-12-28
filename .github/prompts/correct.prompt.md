@@ -2,7 +2,7 @@
 agent: agent
 model: Gemini 3 Flash (Preview) (copilot)
 description: Refine English writing while preserving the author's tone and intent
-tools: ['read/problems', 'read/readFile', 'edit/editFiles', 'search', 'web/fetch', 'agent']
+tools: ['runCommands', 'edit/createFile', 'edit/createDirectory', 'edit/editFiles', 'search', 'problems', 'changes', 'fetch', 'runSubagent']
 ---
 
 For each text:
