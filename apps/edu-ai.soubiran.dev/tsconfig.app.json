@@ -6,14 +6,12 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "@soubiran/ui": [
-        "../../packages/ui/src/index.ts"
       ]
     },
     "types": [
       "vite/client",
-      "unplugin-icons/types/vue"
+      "unplugin-icons/types/vue",
+      "@soubiran/ui/umami"
     ],
     "strict": true,
     "noFallthroughCasesInSwitch": true,

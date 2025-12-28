@@ -3,8 +3,8 @@
 
 @plugin "@tailwindcss/typography";
 
+@source "../node_modules/@soubiran/ui/dist/index.js";
 @source "../../../packages/vite/vite.config.ts";
-@source "../../../packages/ui/src/components/";
 
 @theme {
   --font-sans: 'DM Sans', sans-serif;
