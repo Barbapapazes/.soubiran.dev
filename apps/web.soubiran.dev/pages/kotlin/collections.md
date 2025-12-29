@@ -1,6 +1,17 @@
 # Collections & Functional Operations
 
-Kotlin distinguishes between read-only and mutable collections, providing a rich set of functional operators to manipulate them.
+## Recap
+
+| Feature | Description | Example |
+|---------|-------------|---------|
+| **List** | Ordered collection | `listOf(1, 2, 3)` |
+| **Set** | Unique elements | `setOf(1, 2, 3)` |
+| **Map** | Key-value pairs | `mapOf("a" to 1)` |
+| **Mutable** | Modifiable collection | `mutableListOf()` |
+| **Sequence** | Lazy evaluation | `list.asSequence()` |
+| **Range** | Interval of values | `1..10`, `1..<10` |
+
+---
 
 ## Read-only vs Mutable
 
@@ -14,6 +25,8 @@ By default, Kotlin encourages the use of read-only collections to promote immuta
 
 > [!IMPORTANT]
 > A `List` is not necessarily immutable; it is just a read-only view. The underlying implementation might still be mutable (e.g., if cast from a `MutableList`).
+
+---
 
 ## Functional Operators
 
@@ -41,6 +54,8 @@ val doubledEvens = numbers
     .map { it * 2 } // [4, 8]
 ```
 
+---
+
 ## Sequences (Lazy Collections)
 
 For large collections or complex chains of operations, `Sequence` provides lazy evaluation, similar to Java `Stream`.
@@ -51,6 +66,8 @@ val sequence = numbers.asSequence()
     .map { it * 2 }
     .toList() // Operations are only executed here
 ```
+
+---
 
 ## Ranges and Progressions
 
