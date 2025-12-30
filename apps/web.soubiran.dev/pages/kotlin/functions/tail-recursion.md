@@ -14,7 +14,7 @@ To enable this optimization, mark the function with `tailrec`. The recursive cal
 
 ```kotlin
 tailrec fun findFixPoint(x: Double = 1.0): Double =
-    if (Math.abs(x - Math.cos(x)) < 0.001) x 
+    if (Math.abs(x - Math.cos(x)) < 0.001) x
     else findFixPoint(Math.cos(x))
 ```
 

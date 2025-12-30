@@ -55,7 +55,7 @@ interface TaskRepository {
 @Test
 fun `basic mock creation`() {
     val mockRepo = mockk<TaskRepository>()
-    
+
     // Mock is created but has no behavior defined yet
 }
 ```
@@ -70,7 +70,7 @@ Throws an exception if called without defined behavior.
 @Test
 fun `strict mock requires behavior definition`() {
     val mockRepo = mockk<TaskRepository>()
-    
+
     // ❌ This throws: no answer found for TaskRepository.count()
     // mockRepo.count()
 }
@@ -86,10 +86,10 @@ Returns default values automatically (null, 0, false, empty collections).
 @Test
 fun `relaxed mock returns defaults`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
-    
+
     // ✅ Returns 0 by default
     assertEquals(0, mockRepo.count())
-    
+
     // ✅ Returns null by default
     assertNull(mockRepo.findById(1))
 }
@@ -109,10 +109,10 @@ The `every { }` block defines what a mock should return when called.
 @Test
 fun `stub simple method`() {
     val mockRepo = mockk<TaskRepository>()
-    
+
     // Define behavior: when count() is called, return 42
     every { mockRepo.count() } returns 42
-    
+
     assertEquals(42, mockRepo.count())
 }
 ```
@@ -124,10 +124,10 @@ fun `stub simple method`() {
 fun `stub method with specific argument`() {
     val mockRepo = mockk<TaskRepository>()
     val expectedTask = Task(id = 1, name = "Test Task")
-    
+
     // Returns task only when called with id = 1
     every { mockRepo.findById(1) } returns expectedTask
-    
+
     assertEquals(expectedTask, mockRepo.findById(1))
     assertNull(mockRepo.findById(2)) // Throws if not relaxed
 }
@@ -162,13 +162,13 @@ import io.mockk.*
 fun `using argument matchers`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
     val task = Task(id = 1, name = "Test")
-    
+
     // any() - matches any value of the type
     every { mockRepo.findById(any()) } returns task
-    
+
     // eq() - matches exact value (explicit equality)
     every { mockRepo.findById(eq(1)) } returns task
-    
+
     // Matchers can be combined
     every { mockRepo.findById(or(eq(1), eq(2))) } returns task
 }
@@ -180,16 +180,16 @@ fun `using argument matchers`() {
 @Test
 fun `numeric matchers`() {
     val mockPricer = mockk<PriceCalculator>()
-    
+
     // more() - greater than
     every { mockPricer.calculateDiscount(more(100.0)) } returns 20.0
-    
+
     // less() - less than
     every { mockPricer.calculateDiscount(less(50.0)) } returns 5.0
-    
+
     // between() - range matching
     every { mockPricer.calculateDiscount(more(50.0) and less(100.0)) } returns 10.0
-    
+
     assertEquals(20.0, mockPricer.calculateDiscount(150.0))
     assertEquals(5.0, mockPricer.calculateDiscount(30.0))
 }
@@ -201,13 +201,13 @@ fun `numeric matchers`() {
 @Test
 fun `string matchers`() {
     val mockValidator = mockk<Validator>()
-    
+
     // match() - regex matching
     every { mockValidator.isValid(match { it.contains("@") }) } returns true
-    
+
     // Custom lambda matcher
     every { mockValidator.isValid(match { it.length > 5 }) } returns true
-    
+
     assertTrue(mockValidator.isValid("test@example.com"))
 }
 ```
@@ -219,12 +219,12 @@ fun `string matchers`() {
 fun `capture argument for inspection`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
     val slot = slot<Task>()
-    
+
     every { mockRepo.save(capture(slot)) } returns Unit
-    
+
     val service = TaskService(mockRepo)
     service.createTask("New Task")
-    
+
     // Inspect captured value
     assertEquals("New Task", slot.captured.name)
 }
@@ -242,10 +242,10 @@ Verification ensures that mocks were called as expected. This is the **key diffe
 @Test
 fun `verify method was called`() {
     val mockNotifier = mockk<EmailNotifier>(relaxed = true)
-    
+
     val service = TaskService(mockNotifier)
     service.sendReminder("Complete your tasks")
-    
+
     // Verify send() was called exactly once
     verify(exactly = 1) { mockNotifier.send(any()) }
 }
@@ -257,16 +257,16 @@ fun `verify method was called`() {
 @Test
 fun `verification modes`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
-    
+
     // Called at least once
     verify(atLeast = 1) { mockRepo.save(any()) }
-    
+
     // Called at most twice
     verify(atMost = 2) { mockRepo.save(any()) }
-    
+
     // Never called
     verify(exactly = 0) { mockRepo.delete(any()) }
-    
+
     // Alternative syntax for "never"
     verify { mockRepo wasNot Called }
 }
@@ -279,13 +279,13 @@ fun `verification modes`() {
 fun `verify with specific arguments`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
     val task = Task(id = 1, name = "Important")
-    
+
     val service = TaskService(mockRepo)
     service.saveTask(task)
-    
+
     // Verify save was called with exact task
     verify { mockRepo.save(task) }
-    
+
     // Verify with matcher
     verify { mockRepo.save(match { it.name == "Important" }) }
 }
@@ -299,10 +299,10 @@ Ensures methods are called in a specific sequence.
 @Test
 fun `verify call order`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
-    
+
     val service = TaskService(mockRepo)
     service.performBatchOperation()
-    
+
     // Verify exact order
     verifyOrder {
         mockRepo.startTransaction()
@@ -320,10 +320,10 @@ Verifies consecutive calls without gaps.
 @Test
 fun `verify consecutive calls`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
-    
+
     mockRepo.save(Task(id = 1, name = "First"))
     mockRepo.save(Task(id = 2, name = "Second"))
-    
+
     // These must be consecutive with no other calls in between
     verifySequence {
         mockRepo.save(match { it.id == 1 })
@@ -340,9 +340,9 @@ Ensures ALL calls are accounted for.
 @Test
 fun `verify all interactions`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
-    
+
     mockRepo.save(Task(id = 1, name = "Task"))
-    
+
     // Verify ALL interactions happened
     verifyAll {
         mockRepo.save(any())
@@ -364,9 +364,9 @@ fun Task.isOverdue(): Boolean = // ...
 @Test
 fun `mock extension function`() {
     val task = mockk<Task>()
-    
+
     every { task.isOverdue() } returns true
-    
+
     assertTrue(task.isOverdue())
 }
 ```
@@ -381,11 +381,11 @@ object DatabaseConfig {
 @Test
 fun `mock object singleton`() {
     mockkObject(DatabaseConfig)
-    
+
     every { DatabaseConfig.getConnectionString() } returns "test-db"
-    
+
     assertEquals("test-db", DatabaseConfig.getConnectionString())
-    
+
     // Restore original behavior
     unmockkObject(DatabaseConfig)
 }
@@ -397,12 +397,12 @@ fun `mock object singleton`() {
 @Test
 fun `mock constructor`() {
     mockkConstructor(Task::class)
-    
+
     every { anyConstructed<Task>().name } returns "Mocked Task"
-    
+
     val task = Task(id = 1, name = "Real Name")
     assertEquals("Mocked Task", task.name)
-    
+
     unmockkConstructor(Task::class)
 }
 ```
@@ -414,13 +414,13 @@ fun `mock constructor`() {
 fun `spy on real object`() {
     val realTask = Task(id = 1, name = "Real Task")
     val spy = spyk(realTask)
-    
+
     // Mock specific method while keeping others real
     every { spy.isComplete() } returns true
-    
+
     // Real behavior
     assertEquals("Real Task", spy.name)
-    
+
     // Mocked behavior
     assertTrue(spy.isComplete())
 }
@@ -438,9 +438,9 @@ fun `spy on real object`() {
 fun `notify user on task completion`() {
     val mockEmailService = mockk<EmailService>(relaxed = true)
     val service = TaskService(mockEmailService)
-    
+
     service.completeTask(taskId = 1)
-    
+
     verify { mockEmailService.send(any()) }
 }
 
@@ -449,7 +449,7 @@ fun `notify user on task completion`() {
 fun `calculate task priority`() {
     val mockTask = mockk<Task>()
     val mockCalculator = mockk<PriorityCalculator>()
-    
+
     // Too many mocks = brittle test
     every { mockTask.dueDate } returns LocalDate.now()
     every { mockCalculator.calculate(any()) } returns Priority.HIGH
@@ -463,14 +463,14 @@ fun `calculate task priority`() {
 fun `payment workflow`() {
     // Relaxed for dependencies we don't verify
     val mockRepo = mockk<TaskRepository>(relaxed = true)
-    
+
     // Strict for critical boundaries we verify
     val mockPaymentGateway = mockk<PaymentGateway>()
     every { mockPaymentGateway.charge(any()) } returns PaymentResult.Success
-    
+
     val service = PaymentService(mockRepo, mockPaymentGateway)
     service.processPayment(amount = 99.99)
-    
+
     verify { mockPaymentGateway.charge(99.99) }
 }
 ```
@@ -480,15 +480,15 @@ fun `payment workflow`() {
 ```kotlin
 class TaskServiceTest {
     private val mockRepo = mockk<TaskRepository>()
-    
+
     @BeforeEach
     fun setup() {
         clearMocks(mockRepo) // Reset all stubbing and verification
     }
-    
+
     @Test
     fun `test 1`() { /* ... */ }
-    
+
     @Test
     fun `test 2`() { /* ... */ }
 }
@@ -498,19 +498,19 @@ class TaskServiceTest {
 
 ```kotlin
 // ❌ BAD: Too specific, brittle
-verify { 
+verify {
     mockRepo.save(Task(
-        id = 1, 
-        name = "Exact name", 
+        id = 1,
+        name = "Exact name",
         priority = Priority.HIGH,
         createdAt = LocalDateTime.of(2024, 1, 1, 10, 0)
     ))
 }
 
 // ✅ GOOD: Verify what matters
-verify { 
-    mockRepo.save(match { 
-        it.name == "Exact name" && it.priority == Priority.HIGH 
+verify {
+    mockRepo.save(match {
+        it.name == "Exact name" && it.priority == Priority.HIGH
     })
 }
 ```
@@ -543,11 +543,11 @@ fun `over mocked test`() {
     val mockA = mockk<A>()
     val mockB = mockk<B>()
     val mockC = mockk<C>()
-    
+
     every { mockA.getData() } returns "data"
     every { mockB.process(any()) } returns Result.Success
     every { mockC.save(any()) } returns Unit
-    
+
     // Test tells you nothing about actual behavior
 }
 ```
@@ -559,9 +559,9 @@ fun `over mocked test`() {
 @Test
 fun `pointless mock`() {
     val mockNotifier = mockk<Notifier>(relaxed = true)
-    
+
     service.doSomething(mockNotifier)
-    
+
     // No verification = mock is pointless
     // Either verify it or use a fake
 }
@@ -575,7 +575,7 @@ fun `pointless mock`() {
 fun `fragile test`() {
     verify { mockRepo.findById(1) }
     verify { mockRepo.update(any()) }
-    
+
     // Breaks if you refactor to findAndUpdate()
 }
 
@@ -583,7 +583,7 @@ fun `fragile test`() {
 @Test
 fun `resilient test`() {
     val result = service.updateTask(1, "New name")
-    
+
     assertEquals("New name", result.name)
 }
 ```
@@ -603,17 +603,17 @@ interface AsyncTaskRepository {
 @Test
 fun `mock suspend function`() = runTest {
     val mockRepo = mockk<AsyncTaskRepository>()
-    
+
     // Stub suspend function
     coEvery { mockRepo.fetchTasks() } returns listOf(
         Task(id = 1, name = "Task 1")
     )
-    
+
     val service = TaskService(mockRepo)
     val tasks = service.getTasks()
-    
+
     assertEquals(1, tasks.size)
-    
+
     // Verify suspend function
     coVerify { mockRepo.fetchTasks() }
 }
@@ -654,48 +654,48 @@ class PaymentService(
 }
 
 class PaymentServiceTest {
-    
+
     @Test
     fun `successful payment saves transaction`() {
         // Arrange
         val mockGateway = mockk<PaymentGateway>()
         val mockRepo = mockk<TransactionRepository>(relaxed = true)
-        
-        every { 
-            mockGateway.charge(99.99, "tok_123") 
+
+        every {
+            mockGateway.charge(99.99, "tok_123")
         } returns PaymentResult.Success(transactionId = "txn_456")
-        
+
         val service = PaymentService(mockGateway, mockRepo)
-        
+
         // Act
         val status = service.processPayment(99.99, "tok_123")
-        
+
         // Assert
         assertTrue(status is PaymentStatus.Success)
         assertEquals("txn_456", (status as PaymentStatus.Success).transactionId)
-        
+
         verify(exactly = 1) { mockGateway.charge(99.99, "tok_123") }
-        verify { 
-            mockRepo.save(match { 
-                it.id == "txn_456" && it.amount == 99.99 
+        verify {
+            mockRepo.save(match {
+                it.id == "txn_456" && it.amount == 99.99
             })
         }
     }
-    
+
     @Test
     fun `failed payment does not save transaction`() {
         val mockGateway = mockk<PaymentGateway>()
         val mockRepo = mockk<TransactionRepository>(relaxed = true)
-        
-        every { 
-            mockGateway.charge(any(), any()) 
+
+        every {
+            mockGateway.charge(any(), any())
         } returns PaymentResult.Failure("Insufficient funds")
-        
+
         val service = PaymentService(mockGateway, mockRepo)
         val status = service.processPayment(99.99, "tok_123")
-        
+
         assertTrue(status is PaymentStatus.Failed)
-        
+
         // Verify repository was never called
         verify(exactly = 0) { mockRepo.save(any()) }
     }

@@ -21,7 +21,7 @@ fun `GET tasks returns 200`() = testApplication {
             get("/tasks") { call.respond(HttpStatusCode.OK) }
         }
     }
-    
+
     val response = client.get("/tasks")
     assertEquals(HttpStatusCode.OK, response.status)
 }

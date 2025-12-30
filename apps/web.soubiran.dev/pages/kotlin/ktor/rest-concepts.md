@@ -30,7 +30,7 @@ description: Understand the principles of REST and how to map them to Ktor route
 route("/api/tasks") {
     get { /* List */ }
     post { /* Create */ }
-    
+
     route("/{id}") {
         get { /* Get One */ }
         put { /* Update */ }

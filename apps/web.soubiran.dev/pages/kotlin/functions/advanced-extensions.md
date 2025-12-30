@@ -14,7 +14,7 @@ You can define extensions on generic types like `List<T>`. This allows you to ad
 
 ```kotlin
 // Only available on List<Task>
-fun List<Task>.tasksAsRows(): String = 
+fun List<Task>.tasksAsRows(): String =
     this.joinToString("\n") { it.taskAsRow() }
 ```
 

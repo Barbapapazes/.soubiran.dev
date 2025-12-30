@@ -152,7 +152,7 @@ fun process(user: User?) {
         println("User or name is null")
         return
     }
-    
+
     // Continue with non-null name
     println("Processing: $name")
 }
@@ -420,7 +420,7 @@ fun processUser(user: User?) {
 // ✅ GOOD: Early return
 fun processUser(user: User?) {
     val name = user?.name ?: return
-    
+
     // ... many lines of code with guaranteed non-null name
 }
 ```
@@ -549,18 +549,18 @@ data class User(val id: Int, val name: String, val email: String?, val address: 
 fun getUserSummary(user: User?): String {
     // Early return if user is null
     val u = user ?: return "No user provided"
-    
+
     // Get email or default
     val email = u.email ?: "no-email@example.com"
-    
+
     // Get city with safe navigation, or default
     val city = u.address?.city ?: "Unknown City"
-    
+
     // Get zip code only if address exists
     val zipInfo = u.address?.zipCode?.let { zip ->
         " (ZIP: $zip)"
     } ?: ""
-    
+
     return """
         User: ${u.name}
         Email: $email

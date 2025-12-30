@@ -21,7 +21,7 @@ To be marked with the `infix` keyword, a function must:
 infix fun Int.times(str: String) = str.repeat(this)
 
 // Usage
-val result = 2 times "Bye " 
+val result = 2 times "Bye "
 // Result: "Bye Bye "
 ```
 

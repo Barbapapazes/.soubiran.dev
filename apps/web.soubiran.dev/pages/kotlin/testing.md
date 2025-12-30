@@ -42,15 +42,15 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class CalculatorTest {
-    
+
     @Test
     fun `add should return sum of two numbers`() {
         // Arrange
         val calculator = Calculator()
-        
+
         // Act
         val result = calculator.add(2, 3)
-        
+
         // Assert
         assertEquals(5, result)
     }
@@ -63,30 +63,30 @@ class CalculatorTest {
 
 ```kotlin
 class TaskServiceTest {
-    
+
     @BeforeAll
     fun setupClass() {
         // Runs once before all tests in this class
         // Use for expensive setup (database connections)
     }
-    
+
     @BeforeEach
     fun setup() {
         // Runs before each test method
         // Use for test isolation (fresh instances)
     }
-    
+
     @Test
     fun `test case`() {
         // Individual test
     }
-    
+
     @AfterEach
     fun teardown() {
         // Runs after each test method
         // Use for cleanup
     }
-    
+
     @AfterAll
     fun teardownClass() {
         // Runs once after all tests
@@ -100,25 +100,25 @@ class TaskServiceTest {
 ```kotlin
 @DisplayName("Task Service")
 class TaskServiceTest {
-    
+
     @Nested
     @DisplayName("Task Creation")
     inner class TaskCreation {
-        
+
         @Test
         fun `creates task with valid name`() { }
-        
+
         @Test
         fun `rejects task with empty name`() { }
     }
-    
+
     @Nested
     @DisplayName("Task Completion")
     inner class TaskCompletion {
-        
+
         @Test
         fun `marks task as complete`() { }
-        
+
         @Test
         fun `prevents double completion`() { }
     }

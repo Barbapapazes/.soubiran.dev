@@ -39,10 +39,10 @@ Modules are where you declare your components.
 val appModule = module {
     // Singleton: Created once, shared everywhere
     single<TaskRepository> { InMemoryTaskRepository() }
-    
+
     // Factory: Created every time it's needed
     factory { TaskService(get()) }
-    
+
     // ViewModel (if using Android/Koin annotations)
     // viewModel { TaskViewModel(get()) }
 }
@@ -56,10 +56,10 @@ The `get()` function resolves a dependency from the container. Koin infers the t
 class TaskService(private val repository: TaskRepository)
 
 // In module:
-factory { 
+factory {
     // Koin sees TaskService needs TaskRepository
     // It looks for a definition of TaskRepository and injects it
-    TaskService(get()) 
+    TaskService(get())
 }
 ```
 
@@ -75,7 +75,7 @@ fun main() {
         // Load modules
         modules(appModule)
     }
-    
+
     // Resolve components
     val service = GlobalContext.get().get<TaskService>()
     service.doSomething()
@@ -197,8 +197,8 @@ Inject configuration values from files or environment.
 
 ```kotlin
 module {
-    single { 
-        Database(url = getProperty("db.url")) 
+    single {
+        Database(url = getProperty("db.url"))
     }
 }
 
@@ -219,10 +219,10 @@ Koin provides the `KoinTest` interface and `koin-test` library for easy testing.
 
 ```kotlin
 class TaskServiceTest : KoinTest {
-    
+
     // Lazy inject
     private val service by inject<TaskService>()
-    
+
     @Test
     fun `test service`() {
         // Start Koin for this test
@@ -232,9 +232,9 @@ class TaskServiceTest : KoinTest {
                 singleOf(::TaskService)
             })
         }
-        
+
         service.doSomething()
-        
+
         // Cleanup
         stopKoin()
     }
@@ -249,21 +249,20 @@ You can easily swap real implementations with Mocks.
 @Test
 fun `test with mockk`() {
     val mockRepo = mockk<TaskRepository>(relaxed = true)
-    
+
     startKoin {
         modules(module {
             single { mockRepo }
             singleOf(::TaskService)
         })
     }
-    
+
     val service = getKoin().get<TaskService>()
     service.createTask("Test")
-    
+
     verify { mockRepo.save(any()) }
 }
 ```
-
 
 ---
 
@@ -284,13 +283,13 @@ interface NotificationService {
 // Implementation layer
 class InMemoryTaskRepository : TaskRepository {
     private val tasks = mutableListOf<Task>()
-    
+
     override fun save(task: Task) {
         tasks.add(task)
     }
-    
+
     override fun findAll(): List<Task> = tasks.toList()
-    
+
     override fun findById(id: Int): Task? = tasks.find { it.id == id }
 }
 
@@ -311,7 +310,7 @@ class TaskService(
         notifier.send("Task created: $name")
         return task
     }
-    
+
     fun getTasks(): List<Task> = repository.findAll()
 }
 
@@ -327,12 +326,12 @@ fun main() {
     startKoin {
         modules(appModule)
     }
-    
+
     val service = getKoin().get<TaskService>()
-    
+
     service.createTask("Learn Dependency Injection")
     service.createTask("Build amazing apps")
-    
+
     println("\nAll tasks:")
     service.getTasks().forEach { task ->
         println("- ${task.name}")
@@ -370,11 +369,11 @@ module {
 module {
     // Repositories
     singleOf(::TaskRepositoryImpl) { bind<TaskRepository>() }
-    
+
     // Services depend on repositories
     singleOf(::TaskService)
     singleOf(::UserService)
-    
+
     // Controllers depend on services
     singleOf(::TaskController)
 }

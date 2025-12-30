@@ -42,7 +42,7 @@ routing {
     route("/api/tasks") {
         get { /* GET /api/tasks */ }
         post { /* POST /api/tasks */ }
-        
+
         route("/{id}") {
             get { /* GET /api/tasks/{id} */ }
             delete { /* DELETE /api/tasks/{id} */ }

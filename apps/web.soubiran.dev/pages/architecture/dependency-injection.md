@@ -23,7 +23,7 @@ Without DI, classes create their own dependencies.
 // ❌ BAD: Hard-coded dependency
 class TaskService {
     private final TaskRepository repository = new PostgresTaskRepository();
-    
+
     public List<Task> getTasks() {
         return repository.findAll();
     }
@@ -43,12 +43,12 @@ With DI, dependencies are provided (injected) into the class, usually via the co
 // ✅ GOOD: Dependency injected via constructor
 class TaskService {
     private final TaskRepository repository;
-    
+
     // Constructor Injection
     public TaskService(TaskRepository repository) {
         this.repository = repository;
     }
-    
+
     public List<Task> getTasks() {
         return repository.findAll();
     }
@@ -111,7 +111,7 @@ A Service Locator is a global registry where classes ask for their dependencies.
 ```java
 class TaskService {
     private final TaskRepository repository;
-    
+
     public TaskService() {
         // ❌ Class asks for dependency
         this.repository = ServiceLocator.get(TaskRepository.class);
@@ -135,10 +135,10 @@ DI makes testing trivial by allowing you to substitute real implementations with
 void testTaskService() {
     // Arrange: Create a fake dependency
     TaskRepository fakeRepo = new FakeTaskRepository();
-    
+
     // Inject the fake
     TaskService service = new TaskService(fakeRepo);
-    
+
     // Act & Assert
     service.createTask("Test");
     assertEquals(1, fakeRepo.count());

@@ -251,7 +251,7 @@ class HttpRequest {
     var url: String = ""
     var method: String = "GET"
     val headers = mutableMapOf<String, String>()
-    
+
     fun addHeader(key: String, value: String) {
         headers[key] = value
     }

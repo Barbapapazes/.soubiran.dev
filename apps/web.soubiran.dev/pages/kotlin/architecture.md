@@ -25,7 +25,7 @@ graph TD
     Data -->|Entity| Domain
     Data -->|External| DB[(Database)]
     Data -->|External| API[External API]
-    
+
     style Domain fill:#50c878
     style Service fill:#4a90e2
     style HTTP fill:#ffd93d
@@ -158,15 +158,15 @@ Implements data access. Depends on **Domain** interfaces.
 ```kotlin
 class InMemoryTaskRepository : TaskRepository {
     private val tasks = mutableMapOf<TaskId, Task>()
-    
+
     override fun findAll(): List<Task> = tasks.values.toList()
-    
+
     override fun findById(id: TaskId): Task? = tasks[id]
-    
+
     override fun save(task: Task) {
         tasks[task.id] = task
     }
-    
+
     override fun delete(id: TaskId): Boolean = tasks.remove(id) != null
 }
 ```
@@ -175,7 +175,7 @@ class InMemoryTaskRepository : TaskRepository {
 class PostgresTaskRepository(
     private val database: Database
 ) : TaskRepository {
-    
+
     override fun findAll(): List<Task> {
         return database.query("SELECT * FROM tasks").map { row ->
             Task(
@@ -187,13 +187,13 @@ class PostgresTaskRepository(
             )
         }
     }
-    
+
     override fun findById(id: TaskId): Task? {
         return database.query("SELECT * FROM tasks WHERE id = ?", id.value)
             .firstOrNull()
             ?.toTask()
     }
-    
+
     override fun save(task: Task) {
         database.execute(
             """
@@ -211,7 +211,7 @@ class PostgresTaskRepository(
             task.createdAt.toString()
         )
     }
-    
+
     override fun delete(id: TaskId): Boolean {
         val rowsAffected = database.execute("DELETE FROM tasks WHERE id = ?", id.value)
         return rowsAffected > 0
@@ -229,12 +229,12 @@ interface WeatherService {
 class OpenWeatherMapClient(
     private val httpClient: HttpClient
 ) : WeatherService {
-    
+
     override suspend fun getCurrentTemperature(city: String): Temperature? {
         val response = httpClient.get("https://api.openweathermap.org/data/2.5/weather") {
             parameter("q", city)
         }
-        
+
         return response.body<WeatherResponse>().temp?.let { Temperature(it) }
     }
 }
@@ -259,11 +259,11 @@ class TaskService(
     private val userRepository: UserRepository,
     private val notificationService: NotificationService
 ) {
-    
+
     fun createTask(request: CreateTaskRequest): Task {
         // Validate business rules
         require(request.name.isNotBlank()) { "Task name cannot be blank" }
-        
+
         // Create domain entity
         val task = Task(
             id = TaskId(generateId()),
@@ -272,50 +272,50 @@ class TaskService(
             status = TaskStatus.TODO,
             createdAt = Clock.System.now()
         )
-        
+
         // Persist
         taskRepository.save(task)
-        
+
         // Side effects
         notificationService.send("Task created: ${task.name}")
-        
+
         return task
     }
-    
+
     fun assignTask(taskId: TaskId, userId: UserId): Task {
         val task = taskRepository.findById(taskId)
             ?: throw NotFoundException("Task not found")
-        
+
         val user = userRepository.findById(userId)
             ?: throw NotFoundException("User not found")
-        
+
         // Business logic: assign task
         val updatedTask = task.copy(assignedTo = user.id)
         taskRepository.save(updatedTask)
-        
+
         notificationService.send("Task assigned to ${user.name}")
-        
+
         return updatedTask
     }
-    
+
     fun completeTask(taskId: TaskId): Task {
         val task = taskRepository.findById(taskId)
             ?: throw NotFoundException("Task not found")
-        
+
         // Business rule: can't complete cancelled tasks
         require(task.status != TaskStatus.CANCELLED) {
             "Cannot complete a cancelled task"
         }
-        
+
         val completedTask = task.copy(status = TaskStatus.DONE)
         taskRepository.save(completedTask)
-        
+
         return completedTask
     }
-    
+
     fun getTasks(filter: TaskFilter?): List<Task> {
         val tasks = taskRepository.findAll()
-        
+
         return when (filter?.status) {
             null -> tasks
             else -> tasks.filter { it.status == filter.status }
@@ -404,25 +404,25 @@ fun CreateTaskRequest.toDomain(): CreateTaskInput = CreateTaskInput(
 
 ```kotlin
 fun Route.taskRoutes(taskService: TaskService) {
-    
+
     route("/api/tasks") {
-        
+
         // GET /api/tasks
         get {
             val status = call.parameters["status"]
             val filter = status?.let { TaskFilter(TaskStatus.valueOf(it)) }
-            
+
             val tasks = taskService.getTasks(filter)
             val response = tasks.map { it.toResponse() }
-            
+
             call.respond(HttpStatusCode.OK, response)
         }
-        
+
         // GET /api/tasks/{id}
         get("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()?.let { TaskId(it) }
                 ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid ID")
-            
+
             try {
                 val task = taskService.getTaskById(id)
                 call.respond(HttpStatusCode.OK, task.toResponse())
@@ -430,11 +430,11 @@ fun Route.taskRoutes(taskService: TaskService) {
                 call.respond(HttpStatusCode.NotFound, e.message ?: "Not found")
             }
         }
-        
+
         // POST /api/tasks
         post {
             val request = call.receive<CreateTaskRequest>()
-            
+
             try {
                 val task = taskService.createTask(request.toDomain())
                 call.respond(HttpStatusCode.Created, task.toResponse())
@@ -442,14 +442,14 @@ fun Route.taskRoutes(taskService: TaskService) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             }
         }
-        
+
         // PUT /api/tasks/{id}
         put("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()?.let { TaskId(it) }
                 ?: return@put call.respond(HttpStatusCode.BadRequest)
-            
+
             val request = call.receive<UpdateTaskRequest>()
-            
+
             try {
                 val task = taskService.updateTask(id, request.toDomain())
                 call.respond(HttpStatusCode.OK, task.toResponse())
@@ -457,14 +457,14 @@ fun Route.taskRoutes(taskService: TaskService) {
                 call.respond(HttpStatusCode.NotFound)
             }
         }
-        
+
         // DELETE /api/tasks/{id}
         delete("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()?.let { TaskId(it) }
                 ?: return@delete call.respond(HttpStatusCode.BadRequest)
-            
+
             val deleted = taskService.deleteTask(id)
-            
+
             if (deleted) {
                 call.respond(HttpStatusCode.NoContent)
             } else {
@@ -491,28 +491,28 @@ graph TB
         Controller[Task Controller]
         DTO[DTOs]
     end
-    
+
     subgraph Service Layer
         TaskService[Task Service]
         UserService[User Service]
     end
-    
+
     subgraph Data Layer
         TaskRepo[Task Repository Impl]
         UserRepo[User Repository Impl]
     end
-    
+
     subgraph Domain Layer
         Entity[Task Entity]
         Interface[Repository Interface]
     end
-    
+
     Controller -->|CreateTaskRequest| TaskService
     TaskService -->|Task| Entity
     TaskService --> Interface
     TaskRepo -->|implements| Interface
     TaskRepo -->|reads/writes| Entity
-    
+
     style Entity fill:#50c878
     style Interface fill:#50c878
     style TaskService fill:#4a90e2
@@ -552,9 +552,9 @@ interface TaskRepository {
 
 class InMemoryTaskRepository : TaskRepository {
     private val tasks = mutableMapOf<TaskId, Task>()
-    
+
     override fun findAll(): List<Task> = tasks.values.toList()
-    
+
     override fun save(task: Task) {
         tasks[task.id] = task
     }
@@ -568,7 +568,7 @@ data class CreateTaskInput(val name: String, val priority: Priority)
 
 class TaskService(private val repository: TaskRepository) {
     private var currentId = 1
-    
+
     fun createTask(input: CreateTaskInput): Task {
         val task = Task(
             id = TaskId(currentId++),
@@ -579,7 +579,7 @@ class TaskService(private val repository: TaskRepository) {
         repository.save(task)
         return task
     }
-    
+
     fun getTasks(): List<Task> = repository.findAll()
 }
 
@@ -605,7 +605,7 @@ fun Route.taskRoutes(taskService: TaskService) {
             val tasks = taskService.getTasks()
             call.respond(tasks.map { it.toResponse() })
         }
-        
+
         post {
             val request = call.receive<CreateTaskRequest>()
             val input = CreateTaskInput(
@@ -634,9 +634,9 @@ fun Application.module() {
     startKoin {
         modules(dataModule, serviceModule)
     }
-    
+
     install(ContentNegotiation) { json() }
-    
+
     routing {
         taskRoutes(get())
     }
@@ -749,9 +749,9 @@ Use fakes or test databases.
 fun `repository saves and retrieves task`() {
     val repo = InMemoryTaskRepository()
     val task = Task(TaskId(1), "Test", Priority.LOW, TaskStatus.TODO)
-    
+
     repo.save(task)
-    
+
     assertEquals(task, repo.findById(TaskId(1)))
 }
 ```
@@ -766,9 +766,9 @@ fun `create task saves to repository`() {
     val fakeRepo = FakeTaskRepository()
     val mockNotifier = mockk<NotificationService>(relaxed = true)
     val service = TaskService(fakeRepo, mockNotifier)
-    
+
     service.createTask(CreateTaskInput("Test", Priority.HIGH))
-    
+
     assertEquals(1, fakeRepo.findAll().size)
     verify { mockNotifier.send(any()) }
 }
@@ -785,7 +785,7 @@ fun `POST tasks returns 201`() = testApplication {
         contentType(ContentType.Application.Json)
         setBody("""{"name": "Test", "priority": "HIGH"}""")
     }
-    
+
     assertEquals(HttpStatusCode.Created, response.status)
 }
 ```

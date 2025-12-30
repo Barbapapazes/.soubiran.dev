@@ -36,10 +36,10 @@ test_addItem_increasesCartSize() {
     // Arrange
     cart = ShoppingCart()
     item = Item("Product", 10.0)
-    
+
     // Act
     cart.add(item)
-    
+
     // Assert
     assert cart.size() == 1
 }
@@ -74,11 +74,11 @@ test_checkout_with_coupon() {
     cart = ShoppingCart()
     cart.add(Item("Product", 100.0))
     coupon = Coupon("SAVE20", 0.20)
-    
+
     // When the user applies the coupon and checks out
     cart.applyCoupon(coupon)
     total = cart.checkout()
-    
+
     // Then the total should be $80
     assert total == 80.0
 }
@@ -103,7 +103,7 @@ test_checkout_with_coupon() {
 | **Readability** | Technical precision | Natural language |
 | **Documentation** | Implementation details | Business rules |
 
-**Practical Rule**: 
+**Practical Rule**:
 - Use **AAA** for unit tests focused on code logic
 - Use **Given-When-Then** for integration/E2E tests focused on user behavior
 
@@ -135,9 +135,9 @@ Test Double (Generic Term)
 test_login_requires_credentials() {
     logger = DummyLogger()  // Never called in this test
     authService = AuthService(logger)
-    
+
     result = authService.login("user", "pass")
-    
+
     assert result.success == true
 }
 ```
@@ -155,9 +155,9 @@ test_login_requires_credentials() {
 test_greeting_depends_on_time() {
     clock = StubClock()
     clock.currentHour = 14  // Always 2 PM
-    
+
     greeter = Greeter(clock)
-    
+
     assert greeter.greet() == "Good afternoon!"
 }
 ```
@@ -179,11 +179,11 @@ test_greeting_depends_on_time() {
 ```
 class FakeUserRepository implements UserRepository {
     users = []
-    
+
     save(user) {
         users.append(user)
     }
-    
+
     findById(id) {
         return users.find(u => u.id == id)
     }
@@ -192,9 +192,9 @@ class FakeUserRepository implements UserRepository {
 test_service_creates_user() {
     repo = FakeUserRepository()
     service = UserService(repo)
-    
+
     service.createUser("Alice", "alice@example.com")
-    
+
     assert repo.users.length == 1
     assert repo.users[0].name == "Alice"
 }
@@ -222,7 +222,7 @@ test_service_creates_user() {
 ```
 class SpyEmailService extends RealEmailService {
     sentEmails = []
-    
+
     send(email) {
         sentEmails.append(email)
         super.send(email)  // Delegate to real implementation
@@ -232,9 +232,9 @@ class SpyEmailService extends RealEmailService {
 test_password_reset_sends_email() {
     emailService = SpyEmailService()
     authService = AuthService(emailService)
-    
+
     authService.resetPassword("user@example.com")
-    
+
     assert emailService.sentEmails.length == 1
     assert "Reset Password" in emailService.sentEmails[0].subject
 }
@@ -259,10 +259,10 @@ test_checkout_charges_payment() {
     paymentGateway = Mock(PaymentGateway)
     paymentGateway.expect_call("charge", amount=99.99)
     paymentGateway.will_return(PaymentResult.Success)
-    
+
     orderService = OrderService(paymentGateway)
     orderService.placeOrder(Order(total=99.99))
-    
+
     paymentGateway.verify_expectations()  // Fails if charge() not called
 }
 ```
@@ -318,16 +318,16 @@ This is the most common confusion in testing. Here's how to decide:
 test_process_order() {
     mockCart = Mock(ShoppingCart)
     mockCart.expect_call("getTotal").returns(100.0)
-    
+
     mockPricer = Mock(PriceCalculator)
     mockPricer.expect_call("calculate").returns(100.0)
-    
+
     mockPayment = Mock(PaymentGateway)
     mockPayment.expect_call("charge", 100.0).returns(Success)
-    
+
     service = OrderService(mockCart, mockPricer, mockPayment)
     service.process()
-    
+
     // All mocks verify their expectations
 }
 // Problem: Test is fragile, tells you nothing about actual behavior
@@ -336,13 +336,13 @@ test_process_order() {
 test_process_order() {
     fakeCart = FakeShoppingCart()
     fakeCart.add(Item("Product", 100.0))
-    
+
     mockPayment = Mock(PaymentGateway)
     mockPayment.expect_call("charge", 100.0).returns(Success)
-    
+
     service = OrderService(fakeCart, RealPriceCalculator(), mockPayment)
     result = service.process()
-    
+
     assert result.success == true
     assert result.total == 100.0
     mockPayment.verify()
@@ -498,9 +498,9 @@ test_expired_coupon_is_rejected()
 test_service_calls_repository() {
     mock = Mock(Repository)
     service = Service(mock)
-    
+
     service.process()
-    
+
     verify mock.findAll() was called
     verify mock.save() was called
 }
@@ -510,9 +510,9 @@ test_service_processes_items() {
     repo = FakeRepository()
     repo.add(Item("Test"))
     service = Service(repo)
-    
+
     result = service.process()
-    
+
     assert result.processedCount == 1
 }
 ```
@@ -526,9 +526,9 @@ test_with_too_many_mocks() {
     mock2 = Mock(B)
     mock3 = Mock(C)
     mock4 = Mock(D)
-    
+
     // 50 lines of mock setup
-    
+
     // Test tells you nothing
 }
 
@@ -537,7 +537,7 @@ test_with_appropriate_mocks() {
     fakeRepo = FakeRepository()
     realService = RealBusinessLogic()
     mockExternalApi = Mock(ExternalAPI)
-    
+
     // Test actual behavior
 }
 ```

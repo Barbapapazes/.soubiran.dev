@@ -37,7 +37,7 @@ Query parameters (e.g., `?status=active`) are also accessed via `call.parameters
 get("/tasks") {
     val status = call.parameters["status"]
     val limit = call.parameters["limit"]?.toIntOrNull() ?: 10
-    
+
     call.respondText("Status: $status, Limit: $limit")
 }
 ```

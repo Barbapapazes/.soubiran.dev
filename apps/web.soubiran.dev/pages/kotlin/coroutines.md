@@ -53,7 +53,7 @@ Returns a `Deferred<T>`. Use when you need a result or want parallel execution.
 scope.launch {
     val deferred1 = async { fetchData1() }
     val deferred2 = async { fetchData2() }
-    
+
     // Wait for both
     val result = deferred1.await() + deferred2.await()
 }
@@ -108,7 +108,7 @@ Creates a new scope. If one child fails, all are cancelled.
 suspend fun loadData() = coroutineScope {
     val user = async { api.getUser() }
     val posts = async { api.getPosts() }
-    
+
     UserWithPosts(user.await(), posts.await())
 }
 ```
@@ -156,7 +156,7 @@ scope.launch {
 class ViewModel {
     private val _state = MutableStateFlow(InitialState)
     val state: StateFlow<State> = _state.asStateFlow()
-    
+
     fun update() {
         _state.value = NewState
     }

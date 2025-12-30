@@ -15,7 +15,7 @@ install(StatusPages) {
     exception<Throwable> { call, cause ->
         call.respond(HttpStatusCode.InternalServerError, "Error: ${cause.message}")
     }
-    
+
     exception<NotFoundException> { call, cause ->
         call.respond(HttpStatusCode.NotFound, "Resource not found")
     }

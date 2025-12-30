@@ -30,7 +30,7 @@ data class CreateTaskRequest(val name: String)
 object TaskRepository {
     private val tasks = mutableListOf<Task>()
     private var currentId = 1
-    
+
     fun findAll(): List<Task> = tasks.toList()
     fun findById(id: Int): Task? = tasks.find { it.id == id }
     fun create(name: String): Task {
@@ -44,37 +44,37 @@ object TaskRepository {
 fun main() {
     embeddedServer(Netty, port = 8080) {
         install(ContentNegotiation) { json() }
-        
+
         routing {
             route("/api/tasks") {
                 // GET /api/tasks
                 get {
                     call.respond(TaskRepository.findAll())
                 }
-                
+
                 // GET /api/tasks/{id}
                 get("/{id}") {
                     val id = call.parameters["id"]?.toIntOrNull()
                         ?: return@get call.respond(HttpStatusCode.BadRequest)
-                    
+
                     val task = TaskRepository.findById(id)
                         ?: return@get call.respond(HttpStatusCode.NotFound)
-                    
+
                     call.respond(task)
                 }
-                
+
                 // POST /api/tasks
                 post {
                     val request = call.receive<CreateTaskRequest>()
                     val task = TaskRepository.create(request.name)
                     call.respond(HttpStatusCode.Created, task)
                 }
-                
+
                 // DELETE /api/tasks/{id}
                 delete("/{id}") {
                     val id = call.parameters["id"]?.toIntOrNull()
                         ?: return@delete call.respond(HttpStatusCode.BadRequest)
-                    
+
                     if (TaskRepository.delete(id)) {
                         call.respond(HttpStatusCode.NoContent)
                     } else {

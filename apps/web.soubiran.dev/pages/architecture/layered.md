@@ -67,7 +67,7 @@ Entity User:
     - email: Email
     - name: String
     - createdAt: DateTime
-    
+
     method isActive(): Boolean
         return accountStatus == ACTIVE
 ```
@@ -79,7 +79,7 @@ Immutable objects with validation.
 ```
 ValueObject Email:
     - value: String
-    
+
     constructor(value: String):
         require value.contains("@")
         this.value = value
@@ -118,12 +118,12 @@ class UserService:
         userRepository: UserRepository,
         emailService: EmailService
     )
-    
+
     method registerUser(email: Email, name: String): User
         // Validate business rules
         if userRepository.existsByEmail(email):
             throw EmailAlreadyExistsError()
-        
+
         // Create entity
         user = User(
             id: generateId(),
@@ -131,13 +131,13 @@ class UserService:
             name: name,
             createdAt: now()
         )
-        
+
         // Persist
         userRepository.save(user)
-        
+
         // Side effects
         emailService.sendWelcome(user.email)
-        
+
         return user
 ```
 
@@ -168,11 +168,11 @@ Implements technical concerns and external integrations.
 ```
 class PostgresUserRepository implements UserRepository:
     constructor(database: Database)
-    
+
     method findById(id: UserId): User?
         row = database.query("SELECT * FROM users WHERE id = ?", id)
         return row ? mapToUser(row) : null
-    
+
     method save(user: User): void
         database.execute("""
             INSERT INTO users (id, email, name, created_at)
@@ -209,29 +209,29 @@ Handles user interaction and data transfer.
 ```
 class UserController:
     constructor(userService: UserService)
-    
+
     method registerEndpoint(request: HttpRequest): HttpResponse
         // Extract data from request
         dto = parseBody(request, RegisterUserDTO)
-        
+
         // Validate format
         if not dto.email or not dto.name:
             return HttpResponse(400, "Missing fields")
-        
+
         // Call service
         try:
             user = userService.registerUser(
                 Email(dto.email),
                 dto.name
             )
-            
+
             // Map to response
             response = UserResponseDTO(
                 id: user.id.value,
                 email: user.email.value,
                 name: user.name
             )
-            
+
             return HttpResponse(201, response)
         catch EmailAlreadyExistsError:
             return HttpResponse(409, "Email already exists")
@@ -332,9 +332,9 @@ test_register_user_sends_welcome_email():
     fakeRepo = FakeUserRepository()
     mockEmail = Mock(EmailService)
     service = UserService(fakeRepo, mockEmail)
-    
+
     service.registerUser(Email("user@example.com"), "Alice")
-    
+
     verify mockEmail.sendWelcome was called
 ```
 
@@ -347,10 +347,10 @@ test_repository_saves_and_retrieves():
     testDb = InMemoryDatabase()
     repo = PostgresUserRepository(testDb)
     user = User(...)
-    
+
     repo.save(user)
     retrieved = repo.findById(user.id)
-    
+
     assert retrieved == user
 ```
 
@@ -364,7 +364,7 @@ test_register_endpoint_returns_201():
         "email": "user@example.com",
         "name": "Alice"
     })
-    
+
     assert response.status == 201
     assert response.body.email == "user@example.com"
 ```
