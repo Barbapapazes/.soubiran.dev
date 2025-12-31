@@ -119,7 +119,7 @@ defineSlots<EcosystemNodeSlots>()
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
-const isCloudflare = (name: EcosystemName) => name.includes('Cloudflare')
+const isCloudflare = (name: EcosystemName) => name.includes('Cloudflare') || name.includes('Wrangler')
 const isGithub = (name: EcosystemName) => name.includes('GitHub')
 const isSoubiran = (name: EcosystemName) => name.includes('soubiran.dev')
 const isNuxt = (name: EcosystemName) => name.includes('Nuxt')
@@ -127,6 +127,7 @@ const isNuxt = (name: EcosystemName) => name.includes('Nuxt')
 function getTypeIcon(name: EcosystemName, type?: EcosystemType): string | object | undefined {
   if (isCloudflare(name)) {
     switch (type) {
+      case 'stack':
       case 'deployment':
       case 'build':
         return 'cloudflare:workers'
