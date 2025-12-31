@@ -1,7 +1,6 @@
 <script lang="ts">
 import type { NodeProps } from '@vue-flow/core'
 import type { DataflowStep } from '@/types/dataflow'
-import { Handle } from '@vue-flow/core'
 import arrowRight from '~icons/ph/arrow-right'
 import files from '~icons/ph/files-duotone'
 import globeSimple from '~icons/ph/globe-simple-duotone'
@@ -46,8 +45,6 @@ const props = defineProps<DataflowNodeProps>()
 defineEmits<DataflowNodeEmits>()
 defineSlots<DataflowNodeSlots>()
 
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
-
 function getIcon(icon?: string) {
   switch (icon) {
     case 'user':
@@ -83,29 +80,21 @@ const ui = computed(() => dataflowNode({
 </script>
 
 <template>
-  <div>
-    <DefineTemplate>
-      <div :class="ui.base({ class: [props.ui?.base, props.class] })">
-        <UIcon :name="icon" :class="ui.icon({ class: props.ui?.icon })" />
-        <span :class="ui.label({ class: props.ui?.label })">{{ props.data.label }}</span>
+  <BaseFlowNode
+    v-bind="props"
+    :class="ui.base({ class: [props.ui?.base] })"
+  >
+    <template #content>
+      <UIcon :name="icon" :class="ui.icon({ class: props.ui?.icon })" />
+      <span :class="ui.label({ class: props.ui?.label })">{{ props.data.label }}</span>
+    </template>
 
-        <Handle type="target" :position="props.targetPosition" style="opacity: 0" />
-        <Handle type="source" :position="props.sourcePosition" style="opacity: 0" />
+    <template v-if="props.data.description" #popover>
+      <div class="p-3 max-w-xs">
+        <p class="text-sm">
+          {{ props.data.description }}
+        </p>
       </div>
-    </DefineTemplate>
-
-    <UPopover v-if="props.data.description" mode="hover" arrow>
-      <ReuseTemplate />
-
-      <template #content>
-        <div class="p-3 max-w-xs">
-          <p class="text-sm">
-            {{ props.data.description }}
-          </p>
-        </div>
-      </template>
-    </UPopover>
-
-    <ReuseTemplate v-else />
-  </div>
+    </template>
+  </BaseFlowNode>
 </template>

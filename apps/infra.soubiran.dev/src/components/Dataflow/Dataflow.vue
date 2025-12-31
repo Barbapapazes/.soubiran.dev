@@ -1,12 +1,10 @@
 <script lang="ts">
 import type { Edge, Node } from '@vue-flow/core'
-import type { Dataflow } from '@/types/dataflow'
-import { Background } from '@vue-flow/background'
-import { useVueFlow, VueFlow } from '@vue-flow/core'
+import type { Dataflow, DataflowStep } from '@/types/dataflow'
 
 const dataflow = tv({
   slots: {
-    root: 'relative w-full h-50 bg-white dark:bg-black rounded-lg',
+    root: 'h-50 rounded-lg',
     base: '',
   },
 })
@@ -25,9 +23,7 @@ const props = defineProps<DataflowProps>()
 defineEmits<DataflowEmits>()
 defineSlots<DataflowSlots>()
 
-const { fitView } = useVueFlow()
-
-const nodes = ref<Node[]>(
+const nodes = ref<Node<DataflowStep>[]>(
   props.steps.map(step => ({
     id: step.id,
     type: 'dataflow',
@@ -49,42 +45,19 @@ const edges = ref<Edge[]>(
   }),
 )
 
-const { layout } = useLayout()
-onMounted(() => {
-  nextTick(() => {
-    nodes.value = layout(nodes.value, edges.value, 'LR')
-    fitView({ minZoom: 1 })
-  })
-})
-
 const ui = computed(() => dataflow({ class: props.class, ...props.ui }))
 </script>
 
 <template>
-  <div :class="ui.root({ class: props.ui?.root })">
-    <VueFlow
-      fit-view-on-init
-      :default-viewport="{ zoom: 1 }"
-      :nodes-draggable="false"
-      :min-zoom="0.5"
-      :max-zoom="1"
-      :nodes="nodes"
-      :edges="edges"
-      :class="ui.base({ class: [props.ui?.base, props.class] })"
-    >
-      <template #node-dataflow="nodeProps">
-        <DataflowNode v-bind="nodeProps" />
-      </template>
-
-      <Background />
-    </VueFlow>
-  </div>
+  <BaseFlow
+    direction="LR"
+    :nodes="nodes"
+    :edges="edges"
+    :class="ui.base({ class: [props.ui?.base, props.class] })"
+    :ui="{ root: ui.root({ class: props.ui?.root }) }"
+  >
+    <template #node-dataflow="nodeProps">
+      <DataflowNode v-bind="nodeProps" />
+    </template>
+  </BaseFlow>
 </template>
-
-<style scoped>
-@import '@vue-flow/core/dist/style.css';
-
-.vue-flow__edge-path {
-  stroke: var(--ui-border-muted);
-}
-</style>

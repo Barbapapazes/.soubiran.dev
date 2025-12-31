@@ -1,7 +1,6 @@
 <script lang="ts">
 import type { NodeProps } from '@vue-flow/core'
 import type { EcosystemItem, EcosystemName, EcosystemType } from '@/types/ecosystem'
-import { Handle } from '@vue-flow/core'
 import { RouterLink } from 'vue-router'
 import nuxt from '~icons/logos/nuxt-icon'
 import slidev from '~icons/logos/slidev'
@@ -17,7 +16,7 @@ import sqlite from '~icons/simple-icons/sqlite'
 
 const ecosystemNode = tv({
   slots: {
-    base: 'border border-dashed rounded-full flex justify-center',
+    base: 'border border-dashed rounded-full flex flex-row justify-center',
     typeIcon: 'size-4',
     type: 'pl-3 pr-2 py-1 rounded-l-full text-xs font-mono flex items-center gap-1',
     name: 'py-1 text-sm',
@@ -116,8 +115,6 @@ export interface EcosystemNodeSlots {}
 const props = defineProps<EcosystemNodeProps>()
 defineEmits<EcosystemNodeEmits>()
 defineSlots<EcosystemNodeSlots>()
-
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
 const isCloudflare = (name: EcosystemName) => name.includes('Cloudflare') || name.includes('Wrangler')
 const isGithub = (name: EcosystemName) => name.includes('GitHub')
@@ -236,9 +233,15 @@ const ui = computed(() => ecosystemNode({
 </script>
 
 <template>
-  <div>
-    <DefineTemplate>
-      <component :is="isWebsiteOrPlatform ? RouterLink : 'div'" :class="ui.base({ class: [props.ui?.base, props.class] })" :to="isWebsiteOrPlatform ? `${props.data.type}s/${props.data.name.replace(/\./g, '-')}` : undefined">
+  <BaseFlowNode
+    v-bind="props"
+    reverse-handle-positions
+  >
+    <template #content>
+      <component
+        :is="isWebsiteOrPlatform ? RouterLink : 'div'" :to="isWebsiteOrPlatform ? `${props.data.type}s/${props.data.name.replace(/\./g, '-')}` : undefined"
+        :class="ui.base({ class: [props.ui?.base] })"
+      >
         <span v-if="props.data.type" :class="ui.type({ class: props.ui?.type })">
           <UIcon v-if="icon" :name="icon" :class="ui.typeIcon({ class: props.ui?.typeIcon })" />
           <img v-else-if="logo" :src="logo" :alt="props.data.name" :class="ui.typeIcon({ class: props.ui?.typeIcon })">
@@ -246,28 +249,19 @@ const ui = computed(() => ecosystemNode({
         </span>
 
         <span :class="ui.name({ class: props.ui?.name })">{{ props.data.name }}</span>
-
-        <Handle type="target" :position="props.sourcePosition" style="opacity: 0" />
-        <Handle type="source" :position="props.targetPosition" style="opacity: 0" />
       </component>
-    </DefineTemplate>
+    </template>
 
-    <UPopover v-if="props.data.description" mode="hover" arrow>
-      <ReuseTemplate />
-
-      <template #content>
-        <UPageCard
-          :description="props.data.description"
-          :to="props.data.href"
-          :ui="{
-            container: 'p-2 sm:p-2',
-            title: 'text-sm',
-            description: 'text-sm',
-          }"
-        />
-      </template>
-    </UPopover>
-
-    <ReuseTemplate v-else />
-  </div>
+    <template v-if="props.data.description" #popover>
+      <UPageCard
+        :description="props.data.description"
+        :to="props.data.href"
+        :ui="{
+          container: 'p-2 sm:p-2',
+          title: 'text-sm',
+          description: 'text-sm',
+        }"
+      />
+    </template>
+  </BaseFlowNode>
 </template>

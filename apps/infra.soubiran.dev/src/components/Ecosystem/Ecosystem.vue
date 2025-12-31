@@ -1,13 +1,11 @@
 <script lang="ts">
 import type { Edge, Node } from '@vue-flow/core'
 import type { Ecosystem, EcosystemItem } from '@/types/ecosystem'
-import { Background } from '@vue-flow/background'
-import { useVueFlow, VueFlow } from '@vue-flow/core'
 import { kebabCase } from 'scule'
 
 const ecosystem = tv({
   slots: {
-    root: 'relative w-full h-140 bg-white dark:bg-black',
+    root: 'h-140',
     base: '',
   },
 })
@@ -28,8 +26,6 @@ const props = defineProps<EcosystemProps>()
 defineEmits<EcosystemEmits>()
 defineSlots<EcosystemSlots>()
 
-const { fitView } = useVueFlow()
-
 const initialNode = {
   id: kebabCase(props.name),
   type: 'ecosystem',
@@ -41,18 +37,10 @@ const initialNode = {
 
 const { nodes: initialNodes, edges: initialEdges } = createNodesEdges(initialNode)
 
-const nodes = ref<Node[]>(initialNodes)
+const nodes = ref<Node<EcosystemItem>[]>(initialNodes)
 const edges = ref<Edge[]>(initialEdges)
 
-const { layout } = useLayout()
-onMounted(() => {
-  nextTick(() => {
-    nodes.value = layout(nodes.value, edges.value)
-    fitView({ minZoom: 1 })
-  })
-})
-
-function createNodesEdges(initialNode: Node) {
+function createNodesEdges(initialNode: Node<EcosystemItem>) {
   const { nodes, edges } = ecosystemToNodesEdges(props.ecosystem, initialNode)
 
   return {
@@ -61,8 +49,8 @@ function createNodesEdges(initialNode: Node) {
   }
 }
 
-function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
-  const nodes: Node[] = []
+function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node<EcosystemItem>) {
+  const nodes: Node<EcosystemItem>[] = []
   const edges: Edge[] = []
 
   for (const item of ecosystem) {
@@ -73,7 +61,7 @@ function ecosystemToNodesEdges(ecosystem: Ecosystem, parentNode?: Node) {
       type: 'ecosystem',
       position: { x: 0, y: 0 },
       data: item,
-    } satisfies Node
+    } satisfies Node<EcosystemItem>
 
     nodes.push(currentNode)
 
@@ -111,33 +99,20 @@ const ui = computed(() => ecosystem())
 </script>
 
 <template>
-  <div :class="ui.root({ class: props.ui?.root })">
-    <div v-if="props.inline" class="z-10 absolute top-0 h-4 inset-x-0 bg-linear-to-b from-(--ui-bg) to-(--ui-bg)/0" />
-    <div v-if="props.inline" class="z-10 absolute bottom-0 h-4 inset-x-0 bg-linear-to-t from-(--ui-bg) to-(--ui-bg)/0" />
-    <VueFlow
-      fit-view-on-init
-      :default-viewport="{ zoom: 1 }"
-      :nodes-draggable="false"
-      :min-zoom="0.5"
-      :max-zoom="1"
-      :nodes="nodes"
-      :edges="edges"
-      :class="ui.base({ class: [props.ui?.base, props.class] })"
-    >
-      <template #node-ecosystem="defaultNodeProps">
-        <EcosystemNode v-bind="defaultNodeProps" />
-      </template>
+  <BaseFlow
+    direction="RL"
+    :nodes="nodes"
+    :edges="edges"
+    :class="ui.base({ class: [props.ui?.base, props.class] })"
+    :ui="{ root: ui.root({ class: props.ui?.root }) }"
+  >
+    <template v-if="props.inline" #overlays>
+      <div class="z-10 absolute top-0 h-4 inset-x-0 bg-linear-to-b from-(--ui-bg) to-(--ui-bg)/0" />
+      <div class="z-10 absolute bottom-0 h-4 inset-x-0 bg-linear-to-t from-(--ui-bg) to-(--ui-bg)/0" />
+    </template>
 
-      <Background />
-    </VueFlow>
-    <div />
-  </div>
+    <template #node-ecosystem="nodeProps">
+      <EcosystemNode v-bind="nodeProps" />
+    </template>
+  </BaseFlow>
 </template>
-
-<style>
-@import '@vue-flow/core/dist/style.css';
-
-.vue-flow__edge-path {
-  stroke: var(--ui-border-muted);
-}
-</style>
