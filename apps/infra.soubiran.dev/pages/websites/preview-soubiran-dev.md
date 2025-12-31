@@ -1,7 +1,7 @@
 ---
 id: a7aad970-5ce4-4222-9f32-e23c7712d393
 title: preview.soubiran.dev
-description: A website to give my sponsors an early access to upcoming writings. Built statically with Vite but protected behind a Cloudflare Worker.
+description: A website to give my sponsors early access to upcoming writings. Built statically with Vite but protected behind a Cloudflare Worker.
 url: https://preview.soubiran.dev
 repository: https://github.com/barbapapazes/preview.soubiran.dev
 ecosystem:
@@ -41,27 +41,28 @@ ecosystem:
     description: Provide real-time viewer count.
 ---
 
-The website [preview.soubiran.dev](https://preview.soubiran.dev) is dedicated to [my sponsors](https://soubiran.dev/sponsorship). I use it to share my upcoming writings before they are published publicly on my main website [soubiran.dev](https://soubiran.dev) as it's one of the perks for sponsoring me.
+The website [preview.soubiran.dev](https://preview.soubiran.dev) is dedicated to [my sponsors](https://soubiran.dev/sponsorship). I use it to share my **upcoming writings** before they are published publicly on my main website, [soubiran.dev](/websites/soubiran-dev), as it's one of the perks of sponsoring me. I also use it to centralize everything related to my **GitHub sponsorships**, such as announcements, exclusive articles, and more.
 
-As the website replicates features from [soubiran.dev](https://soubiran.dev), sponsors will be able to comments and react to articles. Those interactions will be available publicly once the article is published on the main website. This is possible thanks to the unique identifier contained in the frontmatter of each article.
+As the website replicates features from [soubiran.dev](/websites/soubiran-dev), sponsors will be able to comment on and react to articles. These interactions will become available publicly once the article is published on the main website. This is possible thanks to the **unique identifier** contained in the frontmatter of each article.
 
-<!--
+<Dataflow :steps="[
+  { id: 'user', label: 'User Agent', description: 'Browser or client requesting the website', icon: 'user' },
+  { id: 'domain', label: 'preview.soubiran.dev', description: 'Domain registered with Cloudflare', icon: 'domain' },
+  { id: 'worker', label: 'Cloudflare Worker', description: 'Authenticates via GitHub OAuth and checks sponsorship status', icon: 'worker' },
+  { id: 'assets', label: 'Static Assets', description: 'Vite-built website files served if authenticated', icon: 'assets' }
+]" />
 
-illustration of the architecture (components + data flow) (use ai to create a generic diagram components with vue flow)
+## Authentication with Cloudflare Workers
 
- -->
+Before developing this website, I used a script that copied content from pull requests in the soubiran.dev repository to discussions in the [Barbapapazes-Sponsors GitHub organization](https://github.com/Barbapapazes-Sponsors). Despite being automated, this process wasn't optimal; the content was simply placed in a code block, making it hard to read and navigate, and images were not rendered.
 
-## Development
+To provide a better experience, I wanted a dedicated website similar to [soubiran.dev](/websites/soubiran-dev) in terms of both design and features. The only difference is that it is only accessible to my sponsors. I've extracted the core of [soubiran.dev](/websites/soubiran-dev) into two dedicated packages, making it straightforward to build a **clone**.
 
-Until the development of this website, I used a script that copy content from pull requests to soubiran.dev repository to conversation in the [Barbapapazes-Sponsors GitHub organization](https://github.com/Barbapapazes-Sponsors). Despite being automated, this process wasn't optimal as the content was simply put into a code block, making it hard to read, navigate, and images were not rendered.
+However, [soubiran.dev](/websites/soubiran-dev) is a **statically generated website (SSG)**, which means it's not possible to protect it with traditional server-side authentication.
 
-In order to provide a better experience, I want a dedicated website, similar to [soubiran.ev](https://soubiran.dev) in terms of both design and features, but only accessible to my sponsors. I've extracted the core of [soubiran.dev](https://soubiran.dev) into two dedicated packages so building a clone of it is straightforward. Currently, the website is built with [Vite](https://vite.dev), a bunch of plugins, and [Nuxt UI](https://ui.nuxt.com). For the authentication part, I use [Better Auth](https://www.better-auth.com/) which provides an easy way to authenticate users via cookies without any backend.
+Since I use **Cloudflare** as my main infrastructure provider, I decided to use a **Cloudflare Worker** in front of the static website to handle **authentication**. It is possible to make the [Worker run first](https://developers.cloudflare.com/workers/static-assets/binding/#run_worker_first), even before serving static assets. This way, the Worker can authenticate the user and serve the static assets only if the user is authorized.
 
-However, [soubiran.dev](https://soubiran.dev) is a statically generated website, which means that it's not possible to protect it with authentication.
-
-As I use Cloudflare as my main infrastructure provider, I decided to use a worker in front of the static website to handle authentication. Indeed, it's possible to make [worker runs first](https://developers.cloudflare.com/workers/static-assets/binding/#run_worker_first), even before serving static assets. That way, the worker can authenticate the user and serve the static assets only if the user is authorized.
-
-At the end, the worker code is quite simple at it redirects anonymous users to GitHub for authentication, checks if the authenticated user is a sponsor, and serves the static assets if everything is fine.
+Ultimately, the Worker code is quite simple: it redirects anonymous users to **GitHub OAuth** for authentication, checks if the authenticated user is a sponsor, and serves the static assets if everything is correct.
 
 ```ts
 export default {
@@ -89,9 +90,11 @@ export default {
 }
 ```
 
-## Deployment
+Within the "try to give access" function, a **circuit breaker** is implemented to automatically stop checking for sponsorship if the **GitHub API** is down or rate-limited, ensuring the website remains resilient.
 
-Both the worker and the Vite code are contained in the same repository using a [pnpm monorepo](https://pnpm.io/workspaces). The build output of Vite is used as the static assets for the worker, configured using `wrangler.jsonc`.
+## Automated Deployment Pipeline
+
+Both the Worker and the **Vite** code are contained in the same repository using a [pnpm monorepo](https://pnpm.io/workspaces). The Vite build output is used as the static assets for the Worker, configured via `wrangler.jsonc`.
 
 ```jsonc
 {
@@ -105,19 +108,19 @@ Both the worker and the Vite code are contained in the same repository using a [
 }
 ```
 
-The build and the deployment are fully automated using Cloudflare Build. First, the Vite project is build using `vite build`, and then, the worker is build using `wrangler publish`. Finally, the worker can be deployed to Cloudflare Workers platform and thanks to the configuration, the static assets are also deployed.
+The build and deployment are fully automated using **Cloudflare Build**. First, the Vite project is built using `vite build`, and then the Worker is built using `wrangler deploy`. Finally, the Worker is deployed to the **Cloudflare Workers platform**, and thanks to the configuration, the static assets are deployed alongside it.
 
-Now, every request to [preview.soubiran.dev](https://preview.soubiran.dev) goes through the worker which handles authentication and serves the static assets.
+Now, every request to [preview.soubiran.dev](https://preview.soubiran.dev) goes through the Worker, which handles **identity management** and serves the static assets.
 
-## Considered Alternatives
+## Considered Alternatives for Protected Static Sites
 
-I though a lot on how to implement a custom authentication for external users in front of a static website.
+I thought a lot about how to implement **custom authentication** for external users in front of a static website.
 
 > [!NOTE]
-> The external is important as I can't rely on Cloudflare Access.
+> The "external" part is important as I can't rely on Cloudflare Access for non-team members.
 
-The first idea was to use a backend framework like [Laravel](https://laravel.com) to implement the authentication. Within its static assets folder, I could have build the static website. This was faisable but having to maintain and deploy a full backend for just authentication wasn't something I wanted to do.
+The first idea was to use a backend framework like **Laravel** to implement the authentication. I could have built the static website within its static assets folder. This was feasible, but maintaining and deploying a full backend just for authentication wasn't something I wanted to do for [infra.soubiran.dev](/websites/infra-soubiran-dev).
 
-The other solution was also to use Laravel but instead of generating static assets, I could have build a Markdown pipeline to render articles on-demand, after an authentication check. This solution was required more work as I had to implement the Markdown rendering within Laravel. This isn't something I want to do as I already have one for [soubiran.dev](https://soubiran.dev) and I want to reuse it as much as possible.
+Another solution was also to use Laravel, but instead of generating static assets, I could have built a **Markdown pipeline** to render articles on-demand after an authentication check. This solution required more work, as I would have had to implement Markdown rendering within Laravel. This isn't something I want to do, as I already have a pipeline for [soubiran.dev](/websites/soubiran-dev) and I want to reuse it as much as possible.
 
-Cloudflare Workers naturally appeared as the best solution as everything is managed by Cloudflare, from the deployment to the production. The only thing I have to do is to write the worker code and the static website code, and Cloudflare Build takes care of the rest.
+**Cloudflare Workers** naturally appeared as the best solution to my problem, as everything is managed by Cloudflare, from deployment to production. The only thing I have to do is write the Worker and static website code, and Cloudflare Build takes care of the rest.
