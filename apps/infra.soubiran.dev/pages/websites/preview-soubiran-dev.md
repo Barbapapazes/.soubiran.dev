@@ -41,9 +41,9 @@ ecosystem:
     description: Provide real-time viewer count.
 ---
 
-The website [preview.soubiran.dev](https://preview.soubiran.dev) is dedicated to [my sponsors](https://soubiran.dev/sponsorship). I use it to share my **upcoming writings** before they are published publicly on my main website, [soubiran.dev](/websites/soubiran-dev), as it's one of the perks of sponsoring me. I also use it to centralize everything related to my **GitHub sponsorships**, such as announcements, exclusive articles, and more.
+The website [preview.soubiran.dev](https://preview.soubiran.dev) is dedicated to [my sponsors](https://soubiran.dev/sponsorship). I use it to share my upcoming writings before they are published publicly on my main website, [soubiran.dev](/websites/soubiran-dev), as it's one of the perks of sponsoring me. I also use it to centralize everything related to my **GitHub sponsorships**, such as announcements, exclusive articles, and more.
 
-As the website replicates features from [soubiran.dev](/websites/soubiran-dev), sponsors will be able to comment on and react to articles. These interactions will become available publicly once the article is published on the main website. This is possible thanks to the **unique identifier** contained in the frontmatter of each article.
+As the website replicates features from [soubiran.dev](/websites/soubiran-dev), sponsors will be able to comment on and react to articles. These interactions will become available publicly once the article is published on the main website. This is possible thanks to the unique identifier contained in the frontmatter of each article.
 
 <Dataflow :steps="[
   { id: 'user', label: 'User Agent', description: 'Browser or client requesting the website', icon: 'user' },
@@ -56,13 +56,24 @@ As the website replicates features from [soubiran.dev](/websites/soubiran-dev), 
 
 Before developing this website, I used a script that copied content from pull requests in the soubiran.dev repository to discussions in the [Barbapapazes-Sponsors GitHub organization](https://github.com/Barbapapazes-Sponsors). Despite being automated, this process wasn't optimal; the content was simply placed in a code block, making it hard to read and navigate, and images were not rendered.
 
-To provide a better experience, I wanted a dedicated website similar to [soubiran.dev](/websites/soubiran-dev) in terms of both design and features. The only difference is that it is only accessible to my sponsors. I've extracted the core of [soubiran.dev](/websites/soubiran-dev) into two dedicated packages, making it straightforward to build a **clone**.
+![GitHub Discussion with PR Content](/websites/preview-soubiran-dev/github-discussion.png)
+
+To provide a better experience, I wanted a dedicated website similar to [soubiran.dev](/websites/soubiran-dev) in terms of both design and features. The only difference is that it is only accessible to my sponsors. To do this, I've extracted the core of [soubiran.dev](/websites/soubiran-dev) into two dedicated packages, the UI and the Vite configuration, making it straightforward to build a clone.
 
 However, [soubiran.dev](/websites/soubiran-dev) is a **statically generated website (SSG)**, which means it's not possible to protect it with traditional server-side authentication.
 
-Since I use **Cloudflare** as my main infrastructure provider, I decided to use a **Cloudflare Worker** in front of the static website to handle **authentication**. It is possible to make the [Worker run first](https://developers.cloudflare.com/workers/static-assets/binding/#run_worker_first), even before serving static assets. This way, the Worker can authenticate the user and serve the static assets only if the user is authorized.
+However, Cloudflare Workers have a feature that allows running a Worker before serving static assets using the [`run_worker_first`](https://developers.cloudflare.com/workers/static-assets/binding/#run_worker_first) option. This means I can intercept requests and perform authentication checks before any content is delivered. Using Cloudflare as my infrastructure provider, this approach makes sense. So I decided to implement **authentication** using a **Cloudflare Worker**.
 
-Ultimately, the Worker code is quite simple: it redirects anonymous users to **GitHub OAuth** for authentication, checks if the authenticated user is a sponsor, and serves the static assets if everything is correct.
+The authentication layer is managed using [Better Auth](https://better-auth.dev), using a cookie-based session. The authentication flow is as follows:
+
+1. An anonymous user visits [preview.soubiran.dev](https://preview.soubiran.dev).
+2. The Worker detects the user is not authenticated and redirects them to **GitHub OAuth**.
+3. After successful authentication, the user is redirected back to the Worker with an authorization code.
+4. The Worker exchanges the authorization code for an access token and creates a session cookie.
+5. The Worker checks if the authenticated user is a sponsor using the **GitHub API**.
+6. If the user is a sponsor, the Worker serves the static assets; otherwise, it shows an access denied message.
+
+All this logic is contained within a tiny Worker script:
 
 ```ts
 export default {
@@ -85,7 +96,7 @@ export default {
       return tryGiveAccess(request)
     }
 
-    return env.ASSETS.fetch(request) // [!code highlight]
+    return env.ASSETS.fetch(request)
   },
 }
 ```
@@ -119,7 +130,7 @@ I thought a lot about how to implement **custom authentication** for external us
 > [!NOTE]
 > The "external" part is important as I can't rely on Cloudflare Access for non-team members.
 
-The first idea was to use a backend framework like **Laravel** to implement the authentication. I could have built the static website within its static assets folder. This was feasible, but maintaining and deploying a full backend just for authentication wasn't something I wanted to do for [infra.soubiran.dev](/websites/infra-soubiran-dev).
+The first idea was to use a backend framework like Laravel to implement the authentication. I could have built the static website within its static assets folder. This was feasible, but maintaining and deploying a full backend just for authentication wasn't something I wanted to do for [infra.soubiran.dev](/websites/infra-soubiran-dev).
 
 Another solution was also to use Laravel, but instead of generating static assets, I could have built a **Markdown pipeline** to render articles on-demand after an authentication check. This solution required more work, as I would have had to implement Markdown rendering within Laravel. This isn't something I want to do, as I already have a pipeline for [soubiran.dev](/websites/soubiran-dev) and I want to reuse it as much as possible.
 
