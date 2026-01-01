@@ -7,17 +7,17 @@ ecosystem:
   - type: deployment
     id: infra-soubiran-dev
     name: Cloudflare Workers
-    description: Deploy the infrastructure worldwide.
+    description: Deploy the website worldwide.
     ecosystem:
       - type: build
         id: infra-soubiran-dev
         name: Cloudflare Build
-        description: Build the infrastructure automatically.
+        description: Build the website automatically.
         ecosystem:
           - type: repository
             id: infra.soubiran.dev
             name: GitHub
-            description: Source code for the infrastructure.
+            description: Source code for the website.
             href: 'https://github.com/barbapapazes/infra.soubiran.dev'
             ecosystem:
               - type: stack
