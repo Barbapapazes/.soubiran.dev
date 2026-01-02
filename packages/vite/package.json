@@ -1,7 +1,7 @@
 {
   "name": "@soubiran/vite",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "exports": {
     ".": {
       "types": "./dist/vite.config.d.ts",
