@@ -51,7 +51,7 @@ interface Options {
   /**
    * SEO and structured data configuration.
    */
-  seo: {
+  seo?: {
     /**
      * Person information for Schema.org structured data.
      */
@@ -205,16 +205,16 @@ export default (title: string, hostname: string, options: Options, config: UserC
         },
 
         frontmatterPreprocess(frontmatter, frontmatterOptions, id, defaults) {
-          const assert = createAssert(options.seo.assert?.rules)
+          const assert = createAssert(options.seo?.assert?.rules)
           assert(id, frontmatter)
           og(id, frontmatter, hostname)
           canonical(id, frontmatter, hostname)
           structuredData(id, frontmatter, {
             name: title,
             hostname,
-            person: options.seo.person ?? seo.person,
+            person: options.seo?.person ?? seo.person,
             extractPage: options.extractPage,
-            getPageConfig: options.seo.structuredData?.pageConfig,
+            getPageConfig: options.seo?.structuredData?.pageConfig,
           })
 
           const page = options.extractPage(id)
