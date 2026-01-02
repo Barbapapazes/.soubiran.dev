@@ -66,7 +66,7 @@ importers:
         specifier: ^0.19.1
         version: 0.19.1(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       '@soubiran/ui':
-        specifier: link:../../packages/ui
+        specifier: workspace:*
         version: link:../../packages/ui
       '@unhead/vue':
         specifier: ^2.0.19
@@ -151,7 +151,7 @@ importers:
         specifier: ^0.17.8
         version: 0.17.9(pinia@3.0.4(typescript@5.9.3)(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
       '@soubiran/ui':
-        specifier: link:../../packages/ui
+        specifier: workspace:*
         version: link:../../packages/ui
       '@unhead/vue':
         specifier: ^2.0.19
@@ -327,7 +327,7 @@ importers:
         specifier: ^3.15.0
         version: 3.15.0(markdown-it-async@2.2.0)
       '@soubiran/ui':
-        specifier: link:../ui
+        specifier: workspace:*
         version: link:../ui
       '@types/fs-extra':
         specifier: ^11.0.4
