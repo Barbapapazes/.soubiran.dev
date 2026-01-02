@@ -2,7 +2,7 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "@nuxt/ui": "^4.2.0",
+    "@nuxt/ui": "^4.3.0",
     "@pinia/colada": "^0.17.9",
     "@types/node": "^24.10.1",
     "@vue/tsconfig": "^0.8.1",
