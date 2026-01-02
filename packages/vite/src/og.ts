@@ -6,7 +6,7 @@ import { promises } from './promise'
 
 const ogSVG = fs.readFileSync(new URL('./og-template.svg', import.meta.url), 'utf-8')
 
-async function generate(title: string, output: string) {
+async function generate(title: string, hostname: string, output: string) {
   if (fs.existsSync(output))
     return
 
@@ -19,6 +19,7 @@ async function generate(title: string, output: string) {
     line2: lines[1],
     line3: lines[2],
     headline: '',
+    hostname,
   }
   const svg = ogSVG.replace(/\{\{([^}]+)\}\}/g, (_: unknown, name: string) => data[name] || '')
 
@@ -40,7 +41,7 @@ export function og(id: string, frontmatter: any, hostname: string) {
     const route = basename(id, '.md')
     const path = `og/${route}.png`
 
-    promises.push(generate(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), `public/${path}`))
+    promises.push(generate(frontmatter.title!.replace(/\s-\s.*$/, '').trim(), hostname, `public/${path}`))
 
     frontmatter.image = `https://${hostname}/${path}`
   })()

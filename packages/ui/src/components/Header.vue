@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Component } from 'vue'
+import type { FunctionalComponent, SVGAttributes } from 'vue'
 import UButton from '@nuxt/ui/components/Button.vue'
 import USeparator from '@nuxt/ui/components/Separator.vue'
 import UTooltip from '@nuxt/ui/components/Tooltip.vue'
@@ -22,7 +22,7 @@ const header = tv({
 
 export interface HeaderProps {
   links: {
-    icon: Component
+    icon: FunctionalComponent<SVGAttributes>
     label: string
     to: string
   }[]

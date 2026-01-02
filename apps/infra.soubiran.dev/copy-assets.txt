@@ -1,3 +1,5 @@
+- og/*.png
+- og/*.png.json
 + **/*.png
 + **/*.jpg
 + **/*.jpeg

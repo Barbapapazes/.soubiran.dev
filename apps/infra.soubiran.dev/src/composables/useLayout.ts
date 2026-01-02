@@ -10,14 +10,14 @@ export function useLayout() {
 
   const previousDirection = ref('LR')
 
-  function layout(nodes: Node[], edges: Edge[], direction: 'TB' | 'RL' = 'RL'): Node[] {
+  function layout(nodes: Node[], edges: Edge[], direction: 'TB' | 'RL' | 'LR' = 'RL'): Node[] {
     const dagreGraph = new dagre.graphlib.Graph()
 
     graph.value = dagreGraph
 
     dagreGraph.setDefaultEdgeLabel(() => ({}))
 
-    const isHorizontal = direction === 'RL'
+    const isHorizontal = direction === 'RL' || direction === 'LR'
     dagreGraph.setGraph({ rankdir: direction })
 
     previousDirection.value = direction
