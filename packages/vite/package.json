@@ -2,6 +2,15 @@
   "name": "@soubiran/vite",
   "type": "module",
   "version": "0.1.1",
+  "author": "Estéban Soubiran <esteban@soubiran.dev>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/Barbapapazes",
+  "homepage": "https://github.com/Barbapapazes/.soubiran.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Barbapapazes/.soubiran.dev"
+  },
+  "bugs": "https://github.com/Barbapapazes/.soubiran.dev/issues",
   "exports": {
     ".": {
       "types": "./dist/vite.config.d.ts",
