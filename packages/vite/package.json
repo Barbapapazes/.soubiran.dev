@@ -10,6 +10,9 @@
   },
   "main": "dist/vite.config.mjs",
   "types": "dist/vite.config.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown"
   },
