@@ -6,7 +6,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "build": "pnpm --filter \"@soubiran/*\" build",
-    "generate:media-metadata": "node .scripts/generate-media-metadata.ts"
+    "generate:media-metadata": "node .scripts/generate-media-metadata.ts",
+    "postinstall": "pnpm run build"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
