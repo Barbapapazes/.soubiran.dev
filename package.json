@@ -7,6 +7,7 @@
     "lint:fix": "eslint --fix",
     "build": "pnpm --filter \"@soubiran/*\" build",
     "generate:media-metadata": "node .scripts/generate-media-metadata.ts",
+    "release": "bumpp",
     "postinstall": "pnpm run build"
   },
   "devDependencies": {
