@@ -32,6 +32,8 @@ export type { StructuredDataPageConfig } from './src/structured-data'
 export type { BreadcrumbItem } from './src/structured-data/breadcrumb'
 export type { PersonOptions } from './src/structured-data/person'
 
+export { getUri } from './src/utils'
+
 /**
  * Main configuration interface for the infrastructure status app.
  */
