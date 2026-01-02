@@ -1,5 +1,8 @@
 <script lang="ts">
 import type { FunctionalComponent, SVGAttributes } from 'vue'
+import UButton from '@nuxt/ui/components/Button.vue'
+import USeparator from '@nuxt/ui/components/Separator.vue'
+import UTooltip from '@nuxt/ui/components/Tooltip.vue'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import discord from '~icons/simple-icons/discord'
@@ -8,6 +11,7 @@ import linkedin from '~icons/simple-icons/linkedin'
 import twitch from '~icons/simple-icons/twitch'
 import x from '~icons/simple-icons/x'
 import useUmami from '../composables/useUmami'
+import Container from './Container.vue'
 
 const header = tv({
   slots: {
@@ -61,19 +65,6 @@ const ui = computed(() => header())
         />
       </UTooltip>
       <USeparator orientation="vertical" class="h-5" />
-      <UTooltip text="GitHub">
-        <UButton
-          href="https://github.com/barbapapazes"
-          target="_blank"
-          variant="link"
-          color="neutral"
-          aria-label="GitHub"
-          :icon="github"
-          :class="ui.link({ class: props.ui?.link })"
-          :ui="{ leadingIcon: 'size-4' }"
-          @click="trackClick('GitHub')"
-        />
-      </UTooltip>
       <UTooltip text="LinkedIn">
         <UButton
           href="https://www.linkedin.com/in/esteban25/"
@@ -111,6 +102,19 @@ const ui = computed(() => header())
           :class="ui.link({ class: props.ui?.link })"
           :ui="{ leadingIcon: 'size-4' }"
           @click="trackClick('Twitch')"
+        />
+      </UTooltip>
+      <UTooltip text="GitHub">
+        <UButton
+          href="https://github.com/barbapapazes"
+          target="_blank"
+          variant="link"
+          color="neutral"
+          aria-label="GitHub"
+          :icon="github"
+          :class="ui.link({ class: props.ui?.link })"
+          :ui="{ leadingIcon: 'size-4' }"
+          @click="trackClick('GitHub')"
         />
       </UTooltip>
       <UTooltip text="Discord">

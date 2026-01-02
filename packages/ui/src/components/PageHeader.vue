@@ -1,6 +1,7 @@
 <script lang="ts">
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
+import PageTitle from './PageTitle.vue'
 
 const pageHeader = tv({
   slots: {

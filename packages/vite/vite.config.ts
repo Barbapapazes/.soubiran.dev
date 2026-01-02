@@ -1,13 +1,14 @@
-import type { Options as MarkdownOptions } from 'unplugin-vue-markdown/types'
 /// <reference types="vite-ssg" />
+import type { Options as MarkdownOptions } from 'unplugin-vue-markdown/types'
 import type { UserConfig } from 'vite'
 import type { AssertFn } from './src/assert'
 import type { StructuredDataPageConfig } from './src/structured-data'
 import type { PersonOptions } from './src/structured-data/person'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import ui from '@nuxt/ui/vite'
+import soubiranComposablesImports from '@soubiran/ui/imports'
+import soubiranResolver from '@soubiran/ui/resolver'
 import { unheadVueComposablesImports } from '@unhead/vue'
 import vue from '@vitejs/plugin-vue'
 import matter from 'gray-matter'
@@ -15,9 +16,7 @@ import fonts from 'unplugin-fonts/vite'
 import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
 import vueRouter from 'unplugin-vue-router/vite'
-import { defineConfig } from 'vite'
-import soubiranComposablesImports from '../ui/src/imports'
-import soubiranResolver from '../ui/src/resolver'
+import { defineConfig, mergeConfig } from 'vite'
 import { createAssert } from './src/assert'
 import { canonical } from './src/canonical'
 import { customImage, customLink, githubAlerts, implicitFiguresRule, linkAttributesRule, shikiHighlight, tableOfContentsRule } from './src/markdown-it'
@@ -88,9 +87,7 @@ interface Options {
   apiCategories?: string[]
 }
 
-const config: UserConfig = {}
-
-export default (title: string, hostname: string, options: Options) => defineConfig({
+export default (title: string, hostname: string, options: Options, config: UserConfig = {}) => mergeConfig(defineConfig({
   // define: {
   //   __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: true,
   // },
@@ -256,15 +253,22 @@ export default (title: string, hostname: string, options: Options) => defineConf
   optimizeDeps: {
     include: [
       'vue',
+      'ofetch',
+      'reka-ui',
       'vue-router',
       '@unhead/vue',
       'partysocket',
+      '@iconify/vue',
+    ],
+    exclude: [
+      // Must be excluded as it is a linked package
+      '@soubiran/ui',
     ],
   },
 
   resolve: {
     alias: {
-      '@soubiran/ui': fileURLToPath(new URL('../ui/src', import.meta.url)),
+      // '@soubiran/ui': fileURLToPath(new URL('../ui/src', import.meta.url)),
       '@': resolve('./src'),
     },
   },
@@ -279,4 +283,4 @@ export default (title: string, hostname: string, options: Options) => defineConf
       sitemap(config, hostname, Array.from(routes))
     },
   },
-})
+}), config)

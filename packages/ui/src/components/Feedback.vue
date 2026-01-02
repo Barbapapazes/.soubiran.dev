@@ -1,8 +1,11 @@
 <script lang="ts">
+import UButton from '@nuxt/ui/components/Button.vue'
+import UPopover from '@nuxt/ui/components/Popover.vue'
 import { tv } from 'tailwind-variants'
 import { computed, ref } from 'vue'
 import thumbsUp from '~icons/ph/thumbs-up'
-import useUmami from '../composables/useUmami.js'
+import useUmami from '../composables/useUmami'
+import FeedbackCard from './FeedbackCard.vue'
 
 const feedback = tv({
   slots: {

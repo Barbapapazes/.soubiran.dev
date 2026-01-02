@@ -1,4 +1,10 @@
 <script lang="ts">
+import UButton from '@nuxt/ui/components/Button.vue'
+import UCard from '@nuxt/ui/components/Card.vue'
+import UFormField from '@nuxt/ui/components/FormField.vue'
+import UIcon from '@nuxt/ui/components/Icon.vue'
+import UTextarea from '@nuxt/ui/components/Textarea.vue'
+import UTooltip from '@nuxt/ui/components/Tooltip.vue'
 import { useMutation } from '@pinia/colada'
 import { motion } from 'motion-v'
 import { ofetch } from 'ofetch'

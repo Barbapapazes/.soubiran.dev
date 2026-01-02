@@ -102,6 +102,15 @@ export default soubiran(name, hostname, {
     },
   },
   apiCategories: ['websites', 'platforms'],
+}, {
+  optimizeDeps: {
+    include: [
+      '@dagrejs/dagre',
+      '@vue-flow/background',
+      '@vue-flow/core',
+      'scule',
+    ],
+  },
 })
 
 type Page = 'index' | 'platforms-index' | 'platforms-show' | 'websites-index' | 'websites-show' | 'ecosystem'
