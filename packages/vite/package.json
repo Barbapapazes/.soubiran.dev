@@ -15,6 +15,10 @@
     ".": {
       "types": "./dist/vite.config.d.ts",
       "import": "./dist/vite.config.mjs"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.mjs"
     }
   },
   "main": "dist/vite.config.mjs",
