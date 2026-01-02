@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix",
+    "build": "pnpm --filter \"@soubiran/*\" build",
     "generate:media-metadata": "node .scripts/generate-media-metadata.ts"
   },
   "devDependencies": {
@@ -14,6 +15,7 @@
     "@unpic/pixels": "^1.3.0",
     "ansis": "^4.2.0",
     "blurhash": "^2.0.5",
+    "bumpp": "^10.3.2",
     "eslint": "^9.39.1",
     "taze": "^19.9.0",
     "typescript": "^5.9.3"
