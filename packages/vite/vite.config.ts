@@ -55,7 +55,7 @@ interface Options {
     /**
      * Person information for Schema.org structured data.
      */
-    person: PersonOptions
+    person?: PersonOptions
 
     /**
      * Custom validation rules for frontmatter fields.
@@ -87,200 +87,208 @@ interface Options {
   apiCategories?: string[]
 }
 
-export default (title: string, hostname: string, options: Options, config: UserConfig = {}) => mergeConfig(defineConfig({
+export default (title: string, hostname: string, options: Options, config: UserConfig = {}) => {
+  const seo = {
+    person: {
+      name: 'Estéban Soubiran',
+      sameAs: [
+        'https://x.com/soubiran_',
+        'https://www.linkedin.com/in/esteban25',
+        'https://www.twitch.tv/barbapapazes',
+        'https://www.youtube.com/@barbapapazes',
+        'https://github.com/barbapapazes',
+        'https://soubiran.dev',
+        'https://esteban-soubiran.site',
+        'https://barbapapazes.dev',
+      ],
+    },
+  }
+
+  return mergeConfig(defineConfig({
   // define: {
   //   __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: true,
   // },
   // build: {
   //   minify: false,
   // },
-  plugins: [
-    vueRouter({
-      extensions: ['.vue', '.md'],
-      routesFolder: 'pages',
-      dts: 'src/typed-router.d.ts',
-      extendRoute(route) {
-        const path = route.components.get('default')
-        if (!path)
-          return
+    plugins: [
+      vueRouter({
+        extensions: ['.vue', '.md'],
+        routesFolder: 'pages',
+        dts: 'src/typed-router.d.ts',
+        extendRoute(route) {
+          const path = route.components.get('default')
+          if (!path)
+            return
 
-        if (path.endsWith('.vue')) {
-          route.addToMeta({
-            frontmatter: {
-              page: options.extractPage(path),
+          if (path.endsWith('.vue')) {
+            route.addToMeta({
+              frontmatter: {
+                page: options.extractPage(path),
+              },
+            })
+          }
+
+          if (path.endsWith('.md')) {
+            const { data } = matter(readFileSync(path, 'utf-8'))
+            route.addToMeta({
+              frontmatter: data,
+            })
+          }
+        },
+      }),
+
+      vue({
+        include: [/\.vue$/, /\.md$/],
+      }),
+
+      ui({
+        autoImport: {
+          dts: 'src/auto-imports.d.ts',
+          dirs: [
+            'src/composables',
+          ],
+          imports: [
+            'vue',
+            'vue-router',
+            '@vueuse/core',
+            unheadVueComposablesImports,
+            {
+              from: 'tailwind-variants',
+              imports: ['tv'],
             },
-          })
-        }
-
-        if (path.endsWith('.md')) {
-          const { data } = matter(readFileSync(path, 'utf-8'))
-          route.addToMeta({
-            frontmatter: data,
-          })
-        }
-      },
-    }),
-
-    vue({
-      include: [/\.vue$/, /\.md$/],
-    }),
-
-    ui({
-      autoImport: {
-        dts: 'src/auto-imports.d.ts',
-        dirs: [
-          'src/composables',
-        ],
-        imports: [
-          'vue',
-          'vue-router',
-          '@vueuse/core',
-          unheadVueComposablesImports,
-          {
-            from: 'tailwind-variants',
-            imports: ['tv'],
+            soubiranComposablesImports,
+          ],
+        },
+        components: {
+          include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+          dts: 'src/components.d.ts',
+          resolvers: [
+            soubiranResolver(),
+          ],
+        },
+        ui: {
+          colors: {
+            neutral: 'neutral',
           },
-          soubiranComposablesImports,
+        },
+      }),
+
+      markdown({
+        headEnabled: true,
+        wrapperClasses: [
+          'slide-enter-content',
+          'max-w-none',
+          'prose prose-neutral dark:prose-invert',
+          'prose-headings:text-default prose-h2:text-[1.125em] prose-h2:mb-[0.5em] prose-h3:text-[1em]',
+          'prose-p:my-[1em] dark:prose-p:text-muted',
+          'dark:prose-ul:text-muted dark:prose-ol:text-muted',
+          'dark:prose-strong:text-default',
+          'dark:prose-a:text-muted prose-a:font-semibold prose-a:no-underline prose-a:border-b prose-a:border-muted prose-a:transition-colors prose-a:duration-300 prose-a:ease-out prose-a:hover:border-[var(--ui-text-dimmed)]',
+          'prose-hr:max-w-1/2 prose-hr:mx-auto prose-hr:my-[2em]',
+          'prose-figure:bg-neutral-100 dark:prose-figure:bg-neutral-800 prose-figure:rounded-lg',
+          'prose-img:rounded-lg prose-img:border prose-img:border-accented prose-img:shadow-md',
+          'prose-video:rounded-lg prose-video:border prose-video:border-accented prose-video:shadow-md',
+          'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
+          '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
         ],
-      },
-      components: {
-        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-        dts: 'src/components.d.ts',
-        resolvers: [
-          soubiranResolver(),
-        ],
-      },
-      ui: {
-        colors: {
-          neutral: 'neutral',
+        transforms: options.markdown?.transforms ?? {},
+        wrapperComponent: options.markdown?.wrapperComponent,
+        async markdownItSetup(md) {
+          githubAlerts(md)
+          implicitFiguresRule(md)
+          linkAttributesRule(md)
+          tableOfContentsRule(md)
+          customLink(md, hostname)
+          customImage(md, hostname)
+          await shikiHighlight(md)
+        },
+
+        frontmatterPreprocess(frontmatter, frontmatterOptions, id, defaults) {
+          const assert = createAssert(options.seo.assert?.rules)
+          assert(id, frontmatter)
+          og(id, frontmatter, hostname)
+          canonical(id, frontmatter, hostname)
+          structuredData(id, frontmatter, {
+            name: title,
+            hostname,
+            person: options.seo.person ?? seo.person,
+            extractPage: options.extractPage,
+            getPageConfig: options.seo.structuredData?.pageConfig,
+          })
+
+          const page = options.extractPage(id)
+          frontmatter.page = page
+
+          const head = defaults(frontmatter, frontmatterOptions)
+          return { head, frontmatter }
+        },
+      }),
+
+      fonts({
+        google: {
+          families: [
+            {
+              name: 'DM Sans',
+              styles: 'ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000',
+            },
+            {
+              name: 'DM Mono',
+              styles: 'ital,wght@0,300;0,400;0,500;1,300;1,400;1,500',
+            },
+            {
+              name: 'Sofia Sans',
+              styles: 'ital,wght@0,1..1000;1,1..1000',
+            },
+          ],
+        },
+      }),
+
+      icons({
+        autoInstall: true,
+      }),
+
+      apiPlugin(options.apiCategories),
+      markdownPlugin(),
+      metaPlugin(hostname),
+
+      {
+        name: 'await',
+        async closeBundle() {
+          await resolveAll()
         },
       },
-    }),
 
-    markdown({
-      headEnabled: true,
-      wrapperClasses: [
-        'slide-enter-content',
-        'max-w-none',
-        'prose prose-neutral dark:prose-invert',
-        'prose-headings:text-default prose-h2:text-[1.125em] prose-h2:mb-[0.5em] prose-h3:text-[1em]',
-        'prose-p:my-[1em] dark:prose-p:text-muted',
-        'dark:prose-ul:text-muted dark:prose-ol:text-muted',
-        'dark:prose-strong:text-default',
-        'dark:prose-a:text-muted prose-a:font-semibold prose-a:no-underline prose-a:border-b prose-a:border-muted prose-a:transition-colors prose-a:duration-300 prose-a:ease-out prose-a:hover:border-[var(--ui-text-dimmed)]',
-        'prose-hr:max-w-1/2 prose-hr:mx-auto prose-hr:my-[2em]',
-        'prose-figure:bg-neutral-100 dark:prose-figure:bg-neutral-800 prose-figure:rounded-lg',
-        'prose-img:rounded-lg prose-img:border prose-img:border-accented prose-img:shadow-md',
-        'prose-video:rounded-lg prose-video:border prose-video:border-accented prose-video:shadow-md',
-        'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
-        '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
-      ],
-      transforms: options.markdown?.transforms ?? {},
-      wrapperComponent: options.markdown?.wrapperComponent,
-      async markdownItSetup(md) {
-        githubAlerts(md)
-        implicitFiguresRule(md)
-        linkAttributesRule(md)
-        tableOfContentsRule(md)
-        customLink(md, hostname)
-        customImage(md, hostname)
-        await shikiHighlight(md)
+      {
+        name: 'extract-config',
+        configResolved(resolvedConfig) {
+          Object.assign(config, resolvedConfig)
+        },
       },
-
-      frontmatterPreprocess(frontmatter, frontmatterOptions, id, defaults) {
-        const assert = createAssert(options.seo.assert?.rules)
-        assert(id, frontmatter)
-        og(id, frontmatter, hostname)
-        canonical(id, frontmatter, hostname)
-        structuredData(id, frontmatter, {
-          name: title,
-          hostname,
-          person: options.seo.person,
-          extractPage: options.extractPage,
-          getPageConfig: options.seo.structuredData?.pageConfig,
-        })
-
-        const page = options.extractPage(id)
-        frontmatter.page = page
-
-        const head = defaults(frontmatter, frontmatterOptions)
-        return { head, frontmatter }
-      },
-    }),
-
-    fonts({
-      google: {
-        families: [
-          {
-            name: 'DM Sans',
-            styles: 'ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000',
-          },
-          {
-            name: 'DM Mono',
-            styles: 'ital,wght@0,300;0,400;0,500;1,300;1,400;1,500',
-          },
-          {
-            name: 'Sofia Sans',
-            styles: 'ital,wght@0,1..1000;1,1..1000',
-          },
-        ],
-      },
-    }),
-
-    icons({
-      autoInstall: true,
-    }),
-
-    apiPlugin(options.apiCategories),
-    markdownPlugin(),
-    metaPlugin(hostname),
-
-    {
-      name: 'await',
-      async closeBundle() {
-        await resolveAll()
-      },
-    },
-
-    {
-      name: 'extract-config',
-      configResolved(resolvedConfig) {
-        Object.assign(config, resolvedConfig)
-      },
-    },
-  ],
-
-  optimizeDeps: {
-    include: [
-      'vue',
-      'ofetch',
-      'reka-ui',
-      'vue-router',
-      '@unhead/vue',
-      'partysocket',
-      '@iconify/vue',
     ],
-    exclude: [
+
+    optimizeDeps: {
+      exclude: [
       // Must be excluded as it is a linked package
-      '@soubiran/ui',
-    ],
-  },
+        '@soubiran/ui',
+      ],
+    },
 
-  resolve: {
-    alias: {
-      // '@soubiran/ui': fileURLToPath(new URL('../ui/src', import.meta.url)),
-      '@': resolve('./src'),
+    resolve: {
+      alias: {
+        '@': resolve('./src'),
+      },
     },
-  },
 
-  ssgOptions: {
-    formatting: 'minify',
-    onPageRendered(route, renderedHTML) {
-      routes.add(route)
-      return renderedHTML
+    ssgOptions: {
+      formatting: 'minify',
+      onPageRendered(route, renderedHTML) {
+        routes.add(route)
+        return renderedHTML
+      },
+      onFinished() {
+        sitemap(config, hostname, Array.from(routes))
+      },
     },
-    onFinished() {
-      sitemap(config, hostname, Array.from(routes))
-    },
-  },
-}), config)
+  }), config)
+}
