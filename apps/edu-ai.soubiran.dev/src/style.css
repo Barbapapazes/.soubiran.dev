@@ -1,28 +1,12 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "@soubiran/ui";
 
-@plugin "@tailwindcss/typography";
+@import 'markdown-it-github-alerts/styles/github-colors-light.css';
+@import 'markdown-it-github-alerts/styles/github-colors-dark-class.css';
+@import 'markdown-it-github-alerts/styles/github-base.css';
 
 @source "../node_modules/@soubiran/ui/dist/index.js";
-@source "../../../packages/vite/vite.config.ts";
+@source "../node_modules/@soubiran/vite/dist/vite.config.mjs";
 
-@theme {
-  --font-sans: 'DM Sans', sans-serif;
-  --font-sofia: 'Sofia sans', sans-serif;
-  --font-mono: 'DM Mono', monospace;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 2rem;
-}
-
-:root {
-  --ui-primary: black;
-  --ui-text-highlighted: var(--ui-color-neutral-950);
-}
-
-.dark {
-  --ui-primary: white;
-  --ui-text-highlighted: var(--ui-color-neutral-200);
-}
+@plugin "@tailwindcss/typography";

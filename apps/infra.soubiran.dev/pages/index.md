@@ -8,6 +8,9 @@ description: >-
 
 Hey! I'm **Estéban Soubiran**, from [soubiran.dev](https://soubiran.dev).
 
+> [!NOTE]
+> Welcome to my infrastructure wiki!
+
 The website you're on is dedicated to documenting the ecosystem I build and maintain. It's like a personal wiki but open to everyone.
 
 Since the beginning of my web journey in 2018, I've always wanted to read concrete, actionable content about everything that goes on behind the scenes of a website. Unfortunately, I never found such content, an end-to-end resource that would cover everything. I sometimes found corporate articles about infrastructure, but that's far too much for personal projects.

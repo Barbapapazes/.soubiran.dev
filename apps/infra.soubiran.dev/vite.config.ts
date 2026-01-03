@@ -1,6 +1,6 @@
-import type { BreadcrumbItem, StructuredDataPageConfig } from '../../packages/vite/vite.config'
-import { getUri, toUrl } from '../../packages/vite/src/utils'
-import soubiran from '../../packages/vite/vite.config'
+import type { BreadcrumbItem, StructuredDataPageConfig } from '@soubiran/vite'
+import soubiran from '@soubiran/vite'
+import { getUri, toUrl } from '@soubiran/vite/utils'
 
 const hostname = 'infra.soubiran.dev'
 const name = 'Estéban\'s Infra'
@@ -34,19 +34,6 @@ export default soubiran(name, hostname, {
     },
   },
   seo: {
-    person: {
-      name: 'Estéban Soubiran',
-      sameAs: [
-        'https://x.com/soubiran_',
-        'https://www.linkedin.com/in/esteban25',
-        'https://www.twitch.tv/barbapapazes',
-        'https://www.youtube.com/@barbapapazes',
-        'https://github.com/barbapapazes',
-        'https://soubiran.dev',
-        'https://esteban-soubiran.site',
-        'https://barbapapazes.dev',
-      ],
-    },
     assert: {
       rules: (id, frontmatter) => {
         // Check if this is a platform or website page (not index pages)

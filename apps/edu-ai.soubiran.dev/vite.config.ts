@@ -1,5 +1,5 @@
-import { getUri } from '../../packages/vite/src/utils'
-import soubiran from '../../packages/vite/vite.config'
+import soubiran from '@soubiran/vite'
+import { getUri } from '@soubiran/vite/utils'
 
 const hostname = 'edu-ai.soubiran.dev'
 const name = 'IA et Éducation'
@@ -9,21 +9,6 @@ export default soubiran(name, hostname, {
   markdown: {
     wrapperComponent: () => {
       return 'WrapperContent'
-    },
-  },
-  seo: {
-    person: {
-      name: 'Estéban Soubiran',
-      sameAs: [
-        'https://x.com/soubiran_',
-        'https://www.linkedin.com/in/esteban25',
-        'https://www.twitch.tv/barbapapazes',
-        'https://www.youtube.com/@barbapapazes',
-        'https://github.com/barbapapazes',
-        'https://soubiran.dev',
-        'https://esteban-soubiran.site',
-        'https://barbapapazes.dev',
-      ],
     },
   },
   apiCategories: [],
