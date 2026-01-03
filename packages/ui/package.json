@@ -14,7 +14,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "style": "./dist/styles.css"
     },
     "./imports": {
       "types": "./dist/imports.d.mts",
@@ -27,9 +28,6 @@
     "./alerts": {
       "types": "./dist/alerts.d.ts",
       "import": "./dist/alerts.js"
-    },
-    "./styles.css": {
-      "import": "./dist/styles.css"
     },
     "./umami": {
       "types": "./umami.d.ts"

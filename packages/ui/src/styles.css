@@ -1,3 +1,24 @@
 @import './styles/animations.css';
 @import './styles/keyframes.css';
 @import './styles/shiki.css';
+
+@theme {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-sofia: 'Sofia sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+:root {
+  --ui-primary: black;
+  --ui-text-highlighted: var(--ui-color-neutral-950);
+}
+
+.dark {
+  --ui-primary: white;
+  --ui-text-highlighted: var(--ui-color-neutral-200);
+}
