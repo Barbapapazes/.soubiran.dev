@@ -2,8 +2,8 @@ import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   entry: [
-    'vite.config.ts',
-    'utils.ts',
+    './vite.config.ts',
+    './src/utils.ts',
   ],
   noExternal: [
     // Because of the patch, it's better to bundle it directly

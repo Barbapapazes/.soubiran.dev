@@ -17,8 +17,8 @@
       "import": "./dist/vite.config.mjs"
     },
     "./utils": {
-      "types": "./dist/utils.d.ts",
-      "import": "./dist/utils.mjs"
+      "types": "./dist/src/utils.d.ts",
+      "import": "./dist/src/utils.mjs"
     }
   },
   "main": "dist/vite.config.mjs",
