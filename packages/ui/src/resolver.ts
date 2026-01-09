@@ -1,19 +1,20 @@
 import type { ComponentResolver } from 'unplugin-vue-components'
 
 const components: string[] = [
+  'Comments',
+  'Feedback',
   'Page',
+  'PageTitle',
+  'PageHeader',
   'Header',
   'Socials',
   'Sponsors',
-  'Feedback',
   'Container',
-  'PageTitle',
-  'PageHeader',
-  'FeedbackCard',
   'ViewersCounter',
   'TableOfContents',
 ]
 
+// TODO: Add a S previx, like U for Nuxt UI
 export default function (): ComponentResolver {
   return {
     type: 'component',

@@ -12,7 +12,7 @@ import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { tv } from 'tailwind-variants'
 import { computed, ref } from 'vue'
 import checkCircle from '~icons/ph/check-circle'
-import useUmami from '../composables/useUmami'
+import useUmami from '../../composables/useUmami'
 
 const feedbackCard = tv({
   slots: {
