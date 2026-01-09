@@ -2,7 +2,7 @@
 import { tv } from 'tailwind-variants'
 import { computed, ref } from 'vue'
 import thumbsUp from '~icons/ph/thumbs-up'
-import useUmami from '../composables/useUmami'
+import useUmami from '../../composables/useUmami'
 import FeedbackCard from './FeedbackCard.vue'
 
 const feedback = tv({
