@@ -1,3 +1,3 @@
 export default {
-  '@soubiran/ui': ['useUmami', 'useTableOfContents'],
+  '@soubiran/ui': ['useUmami', 'useTableOfContents', 'useLocale'],
 }
