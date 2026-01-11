@@ -4,13 +4,12 @@ import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import { useLocale } from '../../composables/useLocale'
 
-// TODO: update colors with the new design system
 const commentHeader = tv({
   slots: {
     root: 'flex flex-col items-start text-sm',
     wrapper: 'flex items-center gap-2',
-    username: 'text-neutral-950 font-semibold tracking-wide dark:text-neutral-200',
-    time: 'text-neutral-500 dark:text-neutral-400',
+    username: 'text-default font-semibold tracking-wide',
+    time: 'text-dimmed',
     link: 'text-xs',
   },
 })
@@ -35,7 +34,7 @@ const ui = computed(() => commentHeader())
 </script>
 
 <template>
-  <div :class="ui.root({ class: [props.class, props.ui?.root] })">
+  <div :class="ui.root({ class: [props.ui?.root, props.class] })">
     <dl :class="ui.wrapper({ class: props.ui?.wrapper })">
       <dt class="sr-only">
         {{ t('comments.CommentHeader.author') }}

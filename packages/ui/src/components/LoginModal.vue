@@ -1,12 +1,10 @@
 <script lang="ts">
-import UButton from '@nuxt/ui/components/Button.vue'
 import UModal from '@nuxt/ui/components/Modal.vue'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
-import githubIcon from '~icons/simple-icons/github'
-import googleIcon from '~icons/simple-icons/google'
 import { useLocale } from '../composables/useLocale'
-import { useLogin } from '../composables/useLogin'
+import LoginWithGitHubButton from './Login/LoginWithGitHubButton.vue'
+import LoginWithGoogleButton from './Login/LoginWithGoogleButton.vue'
 
 const loginModal = tv({
   slots: {
@@ -32,8 +30,6 @@ defineSlots<LoginModalSlots>()
 
 const { t } = useLocale()
 
-const { githubLink, googleLink } = useLogin(() => props.fragment)
-
 const ui = computed(() => loginModal())
 </script>
 
@@ -42,23 +38,11 @@ const ui = computed(() => loginModal())
     :title="t('LoginModal.title')"
     :description="t('LoginModal.description')"
     :class="ui.base({ class: [props.ui?.base, props.class] })"
-    :ui="{ content: 'space-y-4', footer: 'flex flex-row justify-end gap-2' }"
+    :ui="{ content: 'space-y-4', footer: 'flex flex-row items-center justify-end gap-2' }"
   >
     <template #footer>
-      <UButton
-        color="neutral"
-        variant="solid"
-        :label="t('LoginModal.github')"
-        :href="githubLink"
-        :icon="githubIcon"
-      />
-      <UButton
-        color="neutral"
-        variant="solid"
-        :label="t('LoginModal.google')"
-        :href="googleLink"
-        :icon="googleIcon"
-      />
+      <LoginWithGitHubButton />
+      <LoginWithGoogleButton />
     </template>
   </UModal>
 </template>

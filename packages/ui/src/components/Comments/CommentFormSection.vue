@@ -1,9 +1,11 @@
 <script lang="ts">
 import UAvatar from '@nuxt/ui/components/Avatar.vue'
+import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import { useLocale } from '../../composables/useLocale'
-import { useUser } from '../../queries/useUser'
+import { currentUserQuery } from '../../queries/users'
+import LoginRequired from '../LoginRequired.vue'
 import CommentForm from './CommentForm.vue'
 
 const commentFormSection = tv({
@@ -28,7 +30,7 @@ defineSlots<CommentFormSectionSlots>()
 
 const { t } = useLocale()
 
-const { state: userState } = useUser()
+const { data: user } = useQuery(currentUserQuery)
 
 const ui = computed(() => commentFormSection())
 </script>
@@ -37,9 +39,9 @@ const ui = computed(() => commentFormSection())
   <section :class="ui.base({ class: [props.ui?.base, props.class] })">
     <div :class="ui.header({ class: props.ui?.header })">
       <UAvatar
-        v-if="userState.data"
-        :src="userState.data.avatar"
-        :title="userState.data.name"
+        v-if="user"
+        :src="user.data.avatar"
+        :title="user.data.name"
       />
       <!-- TODO: How to manage this Heading3? -->
       <Heading3>
@@ -47,8 +49,7 @@ const ui = computed(() => commentFormSection())
       </Heading3>
     </div>
 
-    <!-- TODO: Create this component -->
-    <LoginRequired v-if="!userState.data" fragment="comments" />
+    <LoginRequired v-if="!user" fragment="comments" />
 
     <CommentForm v-else />
   </section>

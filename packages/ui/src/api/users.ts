@@ -1,3 +1,4 @@
+import type { User } from '../types/user'
 import { api } from '../utils/api'
 
-export const getUser = () => api('/api/user')
+export const getCurrentUser = () => api<{ data: User }>('/api/user')

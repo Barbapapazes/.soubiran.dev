@@ -8,16 +8,15 @@ import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
 import { tv } from 'tailwind-variants'
 import { computed, nextTick, useTemplateRef } from 'vue'
 import infoDuotone from '~icons/ph/info-duotone'
-import { fetchMarkdown } from '../api/comments'
+import { getMarkdown } from '../api/comments'
 import { useLocale } from '../composables/useLocale'
 
-// TODO: update styles with the new design system
 const editor = tv({
   slots: {
-    root: 'overflow-hidden border border-neutral-200 rounded-md dark:border-neutral-600 ',
-    tabs: 'mb-[-1px] ml-[-1px] mt-[-1px] bg-neutral-100 text-sm space-x-1 dark:bg-neutral-800',
-    tab: 'relative border-x border-neutral-200 rounded-t-md px-4 py-2 text-sm text-neutral-500 data-[state=active]:border-t dark:border-neutral-600 data-[state=inactive]:border-transparent data-[state=active]:bg-white dark:text-neutral-400 data-[state=active]:text-neutral-800 hover:text-neutral-800 dark:data-[state=active]:bg-neutral-900 dark:data-[state=active]:text-neutral-200 dark:hover:text-neutral-200 focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:outline-neutral-200 dark:focus-visible:outline-white',
-    content: 'data-[state=active]:p-2 flex flex-col gap-1 border-t border-neutral-200 dark:border-neutral-600 bg-white dark:bg-neutral-900',
+    root: 'overflow-hidden border rounded-md',
+    tabs: 'mb-[-1px] ml-[-1px] mt-[-1px] bg-muted text-sm space-x-1',
+    tab: 'relative border-x rounded-t-md px-4 py-2 text-sm text-dimmed data-[state=active]:border-t data-[state=inactive]:border-transparent data-[state=active]:bg-default data-[state=active]:text-default hover:text-default focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:ring-inverted',
+    content: 'data-[state=active]:p-2 flex flex-col gap-1 border-t bg-default',
     preview: '',
     prose: 'w-full rounded-md p-2 text-sm',
   },
@@ -51,7 +50,7 @@ const { data: preview, isLoading: isPreviewLoading, refresh: refreshPreview } = 
       return Promise.resolve(`<p>${t('Editor.preview.placeholder')}</p>`)
     }
 
-    return fetchMarkdown(content.value).then(response => response.data)
+    return getMarkdown(content.value).then(response => response.data)
   },
 })
 

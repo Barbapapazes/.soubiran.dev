@@ -13,6 +13,8 @@ export interface Comment {
   can: {
     update: boolean
     delete: boolean
+    like: boolean
+    unlike: boolean
   }
   replies: Comment[]
   likes: string[]
