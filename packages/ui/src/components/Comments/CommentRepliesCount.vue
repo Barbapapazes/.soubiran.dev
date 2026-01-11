@@ -4,9 +4,8 @@ import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import { useLocale } from '../../composables/useLocale'
 
-// TODO: update styles with the new design system
 const commentRepliesCount = tv({
-  base: 'text-xs text-neutral-500 dark:text-neutral-400',
+  base: 'text-xs text-dimmed',
 })
 
 export interface CommentRepliesCountProps {

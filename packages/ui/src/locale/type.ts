@@ -13,6 +13,21 @@ export interface LocaleMessages {
       preview: string
     }
   }
+  LoginModal: {
+    title: string
+    description: string
+  }
+  LoginRequired: {
+    text: string
+  }
+  login: {
+    LoginWithGitHubButton: {
+      label: string
+    }
+    LoginWithGoogleButton: {
+      label: string
+    }
+  }
   comments: {
     Comment: {
       actions: {
@@ -32,7 +47,8 @@ export interface LocaleMessages {
       publishedAt: string
     }
     CommentLike: {
-      likedBy: string
+      like: string
+      unlike: string
     }
     CommentRepliesCount: {
       replies: string
@@ -44,6 +60,24 @@ export interface LocaleMessages {
         reply: string
         edit: string
         cancel: string
+      }
+    }
+  }
+  discussions: {
+    DiscussionReply: {
+      reply: string
+    }
+    DiscussionsSection: {
+      empty: string
+    }
+    DiscussionsSectionSubtitle: {
+      comments: {
+        singular: string
+        plural: string
+      }
+      replies: {
+        singular: string
+        plural: string
       }
     }
   }

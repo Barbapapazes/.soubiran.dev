@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { Comment } from '../../types/comment'
+import type Editor from '../Editor.vue'
 import { tv } from 'tailwind-variants'
 import { computed, nextTick, ref, watch } from 'vue'
 

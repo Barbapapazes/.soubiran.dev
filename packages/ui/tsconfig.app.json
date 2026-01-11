@@ -23,6 +23,7 @@
     "./src/main.ts",
     "./src/ui.ts",
     "./src/App.vue",
+    "./src/vite-env.d.ts",
     "./src/locale/*.ts",
     "./src/types/*.ts",
     "./src/api/**/*.ts",

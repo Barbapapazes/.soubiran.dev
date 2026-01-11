@@ -1,12 +1,12 @@
 import type { Comment } from '../types/comment'
-import { defineMutation, useMutation, useQueryCache } from '@pinia/colada'
+import { defineMutation, useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { deleteCommentLike } from '../api/comments'
 import { useFrontmatter } from '../composables/useFrontmatter'
-import { useUser } from '../queries/useUser'
+import { currentUserQuery } from '../queries/users'
 import { getCommentById } from './_utils'
 
 export const useUnlikeComment = defineMutation(() => {
-  const { data: user } = useUser()
+  const { data: user } = useQuery(currentUserQuery)
   const queryCache = useQueryCache()
   const { frontmatter } = useFrontmatter()
 

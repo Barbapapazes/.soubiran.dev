@@ -5,19 +5,19 @@ import UAvatar from '@nuxt/ui/components/Avatar.vue'
 import UButton from '@nuxt/ui/components/Button.vue'
 import UDropdownMenu from '@nuxt/ui/components/DropdownMenu.vue'
 import { useOverlay } from '@nuxt/ui/composables/useOverlay'
+import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, ref } from 'vue'
 import notePencil from '~icons/ph/note-pencil-duotone'
 import trash from '~icons/ph/trash-duotone'
 import { useLocale } from '../../composables/useLocale'
-import { useUser } from '../../queries/useUser'
+import { currentUserQuery } from '../../queries/users'
 import CommentContent from './CommentContent.vue'
 import CommentHeader from './CommentHeader.vue'
 import CommentLike from './CommentLike.vue'
 import CommentRepliesCount from './CommentRepliesCount.vue'
 import CommentConfirmDelete from './Overlays/CommentConfirmDelete.vue'
 
-// TODO: clean tv classes
 const comment = tv({
   slots: {
     base: 'comment relative before:content-[\'\']',
@@ -30,7 +30,7 @@ const comment = tv({
   variants: {
     isReply: {
       true: {
-        base: 'space-y-2 px-4 pb-2 pt-4 before:absolute before:bottom-0 before:left-[calc((var(--avatar-size)/2)-1px+1rem)] before:top-0 before:w-[2px] before:bg-neutral-200  dark:before:bg-neutral-600',
+        base: 'space-y-2 px-4 pb-2 pt-4 before:absolute before:bottom-0 before:left-[calc((var(--avatar-size)/2)-1px+1rem)] before:top-0 before:w-[2px] before:bg-border',
         headerAvatar: 'size-[var(--avatar-size)]',
         contentWrapper: 'ml-[calc(var(--avatar-size)+0.5rem)] space-y-2',
       },
@@ -73,8 +73,8 @@ function onCommentEdited() {
   viewEditCommentEditor.value = false
 }
 
-const { data: user } = useUser()
-const showActions = computed(() => user && (props.comment.can.update || props.comment.can.delete))
+const { data: user } = useQuery(currentUserQuery)
+const showActions = computed(() => user.value && (props.comment.can.update || props.comment.can.delete))
 
 const overlay = useOverlay()
 const actions = computed(() => {
@@ -118,7 +118,7 @@ const ui = computed(() => comment({
 <template>
   <article
     :id="props.comment.html_id"
-    :class="ui.base({ class: [props.class, props.ui?.base] })"
+    :class="ui.base({ class: [props.ui?.base, props.class] })"
     :style="{ '--avatar-size': '1.875rem' }"
   >
     <div :class="ui.wrapper({ class: props.ui?.wrapper })">
