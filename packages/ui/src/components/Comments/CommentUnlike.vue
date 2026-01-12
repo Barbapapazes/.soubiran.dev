@@ -5,8 +5,8 @@ import { useOverlay } from '@nuxt/ui/composables/useOverlay'
 import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
-import heartDuotone from '~icons/ph/heart-duotone'
-import { postCommentLike } from '../../api/comments'
+import heartFill from '~icons/ph/heart-fill'
+import { deleteCommentLike } from '../../api/comments'
 import { useFrontmatter } from '../../composables/useFrontmatter'
 import { useLocale } from '../../composables/useLocale'
 import { COMMENT_QUERY_KEY } from '../../queries/comments'
@@ -14,26 +14,26 @@ import { currentUserQuery } from '../../queries/users'
 import { getCommentById } from '../../utils/comments'
 import LoginModal from '../LoginModal.vue'
 
-const commentLike = tv({
+const commentUnlike = tv({
   slots: {
     base: '',
   },
 })
 
-export interface CommentLikeProps {
+export interface CommentUnlikeProps {
   parentComment?: Comment
   comment: Comment
   class?: any
-  ui?: Partial<typeof commentLike.slots>
+  ui?: Partial<typeof commentUnlike.slots>
 }
-export interface CommentLikeEmits {}
-export interface CommentLikeSlots {}
+export interface CommentUnlikeEmits {}
+export interface CommentUnlikeSlots {}
 </script>
 
 <script lang="ts" setup>
-const props = defineProps<CommentLikeProps>()
-defineEmits<CommentLikeEmits>()
-defineSlots<CommentLikeSlots>()
+const props = defineProps<CommentUnlikeProps>()
+defineEmits<CommentUnlikeEmits>()
+defineSlots<CommentUnlikeSlots>()
 
 const { frontmatter } = useFrontmatter()
 const { t } = useLocale()
@@ -41,7 +41,7 @@ const { t } = useLocale()
 const queryCache = useQueryCache()
 
 const { mutate } = useMutation({
-  mutation: ({ commentId }: { parentCommentId?: number, commentId: number }) => postCommentLike(commentId),
+  mutation: ({ commentId }: { parentCommentId?: number, commentId: number }) => deleteCommentLike(commentId),
 
   onMutate({ parentCommentId, commentId }) {
     const oldComments = queryCache.getQueryData<{ data: Comment[] }>(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id))!
@@ -55,9 +55,9 @@ const { mutate } = useMutation({
     )
 
     if (comment) {
-      comment.likes += 1
-      comment.can.like = false
-      comment.can.unlike = true
+      comment.likes -= 1
+      comment.can.like = true
+      comment.can.unlike = false
     }
 
     queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id), newComments)
@@ -97,16 +97,16 @@ function onClick() {
   })
 }
 
-const ui = computed(() => commentLike())
+const ui = computed(() => commentUnlike())
 </script>
 
 <template>
   <UButton
     variant="link"
     color="neutral"
-    :title="t('comments.CommentLike.title')"
+    :title="t('comments.CommentUnlike.title')"
     :label="props.comment.likes.toString()"
-    :icon="heartDuotone"
+    :icon="heartFill"
     :class="ui.base({ class: [props.ui?.base, props.class] })"
     @click="onClick"
   />

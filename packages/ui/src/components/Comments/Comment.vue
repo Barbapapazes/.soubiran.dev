@@ -16,6 +16,7 @@ import CommentContent from './CommentContent.vue'
 import CommentHeader from './CommentHeader.vue'
 import CommentLike from './CommentLike.vue'
 import CommentRepliesCount from './CommentRepliesCount.vue'
+import CommentUnlike from './CommentUnlike.vue'
 import CommentConfirmDelete from './Overlays/CommentConfirmDelete.vue'
 
 const comment = tv({
@@ -26,6 +27,7 @@ const comment = tv({
     headerAvatar: '',
     contentWrapper: '',
     contentFooter: 'flex items-center justify-between',
+    like: '-mx-3 -my-1.5',
   },
   variants: {
     isReply: {
@@ -155,8 +157,16 @@ const ui = computed(() => comment({
 
       <div :class="ui.contentFooter({ class: props.ui?.contentFooter })">
         <CommentLike
+          v-if="props.comment.can.like"
           :parent-comment="props.parentComment"
           :comment="props.comment"
+          :class="ui.like({ class: props.ui?.like })"
+        />
+        <CommentUnlike
+          v-else-if="props.comment.can.unlike"
+          :parent-comment="props.parentComment"
+          :comment="props.comment"
+          :class="ui.like({ class: props.ui?.like })"
         />
 
         <CommentRepliesCount

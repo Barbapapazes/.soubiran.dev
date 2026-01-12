@@ -17,5 +17,5 @@ export interface Comment {
     unlike: boolean
   }
   replies: Comment[]
-  likes: string[]
+  likes: number
 }

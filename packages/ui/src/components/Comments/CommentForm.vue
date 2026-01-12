@@ -44,7 +44,7 @@ const { frontmatter } = useFrontmatter()
 
 const queryCache = useQueryCache()
 
-// TODO: remove all the unvaluable optimistic updates and just invalidate the queries onSettled
+// TODO: optimistic updates to improve
 // TODO: extract and use a watcher to check for error, ....
 const { mutate: addComment, isLoading: isAddCommentLoading, error: addCommentError } = useMutation<
   {
@@ -196,6 +196,7 @@ function onSubmit() {
     })
   }
   else {
+    // TODO: scroll to comment and highlight it
     addComment({
       postId: frontmatter.value.id,
       content: formData.value.content,

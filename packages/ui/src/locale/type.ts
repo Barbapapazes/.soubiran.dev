@@ -47,8 +47,10 @@ export interface LocaleMessages {
       publishedAt: string
     }
     CommentLike: {
-      like: string
-      unlike: string
+      title: string
+    }
+    CommentUnlike: {
+      title: string
     }
     CommentRepliesCount: {
       replies: string
