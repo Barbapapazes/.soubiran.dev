@@ -22,7 +22,14 @@
     "./src/index.ts",
     "./src/main.ts",
     "./src/App.vue",
-    "./src/components/*.vue",
+    "./src/vite-env.d.ts",
+    "./src/locale/*.ts",
+    "./src/types/*.ts",
+    "./src/api/**/*.ts",
+    "./src/utils/**/*.ts",
+    "./src/queries/**/*.ts",
+    "./src/mutations/**/*.ts",
+    "./src/components/**/*.vue",
     "./src/composables/*.ts"
   ]
 }

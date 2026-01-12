@@ -176,6 +176,7 @@ export default (title: string, hostname: string, options: Options, config: UserC
 
       markdown({
         headEnabled: true,
+        // TODO: only add a simple class and it will be styled by using global CSS from @soubiran/ui
         wrapperClasses: [
           'slide-enter-content',
           'max-w-none',
