@@ -7,7 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.3.0",
+    "@nuxt/ui": "^4.4.0",
     "@pinia/colada": "^0.19.1",
     "@soubiran/ui": "workspace:*",
     "@unhead/vue": "^2.0.19",

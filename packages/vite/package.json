@@ -30,7 +30,7 @@
     "build": "tsdown"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.2.0",
+    "@nuxt/ui": "^4.4.0",
     "@shikijs/markdown-it": "^3.15.0",
     "@soubiran/ui": "workspace:*",
     "@types/fs-extra": "^11.0.4",
