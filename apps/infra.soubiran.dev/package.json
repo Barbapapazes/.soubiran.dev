@@ -11,7 +11,7 @@
   "dependencies": {
     "@dagrejs/dagre": "^1.1.8",
     "@iconify/vue": "^5.0.0",
-    "@nuxt/ui": "^4.2.0",
+    "@nuxt/ui": "^4.4.0",
     "@pinia/colada": "^0.17.8",
     "@soubiran/ui": "workspace:*",
     "@unhead/vue": "^2.0.19",
