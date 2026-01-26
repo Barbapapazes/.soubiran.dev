@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.23.0",
+  "packageManager": "pnpm@10.28.2",
   "scripts": {
     "lint": "eslint",
     "lint:fix": "eslint --fix",
