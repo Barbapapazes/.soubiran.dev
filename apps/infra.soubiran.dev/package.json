@@ -30,7 +30,7 @@
   "devDependencies": {
     "@iconify-json/logos": "^1.2.10",
     "@iconify-json/ph": "^1.2.2",
-    "@iconify-json/simple-icons": "^1.2.59",
+    "@iconify-json/simple-icons": "^1.2.68",
     "@playwright/test": "^1.56.1",
     "@soubiran/vite": "workspace:*",
     "@tailwindcss/typography": "^0.5.19",
