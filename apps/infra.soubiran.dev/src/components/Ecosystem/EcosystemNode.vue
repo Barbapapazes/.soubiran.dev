@@ -99,6 +99,10 @@ const ecosystemNode = tv({
         base: 'border-litestream',
         type: 'bg-litestream/15 text-litestream',
       },
+      'evlog': {
+        base: 'border-evlog',
+        type: 'bg-evlog/15 text-evlog',
+      },
     },
   },
 })
@@ -127,7 +131,10 @@ function getTypeIcon(name: EcosystemName, type?: EcosystemType): string | object
       case 'stack':
       case 'deployment':
       case 'build':
+      case 'workflows':
         return 'cloudflare:workers'
+      case 'auth':
+        return 'cloudflare:one'
       case 'object-storage':
         return 'cloudflare:r2'
       case 'domain':
@@ -201,6 +208,8 @@ function getTypeLogo(name: EcosystemName): string | undefined {
       return 'https://docs.partykit.io/favicon.svg'
     case 'Litestream':
       return 'https://litestream.io/favicon-16x16.png'
+    case 'Evlog':
+      return 'https://evlog.dev/favicon.ico'
     default:
       return undefined
   }

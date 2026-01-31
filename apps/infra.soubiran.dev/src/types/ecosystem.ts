@@ -11,11 +11,13 @@ export type EcosystemType
     | 'website'
     | 'realtime'
     | 'auth'
+    | 'workflows'
 export type EcosystemName
   = | 'Cloudflare Workers'
     | 'Cloudflare Build'
     | 'Cloudflare R2'
     | 'Cloudflare Domains'
+    | 'Cloudflare Workflows'
     | 'Forge'
     | 'Hetzner'
     | 'Authentik'
