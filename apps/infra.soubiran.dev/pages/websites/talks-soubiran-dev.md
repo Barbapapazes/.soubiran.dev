@@ -26,6 +26,17 @@ ecosystem:
               - type: stack
                 name: Slidev
                 href: 'https://sli.dev'
+              - type: stack
+                name: Cloudflare Workers
+                href: 'https://workers.cloudflare.com/'
+          - type: workflows
+            id: trigger-deployment-from-talks-soubiran-dev
+            name: Cloudflare Workflows
+            description: Wait for the build of talks.soubiran.dev to finish, then trigger a deployment to soubiran.dev.
+            ecosystem:
+            - type: ci/cd
+              name: GitHub Actions
+              description: Trigger a workflow on every commit to the talks repository on the main branch.
   - type: object-storage
     id: talks-soubiran-dev
     name: Cloudflare R2
@@ -59,4 +70,4 @@ PDF exports and thumbnails for each talk are generated locally and pushed to [R2
 
 ## Automation
 
-To ensure [soubiran.dev](/websites/soubiran-dev) always has the latest talks, a GitHub Actions workflow triggers a rebuild and redeployment on every push to the [talks repository](https://github.com/barbapapazes/talks). This way, any new talk added to the repository is automatically reflected on the website, without manual intervention. This makes it easy to keep the talks list up to date with changes, like a new talk or a new recording added to an existing talk.
+To ensure [soubiran.dev](/websites/soubiran-dev) always has the latest talks, a GitHub Actions workflow triggers a [Cloudflare Workflow](https://developers.cloudflare.com/workflows/) on every push to the main branch of the talks repository. The workflow waits for the build to finish, then triggers a deployment to soubiran.dev. This way, any new talk added to the repository is automatically reflected on the website, without manual intervention. This makes it easy to keep the talks list up to date with changes, like a new talk or a new recording added to an existing talk.

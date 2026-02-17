@@ -34,6 +34,10 @@ ecosystem:
           - type: ci/cd
             name: GitHub Actions
             description: Trigger a build every day.
+          - type: workflows
+            id: trigger-deployment-from-talks-soubiran-dev
+            name: Cloudflare Workflows
+            description: Wait for the build of talks.soubiran.dev to finish, then trigger a deployment to soubiran.dev.
           - type: data
             name: talks.soubiran.dev
             description: Fetch talks data.

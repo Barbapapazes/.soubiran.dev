@@ -63,5 +63,23 @@
     "scss",
     "pcss",
     "postcss"
+  ],
+  "cSpell.words": [
+    "authentik",
+    "cloudflare",
+    "colada",
+    "evlog",
+    "github",
+    "githubactions",
+    "hetzner",
+    "inertiajs",
+    "laravel",
+    "litestream",
+    "nuxt",
+    "partykit",
+    "pinia",
+    "slidev",
+    "soubiran",
+    "vitepress"
   ]
 }
