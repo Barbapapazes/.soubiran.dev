@@ -10,5 +10,6 @@ export const commentsByPageIdQuery = defineQueryOptions(
   ({ id }: { id: string }) => ({
     key: COMMENT_QUERY_KEY.byPageId(id),
     query: () => getComments(id),
+    enabled: typeof window !== 'undefined',
   }),
 )

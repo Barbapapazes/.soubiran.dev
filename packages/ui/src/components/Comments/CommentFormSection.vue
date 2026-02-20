@@ -12,10 +12,12 @@ const commentFormSection = tv({
   slots: {
     base: 'space-y-2',
     header: 'flex items-center gap-2',
+    title: 'font-medium text-default',
   },
 })
 
 export interface CommentFormSectionProps {
+  id: string
   class?: any
   ui?: Partial<typeof commentFormSection.slots>
 }
@@ -43,14 +45,16 @@ const ui = computed(() => commentFormSection())
         :src="user.data.avatar"
         :title="user.data.name"
       />
-      <!-- TODO: How to manage this Heading3? -->
-      <Heading3>
+      <h3 :class="ui.title({ class: props.ui?.title })">
         {{ t('comments.CommentFormSection.title') }}
-      </Heading3>
+      </h3>
     </div>
 
     <LoginRequired v-if="!user" fragment="comments" />
 
-    <CommentForm v-else />
+    <CommentForm
+      v-else
+      :id="props.id"
+    />
   </section>
 </template>

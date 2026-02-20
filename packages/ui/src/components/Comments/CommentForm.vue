@@ -5,14 +5,17 @@ import { useMutation, useQueryCache } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed, ref, useTemplateRef } from 'vue'
 import { postComment, putComment } from '../../api/comments'
-import { useFrontmatter } from '../../composables/useFrontmatter'
 import { useLocale } from '../../composables/useLocale'
+import { COMMENT_QUERY_KEY } from '../../queries/comments'
+import Editor from '../Editor.vue'
+import Form from '../Form.vue'
 
 const commentForm = tv({
   base: 'space-y-2',
 })
 
 export interface CommentFormProps {
+  id: string
   cancelable?: boolean
   parentComment?: Comment
   comment?: Comment
@@ -35,18 +38,11 @@ const formData = ref({
   parentId: props.parentComment?.id,
 })
 
-// TODO: remove toast usage
-// const { add } = useToast()
-
 const { t } = useLocale()
-
-const { frontmatter } = useFrontmatter()
 
 const queryCache = useQueryCache()
 
-// TODO: optimistic updates to improve
-// TODO: extract and use a watcher to check for error, ....
-const { mutate: addComment, isLoading: isAddCommentLoading, error: addCommentError } = useMutation<
+const { mutateAsync: addComment, isLoading: isAddCommentLoading, error: addCommentError } = useMutation<
   {
     data: Comment
   },
@@ -61,57 +57,15 @@ const { mutate: addComment, isLoading: isAddCommentLoading, error: addCommentErr
   }
 >({
   mutation: ({ postId, content, parentId }) => postComment(postId, content, parentId),
-
-  onSuccess: ({ data: comment }, { parentId }) => {
-    const oldComments = queryCache.getQueryData<Comment[]>(['comments', frontmatter.value.id]) || [] as Comment[]
-
-    // Since it's a deep nested array, we need to clone it to trigger the reactivity
-    const newComments = JSON.parse(JSON.stringify(oldComments)) as Comment[]
-
-    if (parentId) {
-      const parentComment = newComments.find(c => c.id === parentId)
-      if (parentComment) {
-        parentComment.replies.push(comment)
-      }
-    }
-    else {
-      newComments.push(comment)
-    }
-
-    queryCache.setQueryData(['comments', frontmatter.value.id], newComments)
-    queryCache.cancelQueries({ key: ['comments', frontmatter.value.id], exact: true })
-
-    // TODO: remove toasts, use something else in the UI
-    // const toastContent = parentId
-    //   ? theme.value.comments.mutations.addComment.replyAdded
-    //   : theme.value.comments.mutations.addComment.commentAdded
-
-    // add({
-    //   ...toastContent,
-    //   color: 'success',
-    // })
-
+  onSuccess: () => {
     clearFormData()
-
     emits('success')
   },
-  // onError: (error) => {
-  //   // if (error instanceof FetchError) {
-  //   //   return
-  //   // }
-
-  //   // TODO: remove toasts, use something else in the UI
-  //   // add({
-  //   //   ...theme.value.comments.mutations.addComment.somethingWentWrong,
-  //   //   color: 'error',
-  //   // })
-  // },
-
   onSettled: () =>
-    queryCache.invalidateQueries({ key: ['comments', frontmatter.value.id], exact: true }),
+    queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id), exact: true }),
 })
 
-const { mutate: updateComment, isLoading: isUpdateCommentLoading, error: updateCommentError } = useMutation<
+const { mutateAsync: updateComment, isLoading: isUpdateCommentLoading, error: updateCommentError } = useMutation<
   {
     data: Comment
   },
@@ -126,83 +80,52 @@ const { mutate: updateComment, isLoading: isUpdateCommentLoading, error: updateC
   }
 >({
   mutation: ({ commentId, content }) => putComment(commentId, content),
-
-  onSuccess: (response, { parentId }) => {
-    const oldComments = queryCache.getQueryData<Comment[]>(['comments', frontmatter.value.id]) || [] as Comment[]
-
-    // Since it's a deep nested array, we need to clone it to trigger the reactivity
-    const newComments = JSON.parse(JSON.stringify(oldComments)) as Comment[]
-
-    if (parentId) {
-      const parentComment = newComments.find(c => c.id === parentId)
-      if (parentComment) {
-        const replyIndex = parentComment.replies.findIndex(r => r.id === response.data.id)
-
-        if (replyIndex !== -1) {
-          parentComment.replies[replyIndex] = response.data
-        }
-      }
-    }
-    else {
-      const commentIndex = newComments.findIndex(c => c.id === response.data.id)
-      if (commentIndex !== -1) {
-        newComments[commentIndex] = response.data
-      }
-    }
-
-    queryCache.setQueryData(['comments', frontmatter.value.id], newComments)
-    queryCache.cancelQueries({ key: ['comments', frontmatter.value.id], exact: true })
-
-    // TODO: remove toasts, use something else in the UI
-    // const toastContent = parentId
-    //   ? theme.value.comments.mutations.updateComment.replyUpdated
-    //   : theme.value.comments.mutations.updateComment.commentUpdated
-
-    // add({
-    //   ...toastContent,
-    //   color: 'success',
-    // })
-
+  onSuccess: () => {
     clearFormData()
-
     emits('success')
   },
-
-  // onError: (error) => {
-  //   if (error instanceof FetchError) {
-  //     return
-  //   }
-
-  //   // TODO: remove toasts, use something else in the UI
-  //   // add({
-  //   //   ...theme.value.comments.mutations.updateComment.somethingWentWrong,
-  //   //   color: 'error',
-  //   // })
-  // },
-
   onSettled: () =>
-    queryCache.invalidateQueries({ key: ['comments', frontmatter.value.id], exact: true }),
+    queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id), exact: true }),
 })
 
 const isLoading = computed(() => isAddCommentLoading.value || isUpdateCommentLoading.value)
 const errors = computed(() => addCommentError.value?.data.errors || updateCommentError.value?.data.errors)
 
-function onSubmit() {
+async function onSubmit() {
   if (props.comment) {
-    updateComment({
+    const { data: comment } = await updateComment({
       commentId: props.comment.id,
       content: formData.value.content,
       parentId: formData.value.parentId,
     })
+    highlightComment(comment)
   }
   else {
-    // TODO: scroll to comment and highlight it
-    addComment({
-      postId: frontmatter.value.id,
+    const { data: comment } = await addComment({
+      postId: props.id,
       content: formData.value.content,
       parentId: formData.value.parentId,
     })
+
+    highlightComment(comment)
   }
+}
+
+function highlightComment(comment: Comment) {
+  const commentElement = document.getElementById(comment.html_id)
+  if (!commentElement)
+    return
+
+  const classList = ['outline-2', 'outline-inverted', 'outline-offset-2']
+  commentElement.parentElement!.classList.add(...classList)
+  setTimeout(() => {
+    commentElement.parentElement!.classList.remove(...classList)
+  }, 2000)
+
+  window.scrollTo({
+    top: commentElement.offsetTop - 100,
+    behavior: 'smooth',
+  })
 }
 
 function clearFormData() {

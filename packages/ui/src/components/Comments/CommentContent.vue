@@ -3,12 +3,14 @@ import type { Comment } from '../../types/comment'
 import type Editor from '../Editor.vue'
 import { tv } from 'tailwind-variants'
 import { computed, nextTick, ref, watch } from 'vue'
+import CommentForm from './CommentForm.vue'
 
 const commentContent = tv({
   base: '',
 })
 
 export interface CommentContentProps {
+  id: string
   parentComment?: Comment
   comment: Comment
   class?: any
@@ -47,6 +49,7 @@ const ui = computed(() => commentContent({ class: props.class }))
 <template>
   <CommentForm
     v-if="viewEditor"
+    :id="props.id"
     ref="editor"
     cancelable
     :comment="comment"

@@ -7,7 +7,6 @@ import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import heartFill from '~icons/ph/heart-fill'
 import { deleteCommentLike } from '../../api/comments'
-import { useFrontmatter } from '../../composables/useFrontmatter'
 import { useLocale } from '../../composables/useLocale'
 import { COMMENT_QUERY_KEY } from '../../queries/comments'
 import { currentUserQuery } from '../../queries/users'
@@ -21,6 +20,7 @@ const commentUnlike = tv({
 })
 
 export interface CommentUnlikeProps {
+  id: string
   parentComment?: Comment
   comment: Comment
   class?: any
@@ -35,7 +35,6 @@ const props = defineProps<CommentUnlikeProps>()
 defineEmits<CommentUnlikeEmits>()
 defineSlots<CommentUnlikeSlots>()
 
-const { frontmatter } = useFrontmatter()
 const { t } = useLocale()
 
 const queryCache = useQueryCache()
@@ -44,7 +43,7 @@ const { mutate } = useMutation({
   mutation: ({ commentId }: { parentCommentId?: number, commentId: number }) => deleteCommentLike(commentId),
 
   onMutate({ parentCommentId, commentId }) {
-    const oldComments = queryCache.getQueryData<{ data: Comment[] }>(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id))!
+    const oldComments = queryCache.getQueryData<{ data: Comment[] }>(COMMENT_QUERY_KEY.byPageId(props.id))!
 
     const newComments = structuredClone(oldComments)
 
@@ -60,20 +59,20 @@ const { mutate } = useMutation({
       comment.can.unlike = false
     }
 
-    queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id), newComments)
-    queryCache.cancelQueries({ key: COMMENT_QUERY_KEY.byPageId(frontmatter.value.id) })
+    queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(props.id), newComments)
+    queryCache.cancelQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id) })
 
     return { oldComments, newComments }
   },
 
   onError: (_, __, { oldComments, newComments }) => {
-    if (newComments === queryCache.getQueryData(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id))) {
-      queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id), oldComments)
+    if (newComments === queryCache.getQueryData(COMMENT_QUERY_KEY.byPageId(props.id))) {
+      queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(props.id), oldComments)
     }
   },
 
   onSettled: () => {
-    queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(frontmatter.value.id) })
+    queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id) })
   },
 })
 

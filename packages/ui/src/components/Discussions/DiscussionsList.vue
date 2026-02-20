@@ -2,7 +2,6 @@
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
-import { useFrontmatter } from '../../composables/useFrontmatter'
 import { commentsByPageIdQuery } from '../../queries/comments'
 import Discussion from './Discussion.vue'
 
@@ -14,6 +13,7 @@ const discussionsList = tv({
 })
 
 export interface DiscussionsListProps {
+  id: string
   class?: any
   ui?: Partial<typeof discussionsList.slots>
 }
@@ -26,8 +26,7 @@ const props = defineProps<DiscussionsListProps>()
 defineEmits<DiscussionsListEmits>()
 defineSlots<DiscussionsListSlots>()
 
-const { frontmatter } = useFrontmatter()
-const { data: comments } = useQuery(commentsByPageIdQuery, () => ({ id: frontmatter.value.id }))
+const { data: comments } = useQuery(commentsByPageIdQuery, () => ({ id: props.id }))
 
 const ui = computed(() => discussionsList())
 </script>
@@ -36,6 +35,7 @@ const ui = computed(() => discussionsList())
   <div v-if="comments" :class="ui.base({ class: [props.class, props.ui?.base] })">
     <Discussion
       v-for="comment in comments.data"
+      :id="props.id"
       :key="comment.id"
       :comment="comment"
       :class="ui.discussion({ class: props.ui?.discussion })"

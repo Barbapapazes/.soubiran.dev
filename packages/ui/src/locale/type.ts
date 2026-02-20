@@ -72,6 +72,9 @@ export interface LocaleMessages {
     DiscussionsSection: {
       empty: string
     }
+    DiscussionsSectionTitle: {
+      title: string
+    }
     DiscussionsSectionSubtitle: {
       comments: {
         singular: string
@@ -82,5 +85,10 @@ export interface LocaleMessages {
         plural: string
       }
     }
+  }
+  state: {
+    empty: string
+    error: string
+    pending: string
   }
 }

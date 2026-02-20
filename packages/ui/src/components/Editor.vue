@@ -13,10 +13,10 @@ import { useLocale } from '../composables/useLocale'
 
 const editor = tv({
   slots: {
-    root: 'overflow-hidden border rounded-md',
+    root: 'overflow-hidden border border-muted rounded-md',
     tabs: 'mb-[-1px] ml-[-1px] mt-[-1px] bg-muted text-sm space-x-1',
-    tab: 'relative border-x rounded-t-md px-4 py-2 text-sm text-dimmed data-[state=active]:border-t data-[state=inactive]:border-transparent data-[state=active]:bg-default data-[state=active]:text-default hover:text-default focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:ring-inverted',
-    content: 'data-[state=active]:p-2 flex flex-col gap-1 border-t bg-default',
+    tab: 'relative border-x rounded-t-md px-4 py-2 text-sm text-dimmed data-[state=active]:border-t data-[state=active]:border-muted data-[state=inactive]:border-transparent data-[state=active]:bg-default data-[state=active]:text-default hover:text-default focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:ring-inverted',
+    content: 'data-[state=active]:p-2 flex flex-col gap-1 border-t border-muted bg-default',
     preview: '',
     prose: 'w-full rounded-md p-2 text-sm',
   },
@@ -95,7 +95,7 @@ const ui = computed(() => editor())
           ref="textarea"
           v-model="content"
           variant="none"
-          :ui="{ root: 'flex', base: 'w-full' }"
+          :ui="{ root: 'flex', base: 'w-full resize-none' }"
           :rows="4"
           :placeholder="t('Editor.placeholder')"
           v-bind="props.textarea"

@@ -2,12 +2,13 @@
 import type { Comment } from '../../../types/comment'
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
-import { computed } from 'vue'
+import { computed, nextTick } from 'vue'
 import { deleteComment } from '../../../api/comments'
-import { useFrontmatter } from '../../../composables/useFrontmatter'
+import { useDiscussionsAlert } from '../../../composables/useDiscussionsAlert'
 import { useLocale } from '../../../composables/useLocale'
 import { COMMENT_QUERY_KEY } from '../../../queries/comments'
 import { getCommentById } from '../../../utils/comments'
+import ConfirmModal from '../../ConfirmModal.vue'
 
 const confirmDeleteCommentModal = tv({
   slots: {
@@ -16,6 +17,7 @@ const confirmDeleteCommentModal = tv({
 })
 
 export interface ConfirmDeleteCommentModalProps {
+  id: string
   comment: Comment
   parentComment?: Comment
   class?: any
@@ -34,50 +36,22 @@ defineSlots<ConfirmDeleteCommentModalSlots>()
 
 const { t } = useLocale()
 
-const { frontmatter } = useFrontmatter()
+const { show } = useDiscussionsAlert()
 const queryCache = useQueryCache()
-const { mutate } = useMutation({
+const { mutate, isLoading } = useMutation({
   mutation: ({ commentId }: { commentId: number, parentCommentId?: number }) => deleteComment(commentId),
-
-  onMutate: () => {
-    const oldComments = queryCache.getQueryData<{ data: Comment[] }>(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id))!
-
-    const newComments = structuredClone(oldComments)
-
-    if (props.parentComment?.id) {
-      const comment = getCommentById(newComments.data, props.comment.id, props.parentComment.id)
-
-      if (comment) {
-        comment.replies = comment.replies.filter(reply => reply.id !== props.comment.id)
-      }
-    }
-    else {
-      newComments.data.splice(
-        newComments.data.findIndex(c => c.id === props.comment.id),
-        1,
-      )
-    }
-
-    queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id), newComments)
-    queryCache.cancelQueries({ key: COMMENT_QUERY_KEY.byPageId(frontmatter.value.id) })
-
-    return { oldComments, newComments }
-  },
-
   onSuccess: () => {
-    // TODO: show a message?
+    show(t('comments.CommentConfirmDelete.successMessage'))
   },
 
-  onError: (_, __, { oldComments, newComments }) => {
-    if (newComments === queryCache.getQueryData(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id))) {
-      queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(frontmatter.value.id), oldComments)
-    }
-
-    // TODO: show a message?
+  onError: () => {
+    show(t('comments.CommentConfirmDelete.errorMessage'), 'error')
   },
 
-  onSettled: () => {
-    queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(frontmatter.value.id) })
+  onSettled: async () => {
+    await queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id) })
+
+    emit('close')
   },
 })
 
@@ -90,8 +64,6 @@ function onConfirm() {
     parentCommentId: props.parentComment?.id,
     commentId: props.comment.id,
   })
-
-  emit('close')
 }
 
 const ui = computed(() => confirmDeleteCommentModal())
@@ -101,6 +73,7 @@ const ui = computed(() => confirmDeleteCommentModal())
   <ConfirmModal
     :title="t('comments.CommentConfirmDelete.title')"
     :description="t('comments.CommentConfirmDelete.description')"
+    :loading="isLoading"
     :class="ui.base({ class: [props.ui?.base, props.class] })"
     @close="onClose"
     @confirm="onConfirm"

@@ -3,7 +3,6 @@ import type { Comment } from '../../types/comment'
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
-import { useFrontmatter } from '../../composables/useFrontmatter'
 import { useLocale } from '../../composables/useLocale'
 import { commentsByPageIdQuery } from '../../queries/comments'
 
@@ -12,6 +11,7 @@ const discussionsSectionSubtitle = tv({
 })
 
 export interface DiscussionsSectionSubtitleProps {
+  id: string
   class?: any
 }
 export interface DiscussionsSectionSubtitleEmits {}
@@ -24,8 +24,7 @@ defineEmits<DiscussionsSectionSubtitleEmits>()
 defineSlots<DiscussionsSectionSubtitleSlots>()
 
 const { t } = useLocale()
-const { frontmatter } = useFrontmatter()
-const { data: comments } = useQuery(commentsByPageIdQuery, () => ({ id: frontmatter.value.id }))
+const { data: comments } = useQuery(commentsByPageIdQuery, () => ({ id: props.id }))
 
 const commentsSubtitle = computed(() => {
   const count = comments.value?.data.length ?? 0

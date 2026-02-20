@@ -45,6 +45,7 @@ const comment = tv({
 })
 
 export interface CommentProps {
+  id: string
   parentComment?: Comment
   comment: Comment
   class?: any
@@ -58,15 +59,6 @@ export interface CommentSlots {}
 const props = defineProps<CommentProps>()
 defineEmits<CommentEmits>()
 defineSlots<CommentSlots>()
-
-// Check if we need to focus the comment (when linked to it) (I think yes)
-// onMounted(() => {
-//   const location = useBrowserLocation()
-
-//   watchEffect(() => {
-//     focusTargetComment(location.value.hash)
-//   })
-// })
 
 const { t } = useLocale()
 
@@ -99,6 +91,7 @@ const actions = computed(() => {
       onSelect: () => {
         overlay.create(CommentConfirmDelete, {
           props: {
+            id: props.id,
             comment: props.comment,
             parentComment: props.parentComment,
           },
@@ -149,6 +142,7 @@ const ui = computed(() => comment({
 
     <div :class="ui.contentWrapper({ class: props.ui?.contentWrapper })">
       <CommentContent
+        :id="props.id"
         v-model:view-editor="viewEditCommentEditor"
         :parent-comment="props.parentComment"
         :comment="props.comment"
@@ -158,12 +152,14 @@ const ui = computed(() => comment({
       <div :class="ui.contentFooter({ class: props.ui?.contentFooter })">
         <CommentLike
           v-if="props.comment.can.like"
+          :id="props.id"
           :parent-comment="props.parentComment"
           :comment="props.comment"
           :class="ui.like({ class: props.ui?.like })"
         />
         <CommentUnlike
           v-else-if="props.comment.can.unlike"
+          :id="props.id"
           :parent-comment="props.parentComment"
           :comment="props.comment"
           :class="ui.like({ class: props.ui?.like })"

@@ -12,11 +12,12 @@ import LoginModal from '../LoginModal.vue'
 
 const discussionReply = tv({
   slots: {
-    button: 'justify-start text-neutral-500 dark:text-neutral-400',
+    button: 'justify-start text-muted',
   },
 })
 
 export interface DiscussionReplyProps {
+  id: string
   parentComment: Comment
   class?: any
   ui?: Partial<typeof discussionReply.slots>
@@ -68,6 +69,7 @@ const ui = computed(() => discussionReply())
 <template>
   <CommentForm
     v-if="isFormShown"
+    :id="props.id"
     ref="form"
     cancelable
     :parent-comment="props.parentComment"

@@ -21,5 +21,19 @@
     "eslint": "^10.2.1",
     "taze": "^19.11.0",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "markdown-it": "npm:markdown-exit@1.0.0-beta.6"
+    },
+    "patchedDependencies": {
+      "vite-ssg": "patches/vite-ssg.patch",
+      "markdown-it-table-of-contents": "patches/markdown-it-table-of-contents.patch"
+    },
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "vue-demi"
+    ]
   }
 }

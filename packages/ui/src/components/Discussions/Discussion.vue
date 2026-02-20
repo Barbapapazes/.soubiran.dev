@@ -7,13 +7,14 @@ import DiscussionReply from './DiscussionReply.vue'
 
 const discussion = tv({
   slots: {
-    base: 'overflow-hidden border border-neutral-200 rounded-md dark:border-neutral-600',
-    answers: 'bg-neutral-50 dark:bg-neutral-950',
+    base: 'overflow-hidden border border-muted rounded-md',
+    answers: 'bg-muted',
     reply: 'p-2',
   },
 })
 
 export interface DiscussionProps {
+  id: string
   comment: Comment
   class?: any
   ui?: Partial<typeof discussion.slots>
@@ -32,7 +33,7 @@ const ui = computed(() => discussion())
 
 <template>
   <div :class="ui.base({ class: [props.class, props.ui?.base] })">
-    <CommentVue :comment="comment" />
+    <CommentVue :id="props.id" :comment="comment" />
 
     <div
       v-if="comment.replies.length"
@@ -40,6 +41,7 @@ const ui = computed(() => discussion())
     >
       <CommentVue
         v-for="reply in comment.replies"
+        :id="props.id"
         :key="reply.id"
         :parent-comment="comment"
         :comment="reply"
@@ -47,7 +49,7 @@ const ui = computed(() => discussion())
     </div>
 
     <div :class="ui.reply({ class: props.ui?.reply })">
-      <DiscussionReply :parent-comment="comment" />
+      <DiscussionReply :id="props.id" :parent-comment="comment" />
     </div>
   </div>
 </template>
