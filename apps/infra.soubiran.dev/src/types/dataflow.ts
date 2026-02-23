@@ -4,6 +4,7 @@ export interface DataflowStep {
   description?: string
   icon?: string
   color?: string
+  children?: DataflowStep[]
 }
 
 export type Dataflow = DataflowStep[]
