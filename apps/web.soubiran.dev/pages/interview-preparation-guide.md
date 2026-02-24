@@ -4,6 +4,32 @@ title: Interview Preparation Guide
 description: A comprehensive guide to help you prepare for technical and HR interviews, focusing on storytelling, reliability, and professionalism.
 ---
 
+<!--
+
+put the following in the inverview preparation guide:
+
+coloration cyber
+
+infomaniak => stack, nombre de personnes dans les équipes ()
+maiaspace => amener les choses pour dire que t'es intégré dans une équipe, et prendre la stack (et faire un lien avec la cyber)
+takima => dire un peu plus, toucher à plus de choses, à des éléments plus pro et conférence sur java, je veux comprendre de quoi ća parle
+(et là le but, c'est de devenir meilleur et projet interne chez eux)
+donner les éléments de la stack et des éléments techniques
+évoquer le fait que ça m'ait servi d'avoir cette coloration cyber dans mes différentes expériences (et qu'au regarde du nombre de fuites de données en ce moment, c'est un sujet essentiel)
+
+j'aime recreuser les choses en profondeurs, j'aime partager
+
+ça m'a amené à créer un blog en 2024 où je partage des articles tel que j'aurais aimé les lire quand j'ai commencé le dev web
+dans le même temps, j'ai commencé à participer à des meetups et des conférences puis à en donner. 19 l'an dernier.
+
+Et dans cette continuité d'apprentissage et de rendre à la communauté, je participe à des projets open-source, principalement autour de l'écosystème TypeScript, Vite, Vue et Nuxt.
+
+Et en ce moment, je parle d'IA sur mes réseaux, dont LinkedIn. C'est passionnant comme sujet. D'ailleurs, j'ai vu que vous vous étiez aussi lancé dans l'IA avec Nexus?
+
+prendre du context de eux et vous ? et j'ai vu sur votre landing page que vous poussiez fortement l'AI
+
+ -->
+
 This guide is designed to help you transition from a "student/intern" mindset to a "reliable professional" during technical and HR interviews. The goal is to convince the recruiter that you are not just a coder, but a valuable asset to the team.
 
 ## Recap
