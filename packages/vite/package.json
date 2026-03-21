@@ -64,6 +64,6 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "tsdown": "^0.18.4"
+    "tsdown": "^0.21.4"
   }
 }

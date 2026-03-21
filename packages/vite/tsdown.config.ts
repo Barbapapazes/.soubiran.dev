@@ -5,10 +5,12 @@ export default defineConfig({
     './vite.config.ts',
     './src/utils.ts',
   ],
-  noExternal: [
+  deps: {
+    alwaysBundle: [
     // Because of the patch, it's better to bundle it directly
     'markdown-it-table-of-contents',
-  ],
+  ]
+  },
   copy: [
     { from: 'src/og-template.svg', to: 'dist' },
   ],
