@@ -7,7 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@nuxt/ui": "^4.3.0",
+    "@nuxt/ui": "^4.5.1",
     "@pinia/colada": "^1.0.0",
     "@soubiran/ui": "workspace:*",
     "@unhead/vue": "^2.0.19",
@@ -17,7 +17,7 @@
     "ofetch": "^1.5.1",
     "pinia": "^3.0.4",
     "tailwind-variants": "^3.2.2",
-    "vue": "^3.5.25"
+    "vue": "^3.5.30"
   },
   "devDependencies": {
     "@iconify-json/ph": "^1.2.2",
@@ -25,7 +25,7 @@
     "@soubiran/vite": "workspace:*",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^25.0.3",
-    "@vue/tsconfig": "^0.8.1",
+    "@vue/tsconfig": "^0.9.0",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",
     "unplugin-icons": "^22.5.0",
