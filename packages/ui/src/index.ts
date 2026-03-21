@@ -11,3 +11,5 @@ export { default as TableOfContents } from './components/TableOfContents.vue'
 export { default as ViewersCounter } from './components/ViewersCounter.vue'
 export { default as useTableOfContents } from './composables/useTableOfContents'
 export { default as useUmami } from './composables/useUmami'
+
+import './styles.css'

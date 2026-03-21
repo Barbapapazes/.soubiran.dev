@@ -5,7 +5,6 @@ import vue from 'unplugin-vue/rolldown'
 export default defineConfig({
   entry: [
     './src/index.ts',
-    './src/styles.css',
   ],
   platform: 'browser',
   tsconfig: './tsconfig.app.json',
