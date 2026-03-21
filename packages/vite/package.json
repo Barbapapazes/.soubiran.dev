@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@nuxt/ui": "4.5.0",
-    "@shikijs/markdown-it": "^3.23.0",
+    "@shikijs/markdown-it": "^4.0.2",
     "@soubiran/ui": "workspace:*",
     "@types/fs-extra": "^11.0.4",
     "@types/markdown-it": "^14.1.2",
@@ -50,7 +50,7 @@
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-table-of-contents": "^1.1.0",
     "sharp": "^0.34.5",
-    "shiki": "^3.23.0",
+    "shiki": "^4.0.2",
     "sitemap": "^9.0.1",
     "typescript": "^5.9.3",
     "ufo": "^1.6.3",
