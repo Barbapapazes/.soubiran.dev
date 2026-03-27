@@ -48,7 +48,7 @@ As the website replicates features from [soubiran.dev](/websites/soubiran-dev), 
 <Dataflow :steps="[
   { id: 'user', label: 'User Agent', description: 'Browser or client requesting the website', icon: 'user' },
   { id: 'domain', label: 'preview.soubiran.dev', description: 'Domain registered with Cloudflare', icon: 'domain' },
-  { id: 'worker', label: 'Cloudflare Worker', description: 'Authenticates via GitHub OAuth and checks sponsorship status', icon: 'worker' },
+  { id: 'worker', label: 'Cloudflare Worker', description: 'Authenticates via GitHub OAuth and checks sponsorship status', icon: 'cloudflare-worker' },
   { id: 'assets', label: 'Static Assets', description: 'Vite-built website files served if authenticated', icon: 'assets' }
 ]" />
 
