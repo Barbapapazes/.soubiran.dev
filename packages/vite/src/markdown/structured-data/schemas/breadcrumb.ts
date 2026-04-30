@@ -1,31 +1,16 @@
-import type { Options } from './options'
+import type { Options } from '../types'
+import type { BreadcrumbData, BreadcrumbItem } from './types'
 import { joinURL } from 'ufo'
-import { getUri, toUrl } from '../utils'
-
-interface BreadcrumbData {
-  '@type': 'BreadcrumbList'
-  '@id': string
-  'itemListElement': {
-    '@type': 'ListItem'
-    'position': number
-    'name': string
-    'item'?: {
-      '@type': 'WebSite' | 'WebPage'
-      '@id': string
-    }
-  }[]
-}
-
-export interface BreadcrumbItem {
-  title: string
-  type?: 'WebSite' | 'WebPage'
-  url?: string
-}
+import { getUri, toUrl } from '../../../utils'
 
 /**
  * @see https://developer.yoast.com/features/schema/pieces/breadcrumb/
  */
-export function breadcrumb(id: string, items: BreadcrumbItem[], options: Options) {
+export function breadcrumb(
+  id: string,
+  items: BreadcrumbItem[],
+  options: Options,
+) {
   const data: BreadcrumbData = {
     '@type': 'BreadcrumbList',
     '@id': joinURL(toUrl(options.hostname), '#', 'schema', 'BreadcrumbList', getUri(id)),

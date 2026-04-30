@@ -1,5 +1,5 @@
 import { joinURL } from 'ufo'
-import { getUri, toUrl } from './utils'
+import { getUri, toUrl } from '../utils'
 
 export function getCanonicalUrl(id: string, hostname: string) {
   return joinURL(toUrl(hostname), getUri(id))

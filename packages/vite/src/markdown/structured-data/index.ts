@@ -1,26 +1,24 @@
-import type { BreadcrumbItem } from './breadcrumb'
-import type { PersonOptions } from './person'
-import { toUrl } from '../utils'
-import { article } from './article'
-import { breadcrumb } from './breadcrumb'
-import { person } from './person'
-import { webpage } from './webpage'
-import { website } from './website'
+import type { StructuredDataPageConfig } from './types'
+import { toUrl } from '../../utils'
+import { DEFAULT_PERSON } from './constants'
+import { article } from './schemas/article'
+import { breadcrumb } from './schemas/breadcrumb'
+import { person } from './schemas/person'
+import { webpage } from './schemas/webpage'
+import { website } from './schemas/website'
 
-export interface StructuredDataPageConfig {
-  type: 'article' | 'collection' | 'default'
-  breadcrumbItems?: BreadcrumbItem[]
-}
-
-interface StructuredDataOptions {
+interface Options {
   name: string
   hostname: string
-  person: PersonOptions
   extractPage: (id: string) => string | null
   getPageConfig?: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
 }
 
-export function structuredData(id: string, frontmatter: Record<string, any>, options: StructuredDataOptions) {
+export function structuredData(
+  id: string,
+  frontmatter: Record<string, any>,
+  options: Options,
+) {
   const { name, hostname, extractPage, getPageConfig } = options
   const graph = {
     '@context': 'https://schema.org',
@@ -33,7 +31,7 @@ export function structuredData(id: string, frontmatter: Record<string, any>, opt
     url: toUrl(hostname),
   }
 
-  const personData = person(structuredDataOptions, options.person)
+  const personData = person(DEFAULT_PERSON, structuredDataOptions)
   const websiteData = website({ person: personData }, structuredDataOptions)
   const webpageData = webpage(id, { website: websiteData }, {
     title: frontmatter.title,

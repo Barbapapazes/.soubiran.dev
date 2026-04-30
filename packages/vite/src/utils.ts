@@ -1,7 +1,12 @@
 import { joinURL, withoutTrailingSlash } from 'ufo'
+import { indexSuffixRE, markdownExtensionRE, vueExtensionRE } from './constants'
 
 export function getUri(id: string) {
-  return withoutTrailingSlash(id.split('/pages/')[1].replace(/\.md$/, '').replace(/\.vue$/, '').replace(/index$/, ''))
+  return withoutTrailingSlash(id
+    .split('/pages/')[1]
+    .replace(markdownExtensionRE, '')
+    .replace(vueExtensionRE, '')
+    .replace(indexSuffixRE, ''))
 }
 
 export function toUrl(hostname: string, ...paths: string[]) {

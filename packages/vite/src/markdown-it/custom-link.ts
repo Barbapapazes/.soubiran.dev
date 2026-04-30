@@ -1,5 +1,7 @@
 import type { MarkdownItAsync } from 'markdown-it-async'
 
+const internalLinkRE = /^https?:\/\/(?:[a-z0-9-]+\.)?soubiran\.dev(?:[/?#]|$)/
+
 export function customLink(md: MarkdownItAsync, hostname: string) {
   md.use((md) => {
     const linkRule = md.renderer.rules.link_open!
@@ -8,7 +10,7 @@ export function customLink(md: MarkdownItAsync, hostname: string) {
       const href = token.attrGet('href')
 
       // Add UTM for internal links (including subdomains)
-      if (href && /^https?:\/\/(?:[a-z0-9-]+\.)?soubiran\.dev(?:[/?#]|$)/.test(href)) {
+      if (href && internalLinkRE.test(href)) {
         // Extract link text from the next token(s)
         let linkText = ''
         let nextIdx = idx + 1
@@ -18,7 +20,7 @@ export function customLink(md: MarkdownItAsync, hostname: string) {
           }
           else if (tokens[nextIdx].children) {
             // Handle inline tokens with children
-            for (const child of tokens[nextIdx].children) {
+            for (const child of tokens[nextIdx].children!) {
               if (child.type === 'text' || child.type === 'code_inline') {
                 linkText += child.content
               }

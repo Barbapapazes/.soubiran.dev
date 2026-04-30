@@ -2,16 +2,18 @@ import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   entry: [
-    './vite.config.ts',
+    './src/index.ts',
+    './src/types.ts',
     './src/utils.ts',
   ],
   deps: {
+    onlyBundle: false,
     alwaysBundle: [
-    // Because of the patch, it's better to bundle it directly
-    'markdown-it-table-of-contents',
-  ]
+      // Because of the patch, it's better to bundle it directly
+      'markdown-it-table-of-contents',
+    ],
   },
   copy: [
-    { from: 'src/og-template.svg', to: 'dist' },
+    { from: 'src/markdown/og-template.svg', to: 'dist' },
   ],
 })

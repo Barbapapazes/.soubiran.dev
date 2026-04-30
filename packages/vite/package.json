@@ -13,16 +13,20 @@
   "bugs": "https://github.com/Barbapapazes/.soubiran.dev/issues",
   "exports": {
     ".": {
-      "types": "./dist/vite.config.d.ts",
-      "import": "./dist/vite.config.mjs"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     },
     "./utils": {
-      "types": "./dist/src/utils.d.ts",
-      "import": "./dist/src/utils.mjs"
+      "types": "./dist/utils.d.mts",
+      "import": "./dist/utils.mjs"
+    },
+    "./types": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/types.mjs"
     }
   },
-  "main": "dist/vite.config.mjs",
-  "types": "dist/vite.config.d.ts",
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.mts",
   "files": [
     "dist"
   ],

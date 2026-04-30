@@ -1,95 +1,99 @@
-import type { BreadcrumbItem, StructuredDataPageConfig } from '@soubiran/vite'
+import type { BreadcrumbItem, StructuredDataPageConfig } from '@soubiran/vite/types'
 import soubiran from '@soubiran/vite'
 import { getUri, toUrl } from '@soubiran/vite/utils'
+import { defineConfig } from 'vite'
 
 const hostname = 'infra.soubiran.dev'
 const name = 'Estéban\'s Infra'
 
-export default soubiran(name, hostname, {
-  extractPage,
-  markdown: {
-    transforms: {
-      before: (code: string, id: string) => {
+export default defineConfig({
+  plugins: [soubiran(name, hostname, {
+    extractPage,
+    markdown: {
+      transforms: {
+        before: (code: string, id: string) => {
+          const page = extractPage(id)
+
+          if (page?.endsWith('-show')) {
+            return `${code}\n\n## Ecosystem`
+          }
+
+          return code
+        },
+      },
+      wrapperComponent: (id) => {
         const page = extractPage(id)
 
-        if (page?.endsWith('-show')) {
-          return `${code}\n\n## Ecosystem`
+        if (page === 'platforms-index') {
+          return 'WrapperPlatforms'
         }
 
-        return code
+        if (page === 'websites-index') {
+          return 'WrapperWebsites'
+        }
+
+        return 'WrapperContent'
       },
     },
-    wrapperComponent: (id) => {
-      const page = extractPage(id)
+    seo: {
+      assert: {
+        rules: (id, frontmatter) => {
+          // Check if this is a platform or website page (not index pages)
+          const isPlatformOrWebsite = (id.includes('/platforms/') || id.includes('/websites/'))
+            && !id.endsWith('index.md')
 
-      if (page === 'platforms-index') {
-        return 'WrapperPlatforms'
-      }
-
-      if (page === 'websites-index') {
-        return 'WrapperWebsites'
-      }
-
-      return 'WrapperContent'
-    },
-  },
-  seo: {
-    assert: {
-      rules: (id, frontmatter) => {
-        // Check if this is a platform or website page (not index pages)
-        const isPlatformOrWebsite = (id.includes('/platforms/') || id.includes('/websites/'))
-          && !id.endsWith('index.md')
-
-        // Validate url field for platform/website pages
-        if (isPlatformOrWebsite && !frontmatter.url) {
-          throw new Error(
-            `Missing required field 'url' in frontmatter for file: ${id}`,
-          )
-        }
-
-        // Validate repository field for platform/website pages
-        if (isPlatformOrWebsite && !frontmatter.repository) {
-          throw new Error(
-            `Missing required field 'repository' in frontmatter for file: ${id}`,
-          )
-        }
-      },
-    },
-    structuredData: {
-      pageConfig: (page, frontmatter): StructuredDataPageConfig => {
-        if (page === 'platforms-show' || page === 'websites-show') {
-          const breadcrumbItems: BreadcrumbItem[] = [
-            {
-              title: name,
-              type: 'WebSite',
-              url: toUrl(hostname),
-            },
-            {
-              title: page === 'platforms-show' ? 'Platforms' : 'Websites',
-              type: 'WebPage',
-              url: toUrl(hostname, page === 'platforms-show' ? 'platforms' : 'websites'),
-            },
-            {
-              title: frontmatter.title,
-            },
-          ]
-
-          return {
-            type: 'article',
-            breadcrumbItems,
+          // Validate url field for platform/website pages
+          if (isPlatformOrWebsite && !frontmatter.url) {
+            throw new Error(
+              `Missing required field 'url' in frontmatter for file: ${id}`,
+            )
           }
-        }
 
-        if (page === 'platforms-index' || page === 'websites-index') {
-          return { type: 'collection' }
-        }
+          // Validate repository field for platform/website pages
+          if (isPlatformOrWebsite && !frontmatter.repository) {
+            throw new Error(
+              `Missing required field 'repository' in frontmatter for file: ${id}`,
+            )
+          }
+        },
+      },
+      structuredData: {
+        pageConfig: (page, frontmatter): StructuredDataPageConfig => {
+          if (page === 'platforms-show' || page === 'websites-show') {
+            const breadcrumbItems: BreadcrumbItem[] = [
+              {
+                title: name,
+                type: 'WebSite',
+                url: toUrl(hostname),
+              },
+              {
+                title: page === 'platforms-show' ? 'Platforms' : 'Websites',
+                type: 'WebPage',
+                url: toUrl(hostname, page === 'platforms-show' ? 'platforms' : 'websites'),
+              },
+              {
+                title: frontmatter.title,
+              },
+            ]
 
-        return { type: 'default' }
+            return {
+              type: 'article',
+              breadcrumbItems,
+            }
+          }
+
+          if (page === 'platforms-index' || page === 'websites-index') {
+            return { type: 'collection' }
+          }
+
+          return { type: 'default' }
+        },
       },
     },
-  },
-  apiCategories: ['websites', 'platforms'],
-}, {
+    api: {
+      categories: ['websites', 'platforms'],
+    },
+  })],
   optimizeDeps: {
     include: [
       '@dagrejs/dagre',

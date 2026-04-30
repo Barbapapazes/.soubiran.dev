@@ -1,15 +1,4 @@
-export { default as Container } from './components/Container.vue'
-export { default as Feedback } from './components/Feedback.vue'
-export { default as FeedbackCard } from './components/FeedbackCard.vue'
-export { default as Header } from './components/Header.vue'
-export { default as Page } from './components/Page.vue'
-export { default as PageHeader } from './components/PageHeader.vue'
-export { default as PageTitle } from './components/PageTitle.vue'
-export { default as Socials } from './components/Socials.vue'
-export { default as Sponsors } from './components/Sponsors.vue'
-export { default as TableOfContents } from './components/TableOfContents.vue'
-export { default as ViewersCounter } from './components/ViewersCounter.vue'
+import './styles.css'
+
 export { default as useTableOfContents } from './composables/useTableOfContents'
 export { default as useUmami } from './composables/useUmami'
-
-import './styles.css'

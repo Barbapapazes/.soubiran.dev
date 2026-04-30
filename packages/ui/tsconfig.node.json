@@ -28,6 +28,8 @@
     "noUncheckedSideEffectImports": true
   },
   "include": [
+    "tsdown.config.ts",
+    "tsdown.config.node.ts",
     "src/resolver.ts",
     "src/imports.ts"
   ]

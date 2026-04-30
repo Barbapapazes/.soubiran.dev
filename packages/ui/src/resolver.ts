@@ -20,8 +20,8 @@ export default function (): ComponentResolver {
     resolve: (name: string) => {
       if (components.includes(name)) {
         return {
-          name,
-          from: '@soubiran/ui',
+          name: 'default',
+          from: `@soubiran/ui/components/${name}.vue`,
         }
       }
     },

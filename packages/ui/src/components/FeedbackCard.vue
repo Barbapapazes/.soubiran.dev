@@ -84,7 +84,7 @@ const { mutate, isLoading, error } = useMutation<
     track('feedback_submit')
 
     // Wait for the animation to finish
-    setTimeout(() => emits('success'), 200)
+    setTimeout(emits, 200, 'success')
   },
 })
 

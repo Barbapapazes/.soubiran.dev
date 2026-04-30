@@ -1,34 +1,9 @@
-import type { Options } from './options'
+import type { Options } from '../types'
 import type { person } from './person'
+import type { ArticleData } from './types'
 import type { webpage } from './webpage'
 import { joinURL } from 'ufo'
-import { getUri, toUrl } from '../utils'
-
-interface ArticleData {
-  '@type': 'Article'
-  '@id': string
-  'headline': string
-  'description': string
-  'isPartOf': {
-    '@id': string
-  }
-  'mainEntityOfPage': {
-    '@id': string
-  }
-  'datePublished'?: string
-  'author': {
-    '@id': string
-  }
-  'publisher': {
-    '@id': string
-  }
-  'inLanguage': string
-  // 'potentialAction': {
-  //   '@type': 'CommentAction'
-  //   'name': string
-  //   'target': string[]
-  // }[]
-}
+import { getUri, toUrl } from '../../../utils'
 
 interface Properties {
   title: string
@@ -38,7 +13,15 @@ interface Properties {
 /**
  * @see https://developer.yoast.com/features/schema/pieces/article/
  */
-export function article(id: string, structuredData: { person: ReturnType<typeof person>, webpage: ReturnType<typeof webpage> }, properties: Properties, options: Options) {
+export function article(
+  id: string,
+  structuredData: {
+    person: ReturnType<typeof person>
+    webpage: ReturnType<typeof webpage>
+  },
+  properties: Properties,
+  options: Options,
+) {
   const { title, description } = properties
 
   const data: ArticleData = {

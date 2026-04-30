@@ -1,27 +1,8 @@
+import type { Options } from '../types'
 import type { breadcrumb } from './breadcrumb'
+import type { WebPageData } from './types'
 import type { website } from './website'
-import { getCanonicalUrl } from '../canonical'
-
-interface WebPageData {
-  '@type': 'WebPage' | 'CollectionPage'
-  '@id': string
-  'url': string
-  'name': string
-  'description': string
-  'isPartOf': {
-    '@id': string
-  }
-  'inLanguage': string
-  'potentialAction'?: {
-    '@type': 'ReadAction'
-    'target': string[]
-  }[]
-  'datePublished'?: string
-  'keywords'?: string[]
-  'breadcrumb'?: {
-    '@id': string
-  }
-}
+import { getCanonicalUrl } from '../../canonical'
 
 interface Properties {
   title: string
@@ -33,7 +14,12 @@ interface Properties {
 /**
  * @see https://developer.yoast.com/features/schema/pieces/webpage/
  */
-export function webpage(id: string, structuredData: { website: ReturnType<typeof website> }, properties: Properties, options: { hostname: string }) {
+export function webpage(
+  id: string,
+  structuredData: { website: ReturnType<typeof website> },
+  properties: Properties,
+  options: Options,
+) {
   const {
     title,
     description,

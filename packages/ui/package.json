@@ -17,6 +17,11 @@
       "import": "./dist/index.js",
       "style": "./dist/style.css"
     },
+    "./components/*": "./dist/components/*",
+    "./composables/*": {
+      "types": "./dist/composables/*.d.ts",
+      "import": "./dist/composables/*.js"
+    },
     "./imports": {
       "types": "./dist/imports.d.mts",
       "import": "./dist/imports.mjs"
@@ -31,6 +36,10 @@
     },
     "./umami": {
       "types": "./umami.d.ts"
+    },
+    "./wrapper-classes": {
+      "types": "./dist/wrapper-classes.d.ts",
+      "import": "./dist/wrapper-classes.js"
     }
   },
   "main": "./dist/index.js",
@@ -55,8 +64,11 @@
     "pinia": "^3.0.4",
     "reka-ui": "^2.9.2",
     "tailwind-variants": "^3.2.2",
+    "unplugin-vue-components": "^31.0.0",
+    "vite": "^8.0.1",
     "vue": "^3.5.30",
     "vue-router": "^4.6.3"
+
   },
   "devDependencies": {
     "@iconify-json/ph": "^1.2.2",
@@ -70,8 +82,6 @@
     "typescript": "~5.9.3",
     "unplugin-icons": "^23.0.1",
     "unplugin-vue": "^7.1.1",
-    "unplugin-vue-components": "^31.0.0",
-    "vite": "^8.0.1",
     "vue-tsc": "^3.2.6"
   }
 }

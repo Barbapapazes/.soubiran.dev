@@ -267,6 +267,12 @@ importers:
       tailwind-variants:
         specifier: ^3.2.2
         version: 3.2.2(tailwind-merge@3.5.0)(tailwindcss@4.2.2)
+      unplugin-vue-components:
+        specifier: ^31.0.0
+        version: 31.0.0(@nuxt/kit@4.4.2)(vue@3.5.30(typescript@5.9.3))
+      vite:
+        specifier: ^8.0.1
+        version: 8.0.1(@types/node@24.12.0)(esbuild@0.27.4)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.3)
       vue:
         specifier: ^3.5.30
         version: 3.5.30(typescript@5.9.3)
@@ -307,12 +313,6 @@ importers:
       unplugin-vue:
         specifier: ^7.1.1
         version: 7.1.1(@types/node@24.12.0)(esbuild@0.27.4)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(vue@3.5.30(typescript@5.9.3))(yaml@2.8.3)
-      unplugin-vue-components:
-        specifier: ^31.0.0
-        version: 31.0.0(@nuxt/kit@4.4.2)(vue@3.5.30(typescript@5.9.3))
-      vite:
-        specifier: ^8.0.1
-        version: 8.0.1(@types/node@24.12.0)(esbuild@0.27.4)(jiti@2.6.1)(terser@5.44.0)(tsx@4.20.6)(yaml@2.8.3)
       vue-tsc:
         specifier: ^3.2.6
         version: 3.2.6(typescript@5.9.3)
