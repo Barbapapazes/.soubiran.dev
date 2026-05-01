@@ -2,6 +2,7 @@ import type { NuxtUIOptions } from '@nuxt/ui/vite'
 import type { PluginOption } from 'vite'
 import type { Options } from './types'
 import { readFileSync } from 'node:fs'
+import { cloudflare } from '@cloudflare/vite-plugin'
 import ui from '@nuxt/ui/vite'
 import soubiranComposablesImports from '@soubiran/ui/imports'
 import soubiranResolver from '@soubiran/ui/resolver'
@@ -12,7 +13,7 @@ import matter from 'gray-matter'
 import fonts from 'unplugin-fonts/vite'
 import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
-import router from 'unplugin-vue-router/vite' // TODO: migrate to vue-router@5
+import router from 'vue-router/vite'
 import { componentIncludePatterns, vueIncludePatterns } from './constants'
 import { markdownFrontmatterFactory } from './markdown/frontmatter'
 import { markdownRulesFactory } from './markdown/rules'
@@ -23,7 +24,6 @@ import promise from './plugins/promise'
 import rawMarkdown from './plugins/raw-markdown'
 import sitemap from './plugins/sitemap'
 import ssg from './plugins/ssg'
-// TODO: add cloudflare options
 
 export function factory(options: Options): PluginOption[] {
   const plugins = []
@@ -81,6 +81,7 @@ export function factory(options: Options): PluginOption[] {
 
   plugins.push(
     ui({
+      router: options.router !== false,
       autoImport: {
         dts: 'src/auto-imports.d.ts',
         dirs: [
@@ -174,6 +175,8 @@ export function factory(options: Options): PluginOption[] {
   }
 
   plugins.push(promise())
+
+  plugins.push(cloudflare())
 
   return plugins
 }
