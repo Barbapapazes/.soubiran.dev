@@ -2,23 +2,24 @@ import soubiran from '@soubiran/vite'
 import { getUri } from '@soubiran/vite/utils'
 import { defineConfig } from 'vite'
 
-const hostname = 'edu-ai.soubiran.dev'
-const name = 'IA et Éducation'
-
 export default defineConfig({
-  plugins: [soubiran(name, hostname, {
-    router: {
-      extractPage,
-    },
-    markdown: {
-      extractPage,
-      options: {
-        wrapperComponent: () => {
-          return 'WrapperContent'
+  plugins: [soubiran(
+    {
+      title: 'IA et Éducation',
+      hostname: 'edu-ai.soubiran.dev',
+      router: {
+        extractPage,
+      },
+      markdown: {
+        extractPage,
+        options: {
+          wrapperComponent: () => {
+            return 'WrapperContent'
+          },
         },
       },
     },
-  })],
+  )],
 })
 
 type Page = 'index'
