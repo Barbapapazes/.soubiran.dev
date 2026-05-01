@@ -2,7 +2,11 @@
 import type { Plugin, ResolvedConfig } from 'vite'
 import { generateSitemap } from '../domain/sitemap'
 
-export default function (hostname: string): Plugin {
+export interface SitemapOptions {
+  hostname: string
+}
+
+export default function (options: SitemapOptions): Plugin {
   const routes = new Set<string>()
   let config: ResolvedConfig
 
@@ -16,7 +20,7 @@ export default function (hostname: string): Plugin {
             return renderedHTML
           },
           onFinished() {
-            generateSitemap(config.build.outDir, hostname, Array.from(routes))
+            generateSitemap(config.build.outDir, options.hostname, Array.from(routes))
           },
         },
       }

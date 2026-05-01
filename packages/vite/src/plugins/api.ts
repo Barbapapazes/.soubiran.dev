@@ -2,7 +2,11 @@ import type { Plugin, ResolvedConfig } from 'vite'
 import { green, yellow } from 'ansis'
 import { generateJsonApi } from '../domain/api'
 
-export default function (categories: string[] = []): Plugin {
+export interface ApiOptions {
+  categories?: string[]
+}
+
+export default function (options: ApiOptions = {}): Plugin {
   let config: ResolvedConfig
 
   return {
@@ -15,14 +19,18 @@ export default function (categories: string[] = []): Plugin {
         return
       }
 
-      if (categories.length === 0) {
+      if (!options.categories) {
+        return
+      }
+
+      if (options.categories.length === 0) {
         return
       }
 
       const time = Date.now()
       config.logger.info(yellow('Generate API files'))
 
-      generateJsonApi(config.build.outDir, categories, config.logger)
+      generateJsonApi(config.build.outDir, options.categories, config.logger)
 
       config.logger.info(green(`✓ generated in ${Date.now() - time}ms`))
     },
