@@ -23,6 +23,7 @@ import promise from './plugins/promise'
 import rawMarkdown from './plugins/raw-markdown'
 import sitemap from './plugins/sitemap'
 import ssg from './plugins/ssg'
+// TODO: add cloudflare options
 
 export function factory(options: Options): PluginOption[] {
   const plugins = []
@@ -83,6 +84,7 @@ export function factory(options: Options): PluginOption[] {
       autoImport: {
         dts: 'src/auto-imports.d.ts',
         dirs: [
+          'src/utils',
           'src/composables',
         ],
         imports,
