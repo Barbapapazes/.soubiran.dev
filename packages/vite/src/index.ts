@@ -25,31 +25,33 @@ import ssg from './plugins/ssg'
 
 export default function soubiran(title: string, hostname: string, options: Options): PluginOption[] {
   return [
-    router({
-      extensions: ['.vue', '.md'],
-      routesFolder: 'pages',
-      dts: 'src/typed-router.d.ts',
-      extendRoute(route) {
-        const path = route.components.get('default')
-        if (!path)
-          return
+    options.router === false
+      ? undefined
+      : router({
+          extensions: ['.vue', '.md'],
+          routesFolder: 'pages',
+          dts: 'src/route-map.d.ts',
+          extendRoute(route) {
+            const path = route.components.get('default')
+            if (!path)
+              return
 
-        if (path.endsWith('.vue')) {
-          route.addToMeta({
-            frontmatter: {
-              page: options.extractPage(path),
-            },
-          })
-        }
+            if (path.endsWith('.vue') && options.router && options.router.extractPage) {
+              route.addToMeta({
+                frontmatter: {
+                  page: options.router.extractPage(path),
+                },
+              })
+            }
 
-        if (path.endsWith('.md')) {
-          const { data } = matter(readFileSync(path, 'utf-8'))
-          route.addToMeta({
-            frontmatter: data,
-          })
-        }
-      },
-    }),
+            if (path.endsWith('.md')) {
+              const { data } = matter(readFileSync(path, 'utf-8'))
+              route.addToMeta({
+                frontmatter: data,
+              })
+            }
+          },
+        }),
 
     vue({
       include: vueIncludePatterns,
@@ -87,20 +89,22 @@ export default function soubiran(title: string, hostname: string, options: Optio
       },
     }),
 
-    markdown({
-      headEnabled: true,
-      wrapperClasses: soubiranWrapperClasses,
-      transforms: options.markdown?.transforms ?? {},
-      wrapperComponent: options.markdown?.wrapperComponent,
-      markdownItSetup: markdownRulesFactory(hostname),
-      frontmatterPreprocess: markdownFrontmatterFactory({
-        title,
-        hostname,
-        extractPage: options.extractPage,
-        assertRules: options.seo?.assert?.rules,
-        getPageConfig: options.seo?.structuredData?.pageConfig,
-      }),
-    }),
+    options.markdown === false
+      ? undefined
+      : markdown({
+          headEnabled: true,
+          wrapperClasses: soubiranWrapperClasses,
+          transforms: options.markdown?.options?.transforms ?? {},
+          wrapperComponent: options.markdown?.options?.wrapperComponent,
+          markdownItSetup: markdownRulesFactory(hostname),
+          frontmatterPreprocess: markdownFrontmatterFactory({
+            title,
+            hostname,
+            extractPage: options.markdown.extractPage,
+            assertRules: options.seo?.assert?.rules,
+            getPageConfig: options.seo?.structuredData?.pageConfig,
+          }),
+        }),
 
     fonts({
       google: {

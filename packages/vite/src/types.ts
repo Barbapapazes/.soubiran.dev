@@ -5,9 +5,16 @@ import type { StructuredDataPageConfig } from './markdown/structured-data/types'
 export type { BreadcrumbItem } from './markdown/structured-data/schemas/types'
 export type { StructuredDataPageConfig } from './markdown/structured-data/types'
 
+type ExtractPage = (id: string) => string | null
+
 export interface Options {
-  extractPage: (id: string) => string | null
-  markdown?: MarkdownOptions
+  router?: {
+    extractPage?: ExtractPage
+  } | false
+  markdown: {
+    extractPage: ExtractPage
+    options?: MarkdownOptions
+  } | false
   seo?: {
     assert?: {
       rules?: AssertFn

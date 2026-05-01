@@ -7,10 +7,15 @@ const name = 'IA et Éducation'
 
 export default defineConfig({
   plugins: [soubiran(name, hostname, {
-    extractPage,
+    router: {
+      extractPage,
+    },
     markdown: {
-      wrapperComponent: () => {
-        return 'WrapperContent'
+      extractPage,
+      options: {
+        wrapperComponent: () => {
+          return 'WrapperContent'
+        },
       },
     },
   })],
