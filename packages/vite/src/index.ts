@@ -11,7 +11,7 @@ import matter from 'gray-matter'
 import fonts from 'unplugin-fonts/vite'
 import icons from 'unplugin-icons/vite'
 import markdown from 'unplugin-vue-markdown/vite'
-import vueRouter from 'unplugin-vue-router/vite'
+import router from 'unplugin-vue-router/vite'
 import { componentIncludePatterns, vueIncludePatterns } from './constants'
 import { markdownFrontmatterFactory } from './markdown/frontmatter'
 import { markdownRulesFactory } from './markdown/rules'
@@ -25,7 +25,7 @@ import ssg from './plugins/ssg'
 
 export default function soubiran(title: string, hostname: string, options: Options): PluginOption[] {
   return [
-    vueRouter({
+    router({
       extensions: ['.vue', '.md'],
       routesFolder: 'pages',
       dts: 'src/typed-router.d.ts',
