@@ -1,5 +1,4 @@
 <script lang="ts">
-import UIcon from '@nuxt/ui/components/Icon.vue'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import github from '~icons/simple-icons/github'

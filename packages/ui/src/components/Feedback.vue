@@ -1,6 +1,4 @@
 <script lang="ts">
-import UButton from '@nuxt/ui/components/Button.vue'
-import UPopover from '@nuxt/ui/components/Popover.vue'
 import { tv } from 'tailwind-variants'
 import { computed, ref } from 'vue'
 import thumbsUp from '~icons/ph/thumbs-up'

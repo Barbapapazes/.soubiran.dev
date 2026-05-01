@@ -81,6 +81,7 @@ export function factory(options: Options): PluginOption[] {
 
   plugins.push(
     ui({
+      scanPackages: ['@soubiran/ui'],
       router: options.router !== false,
       autoImport: {
         dts: 'src/auto-imports.d.ts',

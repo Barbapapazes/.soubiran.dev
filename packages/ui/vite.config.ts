@@ -8,10 +8,10 @@ export default defineConfig({
     vue(),
     ui({
       autoImport: {
-        dts: false,
+        dts: 'src/auto-imports.d.ts',
       },
       components: {
-        dts: false,
+        dts: 'src/components.d.ts',
       },
     }),
     icons({
