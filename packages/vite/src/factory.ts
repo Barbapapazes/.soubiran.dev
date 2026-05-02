@@ -9,6 +9,7 @@ import soubiranResolver from '@soubiran/ui/resolver'
 import soubiranWrapperClasses from '@soubiran/ui/wrapper-classes'
 import { unheadVueComposablesImports } from '@unhead/vue'
 import vue from '@vitejs/plugin-vue'
+import { defu } from 'defu'
 import matter from 'gray-matter'
 import fonts from 'unplugin-fonts/vite'
 import icons from 'unplugin-icons/vite'
@@ -80,7 +81,7 @@ export function factory(options: Options): Plugin[] {
   }
 
   plugins.push(
-    ui({
+    ui(defu(options.ui, {
       scanPackages: ['@soubiran/ui'],
       router: options.router !== false,
       autoImport: {
@@ -108,7 +109,7 @@ export function factory(options: Options): Plugin[] {
           neutral: 'neutral',
         },
       },
-    }),
+    })),
   )
 
   if (options.markdown !== false) {

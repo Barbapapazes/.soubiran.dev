@@ -5,6 +5,8 @@ import vue from 'unplugin-vue/rolldown'
 export default defineConfig({
   entry: [
     './src/index.ts',
+    './src/ui.ts',
+    // TODO: rename to prose
     './src/wrapper-classes.ts',
   ],
   copy: [

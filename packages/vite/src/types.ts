@@ -1,3 +1,4 @@
+import type { NuxtUIOptions } from '@nuxt/ui/vite'
 import type { Options as MarkdownOptions } from 'unplugin-vue-markdown/types'
 import type { AssertFn } from './markdown/assert'
 import type { StructuredDataPageConfig } from './markdown/structured-data/types'
@@ -29,6 +30,7 @@ export interface Options {
       pageConfig?: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
     }
   }
+  ui: NuxtUIOptions
   ssg?: SsgOptions | false
   meta?: MetaOptions | false
   api?: ApiOptions | false

@@ -21,6 +21,7 @@
     "./umami.d.ts",
     "./src/index.ts",
     "./src/main.ts",
+    "./src/ui.ts",
     "./src/App.vue",
     "./src/components/*.vue",
     "./src/composables/*.ts"

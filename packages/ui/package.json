@@ -30,9 +30,9 @@
       "types": "./dist/resolver.d.mts",
       "import": "./dist/resolver.mjs"
     },
-    "./alerts": {
-      "types": "./dist/alerts.d.ts",
-      "import": "./dist/alerts.js"
+    "./ui": {
+      "types": "./dist/ui.d.ts",
+      "import": "./dist/ui.js"
     },
     "./umami": {
       "types": "./umami.d.ts"
