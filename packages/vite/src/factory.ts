@@ -1,5 +1,5 @@
 import type { NuxtUIOptions } from '@nuxt/ui/vite'
-import type { PluginOption } from 'vite'
+import type { Plugin } from 'vite'
 import type { Options } from './types'
 import { readFileSync } from 'node:fs'
 import { cloudflare } from '@cloudflare/vite-plugin'
@@ -25,15 +25,15 @@ import rawMarkdown from './plugins/raw-markdown'
 import sitemap from './plugins/sitemap'
 import ssg from './plugins/ssg'
 
-export function factory(options: Options): PluginOption[] {
+export function factory(options: Options): Plugin[] {
   const plugins = []
 
   if (options.router !== false) {
     plugins.push(
       router({
         extensions: ['.vue', '.md'],
-        routesFolder: 'pages',
-        dts: 'src/route-map.d.ts',
+        routesFolder: 'src/app/pages',
+        dts: 'src/app/route-map.d.ts',
         extendRoute(route) {
           const path = route.components.get('default')
           if (!path)
@@ -84,16 +84,21 @@ export function factory(options: Options): PluginOption[] {
       scanPackages: ['@soubiran/ui'],
       router: options.router !== false,
       autoImport: {
-        dts: 'src/auto-imports.d.ts',
+        dts: 'src/app/auto-imports.d.ts',
         dirs: [
-          'src/utils',
-          'src/composables',
+          'src/app/utils',
+          'src/app/composables',
+          'src/shared/utils',
+          'src/shared/types',
         ],
         imports,
       },
       components: {
         include: componentIncludePatterns,
-        dts: 'src/components.d.ts',
+        dirs: [
+          'src/app/components',
+        ],
+        dts: 'src/app/components.d.ts',
         resolvers: [
           soubiranResolver(),
         ],

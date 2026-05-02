@@ -3,7 +3,7 @@ import type { Plugin } from 'vite'
 
 export interface SsgOptions {}
 
-export default function (options: SsgOptions = {}): Plugin {
+export default function (_: SsgOptions = {}): Plugin {
   return {
     name: 'soubiran:ssg',
     config() {

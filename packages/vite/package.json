@@ -35,14 +35,14 @@
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.35.0",
-    "@nuxt/ui": "4.5.0",
+    "@nuxt/ui": "^4.7.0",
     "@shikijs/markdown-it": "^4.0.2",
     "@soubiran/ui": "workspace:*",
     "@types/fs-extra": "^11.0.4",
     "@types/markdown-it": "^14.1.2",
     "@types/markdown-it-link-attributes": "^3.0.5",
     "@types/node": "^24.12.0",
-    "@unhead/vue": "^2.1.12",
+    "@unhead/vue": "^3.0.5",
     "@unpic/placeholder": "^0.1.2",
     "@vitejs/plugin-vue": "^6.0.6",
     "ansis": "^4.2.0",
@@ -58,8 +58,8 @@
     "shiki": "^4.0.2",
     "sitemap": "^9.0.1",
     "typescript": "^5.9.3",
-    "ufo": "^1.6.3",
-    "unhead": "^2.1.12",
+    "ufo": "^1.6.4",
+    "unhead": "^3.0.5",
     "unplugin-fonts": "^2.0.0",
     "unplugin-icons": "^23.0.1",
     "unplugin-vue-markdown": "^30.0.0",
@@ -68,6 +68,6 @@
     "vue-router": "^5.0.6"
   },
   "devDependencies": {
-    "tsdown": "^0.21.4"
+    "tsdown": "^0.21.10"
   }
 }

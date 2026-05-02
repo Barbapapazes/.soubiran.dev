@@ -1,4 +1,4 @@
-import './styles.css'
+import './style.css'
 
 export { default as useTableOfContents } from './composables/useTableOfContents'
 export { default as useUmami } from './composables/useUmami'

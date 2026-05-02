@@ -6,13 +6,8 @@ packages:
   - apps/*
   - packages/*
 overrides:
+  '@unhead/vue': npm:@unhead/vue@3.0.5
   markdown-it: npm:markdown-exit@1.0.0-beta.6
 patchedDependencies:
-  '@nuxt/ui': patches/@nuxt__ui.patch
   markdown-it-table-of-contents: patches/markdown-it-table-of-contents.patch
-  unhead: patches/unhead.patch
   vite-ssg: patches/vite-ssg.patch
-onlyBuiltDependencies:
-  - esbuild
-  - sharp
-  - vue-demi
