@@ -1,5 +1,4 @@
-export default [
-  'slide-enter-content',
+export const prose = [
   'max-w-none',
   'prose prose-neutral dark:prose-invert',
   'prose-headings:text-default prose-h2:text-[1.125em] prose-h2:mb-[0.5em] prose-h3:text-[1em]',
@@ -13,4 +12,9 @@ export default [
   'prose-video:rounded-lg prose-video:border prose-video:border-accented prose-video:shadow-sm',
   'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
   '[&_:first-child]:mt-0 [&_:last-child]:mb-0',
+]
+
+export default [
+  'slide-enter-content',
+  ...prose,
 ]
