@@ -1,0 +1,31 @@
+{
+  "name": "@soubiran/eslint",
+  "type": "module",
+  "version": "0.7.1",
+  "author": "Estéban Soubiran <esteban@soubiran.dev>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/Barbapapazes",
+  "homepage": "https://github.com/Barbapapazes/.soubiran.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Barbapapazes/.soubiran.dev"
+  },
+  "bugs": "https://github.com/Barbapapazes/.soubiran.dev/issues",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown"
+  },
+  "devDependencies": {
+    "tsdown": "^0.21.10"
+  }
+}
