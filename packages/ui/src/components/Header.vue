@@ -22,6 +22,8 @@ export interface HeaderProps {
     icon: FunctionalComponent<SVGAttributes>
     label: string
     to: string
+    target?: string
+    rel?: string
   }[]
   class?: any
   ui?: Partial<typeof header.slots>
@@ -57,6 +59,8 @@ const ui = computed(() => header())
           :to="link.to"
           :aria-label="link.label"
           :icon="link.icon"
+          :target="link.target"
+          :rel="link.rel"
           :class="ui.link({ class: props.ui?.link })"
           @click="trackClick(link.label)"
         />
