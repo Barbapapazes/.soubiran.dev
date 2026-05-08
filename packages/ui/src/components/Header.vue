@@ -21,7 +21,8 @@ export interface HeaderProps {
   links: {
     icon: FunctionalComponent<SVGAttributes>
     label: string
-    to: string
+    to?: string
+    href?: string
     target?: string
     rel?: string
   }[]
@@ -57,6 +58,7 @@ const ui = computed(() => header())
           variant="link"
           color="neutral"
           :to="link.to"
+          :href="link.href"
           :aria-label="link.label"
           :icon="link.icon"
           :target="link.target"
