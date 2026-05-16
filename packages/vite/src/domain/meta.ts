@@ -82,7 +82,7 @@ function scanPagesForMeta(pagesDir: string, baseUri = ''): PageData[] {
  * Generate meta.json file with all pages metadata
  */
 export function generateMeta(outDir: string, hostname: string, logger: Logger) {
-  const pagesDir = resolve(cwd(), 'pages')
+  const pagesDir = resolve(cwd(), 'src', 'app', 'pages')
   const distDir = resolve(cwd(), outDir)
 
   // Scan all pages and collect metadata
