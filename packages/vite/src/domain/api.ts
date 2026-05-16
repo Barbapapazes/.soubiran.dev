@@ -58,7 +58,7 @@ export function generateJsonApi(
   categories: string[],
   logger: Logger,
 ) {
-  const pagesDir = resolve(cwd(), 'pages')
+  const pagesDir = resolve(cwd(), 'src', 'app', 'pages')
   const distDir = resolve(cwd(), outDir)
 
   for (const name of categories) {
