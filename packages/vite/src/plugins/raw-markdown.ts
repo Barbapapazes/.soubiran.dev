@@ -17,7 +17,7 @@ export default function (): Plugin {
         return
       }
 
-      const pagesDir = resolve(cwd(), 'pages')
+      const pagesDir = resolve(cwd(), 'src', 'app', 'pages')
       const distDir = resolve(cwd(), config.build.outDir)
 
       const time = Date.now()
