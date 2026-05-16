@@ -1,7 +1,7 @@
 {
   "name": "@soubiran/vite",
   "type": "module",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "author": "Estéban Soubiran <esteban@soubiran.dev>",
   "license": "MIT",
   "funding": "https://github.com/sponsors/Barbapapazes",
