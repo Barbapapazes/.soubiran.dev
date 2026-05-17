@@ -1,13 +1,15 @@
 import { Buffer } from 'node:buffer'
-import { basename, dirname } from 'node:path'
+import { dirname } from 'node:path'
 import fs from 'fs-extra'
 import sharp from 'sharp'
+import { markdownExtensionRE } from '../constants'
 import { promises } from '../domain/promise'
 
 const ogSVG = fs.readFileSync(new URL('./og-template.svg', import.meta.url), 'utf-8')
 const titleBreakRE = /(.{0,30})(?:\s|$)/g
 const templateTokenRE = /\{\{([^}]+)\}\}/g
 const titleSuffixRE = /\s-\s.*$/
+const pagesDirRE = /[/\\]pages[/\\]/
 
 async function generate(title: string, hostname: string, output: string) {
   if (fs.existsSync(output))
@@ -41,7 +43,9 @@ async function generate(title: string, hostname: string, output: string) {
 
 export function og(id: string, frontmatter: any, hostname: string) {
   (() => {
-    const route = basename(id, '.md')
+    const route = (id.split(pagesDirRE)[1] ?? id)
+      .replaceAll('\\', '/')
+      .replace(markdownExtensionRE, '')
     const path = `og/${route}.png`
 
     promises.push(generate(frontmatter.title!.replace(titleSuffixRE, '').trim(), hostname, `public/${path}`))
