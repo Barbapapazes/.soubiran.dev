@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.35.0",
-    "@nuxt/ui": "^4.7.0",
+    "@nuxt/ui": "^4.7.1",
     "@shikijs/markdown-it": "^4.0.2",
     "@soubiran/ui": "workspace:*",
     "@types/fs-extra": "^11.0.4",
