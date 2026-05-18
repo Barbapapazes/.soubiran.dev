@@ -11,7 +11,7 @@
     "@pinia/colada": "^1.2.0",
     "@soubiran/ui": "workspace:*",
     "@unhead/vue": "^3.0.5",
-    "@vueuse/core": "^14.2.1",
+    "@vueuse/core": "^14.3.0",
     "markdown-it-github-alerts": "^1.0.1",
     "motion-v": "^2.2.1",
     "ofetch": "^1.5.1",
