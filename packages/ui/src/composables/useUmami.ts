@@ -10,7 +10,11 @@ export default function useUmami() {
         page_path: route.path,
       })
     }
-    catch {}
+    catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Failed to track Umami event.', error)
+      }
+    }
   }
 
   return {
