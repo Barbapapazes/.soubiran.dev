@@ -67,7 +67,7 @@ const { mutate, isLoading, error } = useMutation<
   { rating: string, content: string },
   { status: number, data: { errors?: { content?: string[], rating?: string[] } } }
 >({
-  mutation: ({ rating, content }) => ofetch(`/api/posts/${props.id}/feedback`, {
+  mutation: ({ rating, content }) => ofetch(`/api/pages/${props.id}/feedback`, {
     method: 'POST',
     body: { rating, content },
     baseURL: import.meta.env.VITE_API_BASE_URL,
