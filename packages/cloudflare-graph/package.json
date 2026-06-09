@@ -1,0 +1,32 @@
+{
+  "name": "cloudflare-graph",
+  "version": "0.9.0",
+  "private": true,
+  "author": "Estéban Soubiran <esteban@soubiran.dev>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/Barbapapazes",
+  "homepage": "https://github.com/Barbapapazes/.soubiran.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Barbapapazes/.soubiran.dev"
+  },
+  "bugs": "https://github.com/Barbapapazes/.soubiran.dev/issues",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vue-flow/core": "^1.48.2",
+    "vue": "^3.5.34"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.3",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vue/tsconfig": "^0.9.1",
+    "cloudflare": "^6.3.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.12",
+    "vue-tsc": "^3.2.8"
+  }
+}
