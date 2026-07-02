@@ -11,7 +11,7 @@ export const prose = [
   'prose-img:rounded-lg prose-img:border prose-img:border-accented prose-img:shadow-sm',
   'prose-video:rounded-lg prose-video:border prose-video:border-accented prose-video:shadow-sm',
   'prose-figcaption:text-center prose-figcaption:py-1 prose-figcaption:m-0',
-  '[&_:where(:not(:where([class~="not-prose"],[class~="not-prose"]_*)):first-child)]:mt-0 [&_:where(:not(:where([class~="not-prose"],[class~="not-prose"]_*)):last-child)]:mb-0',
+  '[&_:where(:not(:where(.not-prose,.not-prose_*)):first-child)]:mt-0 [&_:where(:not(:where(.not-prose,.not-prose_*)):last-child)]:mb-0',
 ]
 
 export default [
