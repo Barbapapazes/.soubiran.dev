@@ -29,9 +29,12 @@
     "./src/types/*.ts",
     "./src/api/**/*.ts",
     "./src/utils/**/*.ts",
+    "./src/hooks/**/*.ts",
+    "./src/keys/**/*.ts",
     "./src/queries/**/*.ts",
+    "./src/mappers/**/*.ts",
     "./src/mutations/**/*.ts",
     "./src/components/**/*.vue",
-    "./src/composables/*.ts"
+    "./src/composables/**/*.ts"
   ]
 }

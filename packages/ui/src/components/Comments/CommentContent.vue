@@ -10,7 +10,6 @@ const commentContent = tv({
 })
 
 export interface CommentContentProps {
-  id: string
   parentComment?: Comment
   comment: Comment
   class?: any
@@ -49,7 +48,6 @@ const ui = computed(() => commentContent({ class: props.class }))
 <template>
   <CommentForm
     v-if="viewEditor"
-    :id="props.id"
     ref="editor"
     cancelable
     :comment="comment"

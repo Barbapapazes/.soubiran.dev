@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { Comment } from '../../types/comment'
+import { useTimeAgoIntl } from '@vueuse/core'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import { useLocale } from '../../composables/useLocale'
@@ -28,7 +29,16 @@ const props = defineProps<CommentHeaderProps>()
 defineEmits<CommentHeaderEmits>()
 defineSlots<CommentHeaderSlots>()
 
-const { t } = useLocale()
+const { code, t } = useLocale()
+const englishTimeAgo = useTimeAgoIntl(
+  () => props.comment.createdAt,
+  { locale: 'en' },
+)
+const frenchTimeAgo = useTimeAgoIntl(
+  () => props.comment.createdAt,
+  { locale: 'fr' },
+)
+const timeAgo = computed(() => code.value === 'fr' ? frenchTimeAgo.value : englishTimeAgo.value)
 
 const ui = computed(() => commentHeader())
 </script>
@@ -46,9 +56,8 @@ const ui = computed(() => commentHeader())
         {{ t('comments.CommentHeader.publishedAt') }}
       </dt>
       <dd :class="ui.time({ class: props.ui?.time })">
-        <!-- TODO: make datetime auto-updatable using VueUse (then, remove the diff_for_humans and formatted properties from the api) -->
-        <time :datetime="props.comment.created_at.formatted">
-          {{ props.comment.created_at.diff_for_humans }}
+        <time :datetime="props.comment.createdAt.toISOString()">
+          {{ timeAgo }}
         </time>
       </dd>
     </dl>

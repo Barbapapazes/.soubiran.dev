@@ -39,18 +39,18 @@ defineSlots<EditorSlots>()
 
 const content = defineModel<string>('content', { default: '' })
 
-const { t } = useLocale()
+const { code, t } = useLocale()
 
 const { data: preview, isLoading: isPreviewLoading, refresh: refreshPreview } = useQuery({
   enabled: false,
   staleTime: 1000 * 60 * 5, // 5 minutes to avoid unnecessary requests
-  key: () => ['preview', content.value],
+  key: () => ['preview', code.value, content.value],
   query: async () => {
     if (!content.value) {
       return Promise.resolve(`<p>${t('Editor.preview.placeholder')}</p>`)
     }
 
-    return getMarkdown(content.value).then(response => response.data)
+    return getMarkdown(content.value, code.value === 'fr' ? 'fr' : 'en').then(response => response.data)
   },
 })
 

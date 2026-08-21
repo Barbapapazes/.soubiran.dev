@@ -1,4 +1,4 @@
-import { ofetch } from 'ofetch'
+import { FetchError, ofetch } from 'ofetch'
 
 export const api = ofetch.create({
   // TODO: add environment variable to DTS and add it to app tsconfig file
@@ -8,19 +8,15 @@ export const api = ofetch.create({
   },
   credentials: 'include',
   onRequest: [
-    // Set the correct language in the request headers
-    async ({ options }) => {
-      const pathname = window.location.pathname
-
-      if (pathname.startsWith('/fr')) {
-        options.headers.set('Accept-Language', 'fr')
-      }
-    },
     // Add XSRF-TOKEN cookie to the request headers
     async ({ options }) => {
       const method = options.method?.toUpperCase() || 'GET'
 
       if (['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+        return
+      }
+
+      if (typeof document === 'undefined') {
         return
       }
 
@@ -39,6 +35,20 @@ export const api = ofetch.create({
 })
 
 function getCookie(name: string) {
+  if (typeof document === 'undefined') {
+    return null
+  }
+
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`))
   return match ? match[2] : null
+}
+
+interface LaravelUnprocessableEntityError extends Error {
+  data: {
+    message: string
+  }
+}
+
+export function isUnprocessableEntityError(error: Error): error is LaravelUnprocessableEntityError {
+  return error instanceof FetchError && error.response?.status === 422
 }

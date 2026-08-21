@@ -7,7 +7,7 @@ import { routes } from 'vue-router/auto-routes'
 import App from './App.vue'
 
 import './main.css'
-import './styles.css'
+import './style.css'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -17,9 +17,9 @@ const router = createRouter({
 const app = createApp(App)
 
 app.use(router)
-app.use(ui)
-app.use(createPinia())
-app.use(PiniaColada)
+  .use(ui)
+  .use(createPinia())
+  .use(PiniaColada)
 
 app.mount('#app')
 

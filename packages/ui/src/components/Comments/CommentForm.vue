@@ -1,12 +1,15 @@
 <script lang="ts">
+import type { LocaleCode } from '../../locale/type.ts'
 import type { Comment } from '../../types/comment'
 import UButton from '@nuxt/ui/components/Button.vue'
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed, ref, useTemplateRef } from 'vue'
-import { postComment, putComment } from '../../api/comments'
+import { postComment, putComment } from '../../api/comments.ts'
+import { useCommentsContext } from '../../composables/comments/context'
 import { useLocale } from '../../composables/useLocale'
-import { COMMENT_QUERY_KEY } from '../../queries/comments'
+import { COMMENT_QUERY_KEYS } from '../../keys/comments.ts'
+import { isUnprocessableEntityError } from '../../utils/api.ts'
 import Editor from '../Editor.vue'
 import Form from '../Form.vue'
 
@@ -15,7 +18,6 @@ const commentForm = tv({
 })
 
 export interface CommentFormProps {
-  id: string
   cancelable?: boolean
   parentComment?: Comment
   comment?: Comment
@@ -35,105 +37,130 @@ defineSlots<CommentFormSlots>()
 
 const formData = ref({
   content: props.comment?.content || '',
-  parentId: props.parentComment?.id,
 })
 
 const { t } = useLocale()
+const { locale, pageId } = useCommentsContext()
 
+const contentError = ref<string>()
 const queryCache = useQueryCache()
-
-const { mutateAsync: addComment, isLoading: isAddCommentLoading, error: addCommentError } = useMutation<
-  {
-    data: Comment
-  },
-  { postId: string, content: string, parentId?: number },
-  {
-    data: {
-      message: string
-      errors: {
-        content: string[]
-      }
+const { mutate: createComment, isLoading: isCreateCommentLoading } = useMutation({
+  mutation: ({
+    pageId,
+    content,
+    locale,
+    parentCommentId,
+  }: {
+    pageId: string
+    content: string
+    locale: LocaleCode
+    parentCommentId?: number
+  }) => postComment(
+    pageId,
+    content,
+    locale,
+    parentCommentId,
+  ),
+  onError: (error) => {
+    if (isUnprocessableEntityError(error)) {
+      contentError.value = error.data.message
     }
-  }
->({
-  mutation: ({ postId, content, parentId }) => postComment(postId, content, parentId),
+    else {
+      contentError.value = t('comments.errors.create')
+    }
+
+    console.error('Error creating comment:', error)
+  },
   onSuccess: () => {
     clearFormData()
     emits('success')
   },
-  onSettled: () =>
-    queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id), exact: true }),
-})
-
-const { mutateAsync: updateComment, isLoading: isUpdateCommentLoading, error: updateCommentError } = useMutation<
-  {
-    data: Comment
+  onSettled: () => {
+    queryCache.invalidateQueries({
+      key: COMMENT_QUERY_KEYS.byPageId(pageId.value, locale.value),
+    })
   },
-  { commentId: number, content: string, parentId?: number },
-  {
-    data: {
-      message: string
-      errors: {
-        content: string[]
-      }
+})
+const { mutate: updateComment, isLoading: isUpdateCommentLoading } = useMutation({
+  mutation: ({
+    commentId,
+    content,
+    locale,
+  }: {
+    commentId: number
+    content: string
+    locale: LocaleCode
+  }) => putComment(
+    commentId,
+    content,
+    locale,
+  ),
+  onError: (error) => {
+    if (isUnprocessableEntityError(error)) {
+      contentError.value = error.data.message
     }
-  }
->({
-  mutation: ({ commentId, content }) => putComment(commentId, content),
+    else {
+      contentError.value = t('comments.errors.update')
+    }
+
+    console.error('Error updating comment:', error)
+  },
   onSuccess: () => {
     clearFormData()
     emits('success')
   },
-  onSettled: () =>
-    queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id), exact: true }),
+  onSettled: () => {
+    queryCache.invalidateQueries({
+      key: COMMENT_QUERY_KEYS.byPageId(pageId.value, locale.value),
+    })
+  },
 })
 
-const isLoading = computed(() => isAddCommentLoading.value || isUpdateCommentLoading.value)
-const errors = computed(() => addCommentError.value?.data.errors || updateCommentError.value?.data.errors)
+const isLoading = computed(() => isCreateCommentLoading.value || isUpdateCommentLoading.value)
 
 async function onSubmit() {
+  if (isLoading.value || !formData.value.content) {
+    return
+  }
+
+  contentError.value = undefined
+
   if (props.comment) {
-    const { data: comment } = await updateComment({
+    updateComment({
+      locale: locale.value,
       commentId: props.comment.id,
       content: formData.value.content,
-      parentId: formData.value.parentId,
     })
-    highlightComment(comment)
   }
   else {
-    const { data: comment } = await addComment({
-      postId: props.id,
+    createComment({
+      pageId: pageId.value,
+      locale: locale.value,
       content: formData.value.content,
-      parentId: formData.value.parentId,
+      parentCommentId: props.parentComment?.id,
     })
-
-    highlightComment(comment)
   }
 }
 
-function highlightComment(comment: Comment) {
-  const commentElement = document.getElementById(comment.html_id)
-  if (!commentElement)
+function onEditorKeydown(event: KeyboardEvent) {
+  if (event.key !== 'Enter' || (!event.ctrlKey && !event.metaKey)) {
     return
+  }
 
-  const classList = ['outline-2', 'outline-inverted', 'outline-offset-2']
-  commentElement.parentElement!.classList.add(...classList)
-  setTimeout(() => {
-    commentElement.parentElement!.classList.remove(...classList)
-  }, 2000)
-
-  window.scrollTo({
-    top: commentElement.offsetTop - 100,
-    behavior: 'smooth',
-  })
+  event.preventDefault()
+  void onSubmit()
 }
 
 function clearFormData() {
-  formData.value.content = ''
+  formData.value = {
+    content: '',
+  }
 }
 
 function onCancel() {
-  emits('cancel')
+  if (!isLoading.value) {
+    emits('cancel')
+  }
 }
 
 const editor = useTemplateRef('editor')
@@ -152,8 +179,8 @@ const ui = computed(() => commentForm({ class: props.class }))
     <Editor
       ref="editor"
       v-model:content="formData.content"
-      :error="errors?.content[0]"
-      @keydown.ctrl.enter.prevent="onSubmit"
+      :error="contentError"
+      @keydown="onEditorKeydown"
     />
 
     <template #actions>
@@ -161,6 +188,7 @@ const ui = computed(() => commentForm({ class: props.class }))
         v-if="props.cancelable"
         variant="link"
         :label="t('comments.CommentForm.actions.cancel')"
+        :disabled="isLoading"
         @click="onCancel"
       />
       <UButton

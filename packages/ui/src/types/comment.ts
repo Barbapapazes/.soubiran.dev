@@ -6,16 +6,13 @@ export interface Comment {
   content: string
   content_html: string
   user: User
-  created_at: {
-    diff_for_humans: string
-    formatted: string
-  }
+  createdAt: Date
   can: {
     update: boolean
     delete: boolean
     like: boolean
     unlike: boolean
   }
-  replies: Comment[]
+  replies?: Comment[]
   likes: number
 }

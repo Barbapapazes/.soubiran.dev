@@ -3,8 +3,9 @@ import UAvatar from '@nuxt/ui/components/Avatar.vue'
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
+import { useCommentsContext } from '../../composables/comments/context'
 import { useLocale } from '../../composables/useLocale'
-import { currentUserQuery } from '../../queries/users'
+import { currentUserQuery } from '../../queries/users.ts'
 import LoginRequired from '../LoginRequired.vue'
 import CommentForm from './CommentForm.vue'
 
@@ -17,7 +18,6 @@ const commentFormSection = tv({
 })
 
 export interface CommentFormSectionProps {
-  id: string
   class?: any
   ui?: Partial<typeof commentFormSection.slots>
 }
@@ -32,6 +32,8 @@ defineSlots<CommentFormSectionSlots>()
 
 const { t } = useLocale()
 
+const { pageId } = useCommentsContext()
+
 const { data: user } = useQuery(currentUserQuery)
 
 const ui = computed(() => commentFormSection())
@@ -42,8 +44,8 @@ const ui = computed(() => commentFormSection())
     <div :class="ui.header({ class: props.ui?.header })">
       <UAvatar
         v-if="user"
-        :src="user.data.avatar"
-        :title="user.data.name"
+        :src="user.avatar"
+        :title="user.name"
       />
       <h3 :class="ui.title({ class: props.ui?.title })">
         {{ t('comments.CommentFormSection.title') }}
@@ -54,7 +56,7 @@ const ui = computed(() => commentFormSection())
 
     <CommentForm
       v-else
-      :id="props.id"
+      :id="pageId"
     />
   </section>
 </template>

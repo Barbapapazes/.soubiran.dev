@@ -1,29 +1,42 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { onMounted, ref, toValue } from 'vue'
-import { useRoute } from 'vue-router'
+
+export function buildLoginLink(apiUrl: string, currentUrl: string, fragment?: string) {
+  const redirect = new URL(currentUrl)
+  redirect.hash = ''
+
+  const login = new URL('/login', apiUrl)
+  login.searchParams.set('redirect', redirect.toString())
+  login.hash = fragment ?? ''
+
+  return login.toString()
+}
 
 export function useLogin(fragment?: MaybeRefOrGetter<string | undefined>) {
-  const route = useRoute()
+  const loginLink = ref(`${import.meta.env.VITE_API_URL}/login`)
 
-  const githubLink = ref(`${import.meta.env.VITE_API_URL}/auth/github/redirect`)
-  const googleLink = ref(`${import.meta.env.VITE_API_URL}/auth/google/redirect`)
+  function updateLoginLink() {
+    if (typeof window === 'undefined') {
+      return
+    }
 
-  onMounted(() => {
-    const redirect = encodeURIComponent(`${window.location.origin}${route.path}${toValue(fragment)
-      ? `#${toValue(fragment)}`
-      : ''
-    }`)
+    loginLink.value = buildLoginLink(
+      import.meta.env.VITE_API_URL,
+      window.location.href,
+      toValue(fragment),
+    )
+  }
 
-    githubLink.value = `${import.meta.env.VITE_API_URL}/auth/github/redirect?redirect=${
-      redirect
-    }`
-    googleLink.value = `${import.meta.env.VITE_API_URL}/auth/google/redirect?redirect=${
-      redirect
-    }`
-  })
+  function navigateToLogin() {
+    if (typeof window !== 'undefined') {
+      window.location.assign(loginLink.value)
+    }
+  }
+
+  onMounted(updateLoginLink)
 
   return {
-    githubLink,
-    googleLink,
+    loginLink,
+    navigateToLogin,
   }
 }

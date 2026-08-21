@@ -1,13 +1,6 @@
 <script lang="ts">
-import type { Comment } from '../../../types/comment'
-import { useMutation, useQueryCache } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
-import { computed, nextTick } from 'vue'
-import { deleteComment } from '../../../api/comments'
-import { useDiscussionsAlert } from '../../../composables/useDiscussionsAlert'
-import { useLocale } from '../../../composables/useLocale'
-import { COMMENT_QUERY_KEY } from '../../../queries/comments'
-import { getCommentById } from '../../../utils/comments'
+import { computed, ref } from 'vue'
 import ConfirmModal from '../../ConfirmModal.vue'
 
 const confirmDeleteCommentModal = tv({
@@ -17,9 +10,11 @@ const confirmDeleteCommentModal = tv({
 })
 
 export interface ConfirmDeleteCommentModalProps {
-  id: string
-  comment: Comment
-  parentComment?: Comment
+  title: string
+  description: string
+  cancelLabel: string
+  confirmLabel: string
+  deleteComment: () => Promise<boolean>
   class?: any
   ui?: Partial<typeof confirmDeleteCommentModal.slots>
 }
@@ -34,36 +29,24 @@ const props = defineProps<ConfirmDeleteCommentModalProps>()
 const emit = defineEmits<ConfirmDeleteCommentModalEmits>()
 defineSlots<ConfirmDeleteCommentModalSlots>()
 
-const { t } = useLocale()
-
-const { show } = useDiscussionsAlert()
-const queryCache = useQueryCache()
-const { mutate, isLoading } = useMutation({
-  mutation: ({ commentId }: { commentId: number, parentCommentId?: number }) => deleteComment(commentId),
-  onSuccess: () => {
-    show(t('comments.CommentConfirmDelete.successMessage'))
-  },
-
-  onError: () => {
-    show(t('comments.CommentConfirmDelete.errorMessage'), 'error')
-  },
-
-  onSettled: async () => {
-    await queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id) })
-
-    emit('close')
-  },
-})
+const isLoading = ref(false)
 
 function onClose() {
   emit('close')
 }
 
-function onConfirm() {
-  mutate({
-    parentCommentId: props.parentComment?.id,
-    commentId: props.comment.id,
-  })
+async function onConfirm() {
+  if (isLoading.value) {
+    return
+  }
+
+  isLoading.value = true
+  const deleted = await props.deleteComment()
+  isLoading.value = false
+
+  if (deleted) {
+    emit('close')
+  }
 }
 
 const ui = computed(() => confirmDeleteCommentModal())
@@ -71,8 +54,10 @@ const ui = computed(() => confirmDeleteCommentModal())
 
 <template>
   <ConfirmModal
-    :title="t('comments.CommentConfirmDelete.title')"
-    :description="t('comments.CommentConfirmDelete.description')"
+    :title="props.title"
+    :description="props.description"
+    :cancel-label="props.cancelLabel"
+    :confirm-label="props.confirmLabel"
     :loading="isLoading"
     :class="ui.base({ class: [props.ui?.base, props.class] })"
     @close="onClose"

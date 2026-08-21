@@ -1,3 +1,4 @@
+export { default as Comments } from './components/Comments.vue'
 export { default as Container } from './components/Container.vue'
 export { default as Feedback } from './components/Feedback/Feedback.vue'
 export { default as FeedbackCard } from './components/Feedback/FeedbackCard.vue'

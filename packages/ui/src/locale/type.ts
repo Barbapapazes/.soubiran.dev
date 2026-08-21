@@ -1,3 +1,12 @@
+export type LocaleCode = 'en' | 'fr'
+
+export type DeepPartial<T>
+  = T extends readonly unknown[]
+    ? T
+    : T extends object
+      ? { [Key in keyof T]?: DeepPartial<T[Key]> }
+      : T
+
 export interface LocaleMessages {
   Editor: {
     placeholder: string
@@ -13,19 +22,14 @@ export interface LocaleMessages {
       preview: string
     }
   }
-  LoginModal: {
-    title: string
-    description: string
-  }
   LoginRequired: {
     text: string
+    action: string
   }
-  login: {
-    LoginWithGitHubButton: {
-      label: string
-    }
-    LoginWithGoogleButton: {
-      label: string
+  ConfirmModal: {
+    actions: {
+      cancel: string
+      confirm: string
     }
   }
   comments: {
@@ -34,10 +38,13 @@ export interface LocaleMessages {
         edit: string
         delete: string
       }
+      actionMenu: string
     }
     CommentConfirmDelete: {
       title: string
       description: string
+      successMessage: string
+      errorMessage: string
     }
     CommentFormSection: {
       title: string
@@ -63,6 +70,13 @@ export interface LocaleMessages {
         edit: string
         cancel: string
       }
+    }
+    errors: {
+      create: string
+      update: string
+      delete: string
+      like: string
+      unlike: string
     }
   }
   discussions: {

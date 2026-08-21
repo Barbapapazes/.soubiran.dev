@@ -1,14 +1,14 @@
 <script lang="ts">
 import type { Comment } from '../../types/comment'
 import UButton from '@nuxt/ui/components/Button.vue'
-import { useOverlay } from '@nuxt/ui/composables/useOverlay'
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed, nextTick, ref, useTemplateRef } from 'vue'
+import { useCommentsContext } from '../../composables/comments/context'
 import { useLocale } from '../../composables/useLocale'
-import { currentUserQuery } from '../../queries/users'
+import { useLogin } from '../../composables/useLogin'
+import { currentUserQuery } from '../../queries/users.ts'
 import CommentForm from '../Comments/CommentForm.vue'
-import LoginModal from '../LoginModal.vue'
 
 const discussionReply = tv({
   slots: {
@@ -17,7 +17,6 @@ const discussionReply = tv({
 })
 
 export interface DiscussionReplyProps {
-  id: string
   parentComment: Comment
   class?: any
   ui?: Partial<typeof discussionReply.slots>
@@ -32,23 +31,18 @@ defineEmits<DiscussionReplyEmits>()
 defineSlots<DiscussionReplySlots>()
 
 const { t } = useLocale()
+const { data: user } = useQuery(currentUserQuery)
+
+const { navigateToLogin } = useLogin('comments')
 
 const form = useTemplateRef('form')
 
 const isFormShown = ref(false)
-const { data: user } = useQuery(currentUserQuery)
 
-const overlay = useOverlay()
 function showForm() {
   if (!user.value) {
-    return overlay
-      .create(LoginModal, {
-        props: {
-          fragment: 'comments',
-        },
-        destroyOnClose: true,
-      })
-      .open()
+    navigateToLogin()
+    return
   }
 
   isFormShown.value = true
@@ -69,7 +63,6 @@ const ui = computed(() => discussionReply())
 <template>
   <CommentForm
     v-if="isFormShown"
-    :id="props.id"
     ref="form"
     cancelable
     :parent-comment="props.parentComment"

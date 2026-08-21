@@ -1,8 +1,7 @@
 <script lang="ts">
-import { useQuery } from '@pinia/colada'
+import type { Comment } from '../../types/comment'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
-import { commentsByPageIdQuery } from '../../queries/comments'
 import Discussion from './Discussion.vue'
 
 const discussionsList = tv({
@@ -13,7 +12,7 @@ const discussionsList = tv({
 })
 
 export interface DiscussionsListProps {
-  id: string
+  comments: Comment[]
   class?: any
   ui?: Partial<typeof discussionsList.slots>
 }
@@ -26,16 +25,13 @@ const props = defineProps<DiscussionsListProps>()
 defineEmits<DiscussionsListEmits>()
 defineSlots<DiscussionsListSlots>()
 
-const { data: comments } = useQuery(commentsByPageIdQuery, () => ({ id: props.id }))
-
 const ui = computed(() => discussionsList())
 </script>
 
 <template>
-  <div v-if="comments" :class="ui.base({ class: [props.class, props.ui?.base] })">
+  <div :class="ui.base({ class: [props.class, props.ui?.base] })">
     <Discussion
-      v-for="comment in comments.data"
-      :id="props.id"
+      v-for="comment in props.comments"
       :key="comment.id"
       :comment="comment"
       :class="ui.discussion({ class: props.ui?.discussion })"

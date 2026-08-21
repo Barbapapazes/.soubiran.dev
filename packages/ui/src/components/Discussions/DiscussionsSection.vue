@@ -1,12 +1,15 @@
 <script lang="ts">
 import UAlert from '@nuxt/ui/components/Alert.vue'
 import { useQuery } from '@pinia/colada'
-import { AnimatePresence, Motion } from 'motion-v'
+import { AnimatePresence, Motion, useReducedMotion } from 'motion-v'
 import { tv } from 'tailwind-variants'
-import { computed, nextTick } from 'vue'
-import { useDiscussionsAlert } from '../../composables/useDiscussionsAlert'
+import { computed } from 'vue'
+import { getComments } from '../../api/comments.ts'
+import { useCommentsContext } from '../../composables/comments/context.ts'
+import { useCommentsBanner } from '../../composables/comments/useCommentsBanner.ts'
 import { useLocale } from '../../composables/useLocale'
-import { commentsByPageIdQuery } from '../../queries/comments'
+import { COMMENT_QUERY_KEYS } from '../../keys/comments.ts'
+import { mapCommentResponse } from '../../mappers/comments.ts'
 import CommentFormSection from '../Comments/CommentFormSection.vue'
 import StateEmpty from '../State/StateEmpty.vue'
 import StateError from '../State/StateError.vue'
@@ -25,7 +28,6 @@ const discussionsSection = tv({
 })
 
 export interface DiscussionsSectionProps {
-  id: string
   class?: any
   ui?: Partial<typeof discussionsSection.slots>
 }
@@ -39,66 +41,58 @@ defineEmits<DiscussionsSectionEmits>()
 defineSlots<DiscussionsSectionSlots>()
 
 const { t } = useLocale()
-const { state: commentsState } = useQuery(commentsByPageIdQuery, () => ({ id: props.id }))
+const reducedMotion = useReducedMotion()
 
-const { isActive, message, color } = useDiscussionsAlert()
-function onAnimationComplete() {
-  nextTick(() => {
-    const commentsElement = document.getElementById('comments')
-    if (commentsElement) {
-      window.scrollTo({
-        top: commentsElement.offsetTop,
-        behavior: 'smooth',
-      })
-    }
-  })
-}
+const { pageId, locale } = useCommentsContext()
+const { banner, isActive, dismiss } = useCommentsBanner()
+
+const { data: comments, error: commentsError, isPending: isCommentsPending } = useQuery({
+  key: COMMENT_QUERY_KEYS.byPageId(pageId.value, locale.value),
+  query: () => getComments(pageId.value, locale.value).then(response => response.data.map(mapCommentResponse)),
+  enabled: typeof window !== 'undefined',
+})
 
 const ui = computed(() => discussionsSection())
 </script>
 
 <template>
   <section id="comments">
-    <div :class="ui.base({ class: [props.class, props.ui?.header] })">
+    <div :class="ui.base({ class: [props.class, props.ui?.base] })">
       <div :class="ui.header({ class: props.ui?.header })">
         <DiscussionsSectionTitle />
         <DiscussionsSectionSubtitle
-          :id="props.id"
+          :comments="comments ?? []"
         />
       </div>
 
       <AnimatePresence>
         <Motion
-          v-if="isActive"
-          :initial="{
+          v-if="banner && isActive"
+          :initial="reducedMotion ? false : {
             height: 0,
             opacity: 0,
-            filter: 'blur(4px)',
-            translateY: 2,
           }"
           :animate="{
             height: 'auto',
             opacity: 1,
-            filter: 'blur(0)',
-            translateY: 0,
             transition: {
-              duration: 0.3,
+              duration: reducedMotion ? 0 : 0.2,
               ease: 'easeOut',
             },
           }"
-          :exit="{
+          :exit="reducedMotion ? undefined : {
             height: 0,
             opacity: 0,
-            filter: 'blur(4px)',
-            translateY: 2,
           }"
-          @animation-complete="onAnimationComplete"
         >
           <UAlert
-            :title="message"
+            :title="banner.message"
             :class="ui.alert({ class: props.ui?.alert })"
-            :color="color"
+            :color="banner.kind === 'error' ? 'error' : 'success'"
             variant="subtle"
+            close
+            :role="banner.kind === 'error' ? 'alert' : 'status'"
+            @update:open="dismiss"
           />
         </Motion>
       </AnimatePresence>
@@ -109,23 +103,22 @@ const ui = computed(() => discussionsSection())
         the animated element collapses abruptly. We render an empty
         div with `mt-6` while the Alert is active to keep the animation smooth.
       -->
-      <div v-if="isActive" class="mt-6" />
+      <div v-if="banner && isActive" class="mt-6" />
 
-      <StatePending v-if="commentsState.status === 'pending'" />
-      <StateError v-else-if="commentsState.status === 'error'" />
+      <StatePending v-if="isCommentsPending" />
+      <StateError v-else-if="commentsError" />
 
       <StateEmpty
-        v-else-if="!commentsState.data?.data.length"
+        v-else-if="!(comments ?? []).length"
         :text="t('discussions.DiscussionsSection.empty')"
       />
 
       <DiscussionsList
         v-else
-        :id="props.id"
+        :comments="comments ?? []"
       />
 
       <CommentFormSection
-        :id="props.id"
         class="mt-12"
       />
     </div>

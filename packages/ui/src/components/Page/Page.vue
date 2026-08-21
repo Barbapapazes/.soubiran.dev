@@ -2,7 +2,6 @@
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import Container from '../Container.vue'
-import DiscussionsSection from '../Discussions/DiscussionsSection.vue'
 
 const page = tv({
   slots: {

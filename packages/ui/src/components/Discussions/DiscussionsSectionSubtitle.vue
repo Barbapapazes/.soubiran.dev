@@ -1,17 +1,15 @@
 <script lang="ts">
 import type { Comment } from '../../types/comment'
-import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import { useLocale } from '../../composables/useLocale'
-import { commentsByPageIdQuery } from '../../queries/comments'
 
 const discussionsSectionSubtitle = tv({
   base: '',
 })
 
 export interface DiscussionsSectionSubtitleProps {
-  id: string
+  comments: Comment[]
   class?: any
 }
 export interface DiscussionsSectionSubtitleEmits {}
@@ -24,25 +22,23 @@ defineEmits<DiscussionsSectionSubtitleEmits>()
 defineSlots<DiscussionsSectionSubtitleSlots>()
 
 const { t } = useLocale()
-const { data: comments } = useQuery(commentsByPageIdQuery, () => ({ id: props.id }))
-
 const commentsSubtitle = computed(() => {
-  const count = comments.value?.data.length ?? 0
+  const count = props.comments.length
 
-  if (count > 1) {
-    return t('discussions.DiscussionsSectionSubtitle.comments.plural', { count: count.toString() })
+  if (count !== 1) {
+    return t('discussions.DiscussionsSectionSubtitle.comments.plural', { count })
   }
 
-  return t('discussions.DiscussionsSectionSubtitle.comments.singular', { count: count.toString() })
+  return t('discussions.DiscussionsSectionSubtitle.comments.singular', { count })
 })
 const repliesSubtitle = computed(() => {
-  const count = comments.value?.data.reduce((acc: number, comment: Comment) => acc + comment.replies.length, 0) ?? 0
+  const count = props.comments.reduce((acc: number, comment: Comment) => acc + comment.replies.length, 0)
 
-  if (count > 1) {
-    return t('discussions.DiscussionsSectionSubtitle.replies.plural', { count: count.toString() })
+  if (count !== 1) {
+    return t('discussions.DiscussionsSectionSubtitle.replies.plural', { count })
   }
 
-  return t('discussions.DiscussionsSectionSubtitle.replies.singular', { count: count.toString() })
+  return t('discussions.DiscussionsSectionSubtitle.replies.singular', { count })
 })
 
 const ui = computed(() => discussionsSectionSubtitle({ class: props.class }))

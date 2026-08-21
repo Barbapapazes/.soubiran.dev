@@ -1,14 +1,11 @@
 import { defineQueryOptions } from '@pinia/colada'
 import { getCurrentUser } from '../api/users'
-
-export const USER_QUERY_KEY = {
-  current: ['user'] as const,
-}
+import { USER_QUERY_KEYS } from '../keys/user'
 
 export const currentUserQuery = defineQueryOptions(
   () => ({
-    enabled: !import.meta.env.SSR,
-    key: USER_QUERY_KEY.current,
-    query: () => getCurrentUser(),
+    key: USER_QUERY_KEYS.current,
+    query: () => getCurrentUser().then(response => response.data),
+    enabled: typeof window !== 'undefined',
   }),
 )

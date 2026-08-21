@@ -25,10 +25,10 @@ const { t } = useLocale()
 
 const replies = computed(() => {
   if (props.comment.replies.length > 1) {
-    return t('comments.CommentRepliesCount.replies').replace('{count}', props.comment.replies.length.toString())
+    return t('comments.CommentRepliesCount.replies', { count: props.comment.replies.length })
   }
 
-  return t('comments.CommentRepliesCount.reply').replace('{count}', props.comment.replies.length.toString())
+  return t('comments.CommentRepliesCount.reply', { count: props.comment.replies.length })
 })
 
 const ui = computed(() => commentRepliesCount({ class: props.class }))

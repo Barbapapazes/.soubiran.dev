@@ -14,7 +14,6 @@ const discussion = tv({
 })
 
 export interface DiscussionProps {
-  id: string
   comment: Comment
   class?: any
   ui?: Partial<typeof discussion.slots>
@@ -33,7 +32,7 @@ const ui = computed(() => discussion())
 
 <template>
   <div :class="ui.base({ class: [props.class, props.ui?.base] })">
-    <CommentVue :id="props.id" :comment="comment" />
+    <CommentVue :comment="comment" />
 
     <div
       v-if="comment.replies.length"
@@ -41,7 +40,6 @@ const ui = computed(() => discussion())
     >
       <CommentVue
         v-for="reply in comment.replies"
-        :id="props.id"
         :key="reply.id"
         :parent-comment="comment"
         :comment="reply"
@@ -49,7 +47,7 @@ const ui = computed(() => discussion())
     </div>
 
     <div :class="ui.reply({ class: props.ui?.reply })">
-      <DiscussionReply :id="props.id" :parent-comment="comment" />
+      <DiscussionReply :parent-comment="comment" />
     </div>
   </div>
 </template>

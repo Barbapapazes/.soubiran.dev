@@ -1,17 +1,17 @@
 <script lang="ts">
 import type { Comment } from '../../types/comment'
 import UButton from '@nuxt/ui/components/Button.vue'
-import { useOverlay } from '@nuxt/ui/composables/useOverlay'
-import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
+import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import heartDuotone from '~icons/ph/heart-duotone'
-import { postCommentLike } from '../../api/comments'
+import heartFill from '~icons/ph/heart-fill'
+import { useCommentsContext } from '../../composables/comments/context'
+import { useCommentsPending } from '../../composables/comments/useCommentsPending'
 import { useLocale } from '../../composables/useLocale'
-import { COMMENT_QUERY_KEY } from '../../queries/comments'
+import { useLogin } from '../../composables/useLogin'
+import { useToggleCommentLikeMutation } from '../../mutations/comments'
 import { currentUserQuery } from '../../queries/users'
-import { getCommentById } from '../../utils/comments'
-import LoginModal from '../LoginModal.vue'
 
 const commentLike = tv({
   slots: {
@@ -20,7 +20,6 @@ const commentLike = tv({
 })
 
 export interface CommentLikeProps {
-  id: string
   parentComment?: Comment
   comment: Comment
   class?: any
@@ -36,64 +35,36 @@ defineEmits<CommentLikeEmits>()
 defineSlots<CommentLikeSlots>()
 
 const { t } = useLocale()
-
-const queryCache = useQueryCache()
-
-const { mutate } = useMutation({
-  mutation: ({ commentId }: { parentCommentId?: number, commentId: number }) => postCommentLike(commentId),
-
-  onMutate({ parentCommentId, commentId }) {
-    const oldComments = queryCache.getQueryData<{ data: Comment[] }>(COMMENT_QUERY_KEY.byPageId(props.id))!
-
-    const newComments = structuredClone(oldComments)
-
-    const comment = getCommentById(
-      newComments.data,
-      commentId,
-      parentCommentId,
-    )
-
-    if (comment) {
-      comment.likes += 1
-      comment.can.like = false
-      comment.can.unlike = true
-    }
-
-    queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(props.id), newComments)
-    queryCache.cancelQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id) })
-
-    return { oldComments, newComments }
-  },
-
-  onError: (_, __, { oldComments, newComments }) => {
-    if (newComments === queryCache.getQueryData(COMMENT_QUERY_KEY.byPageId(props.id))) {
-      queryCache.setQueryData(COMMENT_QUERY_KEY.byPageId(props.id), oldComments)
-    }
-  },
-
-  onSettled: () => {
-    queryCache.invalidateQueries({ key: COMMENT_QUERY_KEY.byPageId(props.id) })
-  },
-})
-
+const { locale, pageId } = useCommentsContext()
 const { data: user } = useQuery(currentUserQuery)
-const overlay = useOverlay()
-function onClick() {
+
+const { isLikePending } = useCommentsPending()
+const { mutateAsync: toggleCommentLike } = useToggleCommentLikeMutation()
+const { navigateToLogin } = useLogin('comments')
+
+async function onClick() {
   if (!user.value) {
-    return overlay
-      .create(LoginModal, {
-        props: {
-          fragment: 'comments',
-        },
-        destroyOnClose: true,
-      })
-      .open()
+    navigateToLogin()
+    return
   }
 
-  mutate({
-    commentId: props.comment.id,
-    parentCommentId: props.parentComment?.id,
-  })
+  const shouldLike = props.comment.can.like
+
+  try {
+    await toggleCommentLike({
+      pageId: pageId.value,
+      locale: locale.value,
+      commentId: props.comment.id,
+      parentCommentId: props.parentComment?.id,
+      shouldLike,
+    })
+  }
+  catch {
+    banner.show({
+      kind: 'error',
+      message: t(shouldLike ? 'comments.errors.like' : 'comments.errors.unlike'),
+    })
+  }
 }
 
 const ui = computed(() => commentLike())
@@ -103,9 +74,11 @@ const ui = computed(() => commentLike())
   <UButton
     variant="link"
     color="neutral"
-    :title="t('comments.CommentLike.title')"
+    :title="t(props.comment.can.unlike ? 'comments.CommentUnlike.title' : 'comments.CommentLike.title')"
     :label="props.comment.likes.toString()"
-    :icon="heartDuotone"
+    :icon="props.comment.can.unlike ? heartFill : heartDuotone"
+    :loading="isLikePending(props.comment.id)"
+    :disabled="isLikePending(props.comment.id)"
     :class="ui.base({ class: [props.ui?.base, props.class] })"
     @click="onClick"
   />

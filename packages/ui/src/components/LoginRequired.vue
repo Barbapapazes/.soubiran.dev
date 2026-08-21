@@ -1,9 +1,9 @@
 <script lang="ts">
+import UButton from '@nuxt/ui/components/Button.vue'
 import { tv } from 'tailwind-variants'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 import { useLocale } from '../composables/useLocale'
-import LoginWithGitHubButton from './Login/LoginWithGitHubButton.vue'
-import LoginWithGoogleButton from './Login/LoginWithGoogleButton.vue'
+import { useLogin } from '../composables/useLogin'
 
 const loginRequired = tv({
   slots: {
@@ -28,6 +28,7 @@ defineEmits<LoginRequiredEmits>()
 defineSlots<LoginRequiredSlots>()
 
 const { t } = useLocale()
+const { loginLink } = useLogin(toRef(() => props.fragment))
 
 const ui = computed(() => loginRequired())
 </script>
@@ -44,8 +45,12 @@ const ui = computed(() => loginRequired())
     </Prose>
 
     <div :class="ui.actions({ class: props.ui?.actions })">
-      <LoginWithGitHubButton />
-      <LoginWithGoogleButton />
+      <UButton
+        color="neutral"
+        variant="solid"
+        :label="t('LoginRequired.action')"
+        :href="loginLink"
+      />
     </div>
   </div>
 </template>
