@@ -11,3 +11,7 @@ overrides:
 patchedDependencies:
   markdown-it-table-of-contents: patches/markdown-it-table-of-contents.patch
   vite-ssg: patches/vite-ssg.patch
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - vue-demi

@@ -1,15 +1,16 @@
 import type { ComponentResolver } from 'unplugin-vue-components'
 
 const components: string[] = [
+  'Comments',
+  'Feedback',
+  'LoginCallback',
   'Page',
+  'PageTitle',
+  'PageHeader',
   'Header',
   'Socials',
   'Sponsors',
-  'Feedback',
   'Container',
-  'PageTitle',
-  'PageHeader',
-  'FeedbackCard',
   'ViewersCounter',
   'TableOfContents',
 ]
@@ -20,8 +21,8 @@ export default function (): ComponentResolver {
     resolve: (name: string) => {
       if (components.includes(name)) {
         return {
-          name: 'default',
-          from: `@soubiran/ui/components/${name}.vue`,
+          name,
+          from: '@soubiran/ui',
         }
       }
     },

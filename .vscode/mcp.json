@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "X-MCP-Toolsets": "repos,issues,pull_requests"
+      }
+    },
+    "nuxt-ui": {
+      "url": "https://ui.nuxt.com/mcp",
+      "type": "http"
+    }
+  },
+  "inputs": []
+}

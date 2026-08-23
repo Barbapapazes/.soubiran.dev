@@ -6,6 +6,7 @@ import { cloudflare } from '@cloudflare/vite-plugin'
 import ui from '@nuxt/ui/vite'
 import soubiranComposablesImports from '@soubiran/ui/imports'
 import soubiranResolver from '@soubiran/ui/resolver'
+import soubiranUi from '@soubiran/ui/ui'
 import soubiranWrapperClasses from '@soubiran/ui/wrapper-classes'
 import { unheadVueComposablesImports } from '@unhead/vue'
 import vue from '@vitejs/plugin-vue'
@@ -105,6 +106,7 @@ export function factory(options: Options): Plugin[] {
         ],
       },
       ui: {
+        ...soubiranUi,
         colors: {
           neutral: 'neutral',
         },

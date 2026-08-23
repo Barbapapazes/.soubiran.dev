@@ -2,7 +2,8 @@
 import { tv } from 'tailwind-variants'
 import { computed, ref } from 'vue'
 import thumbsUp from '~icons/ph/thumbs-up'
-import useUmami from '../composables/useUmami'
+import { useLocale } from '../../composables/useLocale'
+import useUmami from '../../composables/useUmami'
 import FeedbackCard from './FeedbackCard.vue'
 
 const feedback = tv({
@@ -25,6 +26,7 @@ const props = defineProps<FeedbackProps>()
 defineEmits<FeedbackEmits>()
 defineSlots<FeedbackSlots>()
 
+const { t } = useLocale()
 const { track } = useUmami()
 function onClick() {
   track('feedback_click')
@@ -46,7 +48,7 @@ const ui = computed(() => feedback())
     <UButton
       variant="link"
       color="neutral"
-      label="Give feedback"
+      :label="t('Feedback.action')"
       size="sm"
       :icon="thumbsUp"
       :class="ui.base({ class: [props.ui?.base, props.class] })"

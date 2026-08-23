@@ -1,12 +1,15 @@
 <script lang="ts">
+import type { FetchError } from 'ofetch'
+import type { FeedbackValidationErrorResponse } from '../../api/feedback'
 import { useMutation } from '@pinia/colada'
 import { motion } from 'motion-v'
-import { ofetch } from 'ofetch'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui'
 import { tv } from 'tailwind-variants'
 import { computed, ref } from 'vue'
 import checkCircle from '~icons/ph/check-circle'
-import useUmami from '../composables/useUmami'
+import { postFeedback } from '../../api/feedback'
+import { useLocale } from '../../composables/useLocale'
+import useUmami from '../../composables/useUmami'
 
 const feedbackCard = tv({
   slots: {
@@ -44,34 +47,35 @@ const ratings = [
   {
     label: '😭',
     value: 'Hate it',
+    title: 'FeedbackCard.ratings.hate',
   },
   {
     label: '🙁',
     value: 'Not great',
+    title: 'FeedbackCard.ratings.poor',
   },
   {
     label: '🙂',
     value: 'It\'s ok',
+    title: 'FeedbackCard.ratings.okay',
   },
   {
     label: '🤩',
     value: 'Love it',
+    title: 'FeedbackCard.ratings.love',
   },
-]
+] as const
 
 const successfullySent = ref(false)
 
+const { t } = useLocale()
 const { track } = useUmami()
 const { mutate, isLoading, error } = useMutation<
   void,
   { rating: string, content: string },
-  { status: number, data: { errors?: { content?: string[], rating?: string[] } } }
+  FetchError<FeedbackValidationErrorResponse>
 >({
-  mutation: ({ rating, content }) => ofetch(`/api/pages/${props.id}/feedback`, {
-    method: 'POST',
-    body: { rating, content },
-    baseURL: import.meta.env.VITE_API_BASE_URL,
-  }),
+  mutation: ({ rating, content }) => postFeedback(props.id, rating, content),
   onSuccess: () => {
     successfullySent.value = true
 
@@ -95,12 +99,12 @@ const formattedError = computed<string | undefined>(() => {
   }
 
   if (error.value.status === 404)
-    return 'Page not found. Cannot send feedback. It\'s us, not you!'
+    return t('FeedbackCard.errors.notFound')
 
   if (error.value.status === 503)
-    return 'Service is currently unavailable. Please try again later.'
+    return t('FeedbackCard.errors.unavailable')
 
-  return 'An unexpected error occurred.'
+  return t('FeedbackCard.errors.unexpected')
 })
 
 const ui = computed(() => feedbackCard())
@@ -126,20 +130,20 @@ const ui = computed(() => feedbackCard())
           :animate="{ opacity: 1, transform: 'translateY(0)', transition: { delay: 0.2, duration: 0.3 } }"
           class="mt-3"
         >
-          Your feedback has been received.
+          {{ t('FeedbackCard.success.received') }}
         </motion.p>
         <motion.p
           :initial="{ opacity: 0, transform: 'translateY(4px)' }"
           :animate="{ opacity: 1, transform: 'translateY(0)', transition: { delay: 0.3, duration: 0.3 } }"
           class="mt-1"
         >
-          Thanks for your help!
+          {{ t('FeedbackCard.success.thanks') }}
         </motion.p>
       </div>
     </template>
 
     <UFormField :error="formattedError">
-      <UTextarea v-model="content" placeholder="Your feedback..." variant="soft" :class="ui.input({ class: props.ui?.input })" />
+      <UTextarea v-model="content" :placeholder="t('FeedbackCard.placeholder')" variant="soft" :class="ui.input({ class: props.ui?.input })" />
       <template #error="{ error: formFieldError }">
         <motion.div
           v-if="formFieldError"
@@ -157,12 +161,12 @@ const ui = computed(() => feedbackCard())
           <RadioGroupItem :id="item.value" :value="item.value" :class="ui.radioGroupItem({ class: props.ui?.radioGroupItem })">
             <RadioGroupIndicator />
           </RadioGroupItem>
-          <UTooltip :text="item.value">
+          <UTooltip :text="t(item.title)">
             <label :for="item.value" :class="ui.radioGroupLabel({ class: props.ui?.radioGroupLabel })">{{ item.label }}</label>
           </UTooltip>
         </div>
       </RadioGroupRoot>
-      <UButton size="sm" label="Send" :loading="isLoading" @click="sendFeedback" />
+      <UButton size="sm" :label="t('FeedbackCard.action')" :loading="isLoading" @click="sendFeedback" />
     </template>
   </UCard>
 </template>

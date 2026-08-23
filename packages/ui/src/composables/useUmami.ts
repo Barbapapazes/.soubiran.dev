@@ -1,12 +1,12 @@
-import { useRoute } from 'vue-router'
-
 export default function useUmami() {
-  const route = useRoute()
-
   function track(event: string, data?: Record<string, unknown>) {
+    if (typeof window === 'undefined') {
+      return
+    }
+
     window.umami?.track(event, {
       ...data,
-      page_path: route.path,
+      page_path: window.location.pathname,
     })
   }
 

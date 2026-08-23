@@ -1,9 +1,19 @@
 <script lang="ts" setup>
-
+import App from './components/App.vue'
+import Comments from './components/Comments.vue'
 </script>
 
 <template>
-  <div>
-    Hello World!
-  </div>
+  <App>
+    <UApp>
+      <UContainer>
+        <Comments
+          page-id="f339abd4-daf8-4e1b-8388-ea0f912f50c9"
+          locale="en"
+        />
+
+        <RouterView />
+      </UContainer>
+    </UApp>
+  </App>
 </template>

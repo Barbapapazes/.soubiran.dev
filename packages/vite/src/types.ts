@@ -30,7 +30,7 @@ export interface Options {
       pageConfig?: (page: string | null, frontmatter: Record<string, any>) => StructuredDataPageConfig
     }
   }
-  ui: NuxtUIOptions
+  ui?: NuxtUIOptions
   ssg?: SsgOptions | false
   meta?: MetaOptions | false
   api?: ApiOptions | false

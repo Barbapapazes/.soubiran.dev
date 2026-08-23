@@ -6,16 +6,18 @@ export default defineConfig({
   entry: [
     './src/index.ts',
     './src/ui.ts',
-    // TODO: rename to prose
     './src/wrapper-classes.ts',
   ],
   copy: [
     {
-      from: './src/components/',
-      to: './dist/',
+      from: './src/style.css',
+      to: './dist',
+    },
+    {
+      from: './src/styles',
+      to: './dist',
     },
   ],
-  unbundle: true,
   platform: 'neutral',
   tsconfig: './tsconfig.build.json',
   plugins: [

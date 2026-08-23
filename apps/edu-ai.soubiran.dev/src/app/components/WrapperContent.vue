@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { TableOfContentsItem } from '../../../../packages/ui/src/components/TableOfContents.vue'
+import type { TableOfContentsItem } from '@soubiran/ui'
 import { useHead } from '@unhead/vue'
 import { motion } from 'motion-v'
 
