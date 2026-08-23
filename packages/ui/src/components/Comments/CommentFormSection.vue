@@ -1,9 +1,7 @@
 <script lang="ts">
-import UAvatar from '@nuxt/ui/components/Avatar.vue'
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
-import { useCommentsContext } from '../../composables/comments/context'
 import { useLocale } from '../../composables/useLocale'
 import { currentUserQuery } from '../../queries/users.ts'
 import LoginRequired from '../LoginRequired.vue'
@@ -32,8 +30,6 @@ defineSlots<CommentFormSectionSlots>()
 
 const { t } = useLocale()
 
-const { pageId } = useCommentsContext()
-
 const { data: user } = useQuery(currentUserQuery)
 
 const ui = computed(() => commentFormSection())
@@ -52,11 +48,8 @@ const ui = computed(() => commentFormSection())
       </h3>
     </div>
 
-    <LoginRequired v-if="!user" fragment="comments" />
+    <LoginRequired v-if="!user" />
 
-    <CommentForm
-      v-else
-      :id="pageId"
-    />
+    <CommentForm v-else />
   </section>
 </template>

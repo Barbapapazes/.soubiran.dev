@@ -17,11 +17,6 @@
       "import": "./dist/index.js",
       "style": "./dist/style.css"
     },
-    "./components/*": "./dist/components/*",
-    "./composables/*": {
-      "types": "./dist/composables/*.d.ts",
-      "import": "./dist/composables/*.js"
-    },
     "./imports": {
       "types": "./dist/imports.d.mts",
       "import": "./dist/imports.mjs"
@@ -50,42 +45,42 @@
   ],
   "scripts": {
     "dev": "vite dev",
-    "build": "tsdown && tsdown -c tsdown.config.node.ts --no-clean",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "build": "tsdown && tsdown -c tsdown.config.node.ts --no-clean"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@nuxt/ui": "^4.7.0",
     "@pinia/colada": "^1.2.1",
-    "@vue/compiler-sfc": "^3.5.33",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.35"
+  },
+  "dependencies": {
     "@vueuse/core": "^14.3.0",
-    "markdown-it-github-alerts": "^1.0.1",
     "motion-v": "^2.2.1",
     "ofetch": "^1.5.1",
     "partysocket": "^1.1.18",
-    "pinia": "^3.0.4",
-    "reka-ui": "^2.6.0",
-    "tailwind-variants": "^3.1.1",
-    "vue": "^3.5.24"
+    "reka-ui": "^2.9.6",
+    "tailwind-variants": "^3.2.2",
+    "unplugin-vue-components": "^32.0.0"
   },
   "devDependencies": {
     "@iconify-json/ph": "^1.2.2",
-    "@iconify-json/simple-icons": "^1.2.63",
-    "@pinia/colada-devtools": "^0.4.2",
-    "@types/node": "^24.10.1",
-    "@vitejs/plugin-vue": "^6.0.3",
-    "@vue/language-core": "^3.2.1",
-    "@vue/test-utils": "^2.4.11",
-    "@vue/tsconfig": "^0.8.1",
-    "jsdom": "^30.0.1",
-    "tsdown": "^0.18.3",
+    "@iconify-json/simple-icons": "^1.2.79",
+    "@nuxt/ui": "^4.7.0",
+    "@pinia/colada": "^1.2.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^24.12.2",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vue/compiler-sfc": "^3.5.35",
+    "@vue/tsconfig": "^0.9.1",
+    "pinia": "^3.0.4",
+    "tailwindcss": "^4.3.3",
+    "tsdown": "^0.21.10",
     "typescript": "~5.9.3",
-    "unplugin-icons": "^22.5.0",
-    "unplugin-vue": "^7.1.0",
-    "unplugin-vue-components": "^30.0.0",
-    "vite": "8.0.0-beta.0",
-    "vitest": "^4.1.11",
-    "vue-router": "^5.0.0",
-    "vue-tsc": "^3.2.1"
+    "unplugin-icons": "^23.0.1",
+    "unplugin-vue": "^7.2.0",
+    "vite": "^8.0.10",
+    "vue": "^3.5.35",
+    "vue-router": "^5.0.6",
+    "vue-tsc": "^3.2.7"
   }
 }

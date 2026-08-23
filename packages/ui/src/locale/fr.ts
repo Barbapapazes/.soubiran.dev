@@ -1,5 +1,4 @@
 import type { LocaleMessages } from './type'
-import { defineLocale } from '@nuxt/ui/composables/defineLocale'
 
 export default defineLocale<LocaleMessages>({
   name: 'Français',
@@ -23,11 +22,42 @@ export default defineLocale<LocaleMessages>({
     LoginRequired: {
       text: 'Vous devez être connecté pour accéder à cette fonctionnalité.',
       action: 'Se connecter',
+      errors: {
+        popupBlocked: 'La fenêtre de connexion a été bloquée. Autorisez les fenêtres contextuelles et réessayez.',
+        popupClosed: 'La fenêtre de connexion a été fermée avant la fin de l’authentification.',
+        refreshFailed: 'Vous êtes connecté, mais votre session n’a pas pu être actualisée. Veuillez réessayer.',
+      },
+    },
+    LoginCallback: {
+      success: 'Connexion terminée. Vous pouvez fermer cette fenêtre.',
+      error: 'La connexion n’a pas pu être terminée. Fermez cette fenêtre et réessayez.',
     },
     ConfirmModal: {
       actions: {
         cancel: 'Annuler',
         confirm: 'Confirmer',
+      },
+    },
+    Feedback: {
+      action: 'Donner mon avis',
+    },
+    FeedbackCard: {
+      placeholder: 'Votre avis...',
+      action: 'Envoyer',
+      ratings: {
+        hate: 'Je déteste',
+        poor: 'Pas terrible',
+        okay: 'Ça va',
+        love: 'J’adore',
+      },
+      success: {
+        received: 'Votre avis a bien été reçu.',
+        thanks: 'Merci pour votre aide !',
+      },
+      errors: {
+        notFound: 'Page introuvable. Impossible d’envoyer votre avis.',
+        unavailable: 'Le service est indisponible. Veuillez réessayer plus tard.',
+        unexpected: 'Une erreur inattendue est survenue.',
       },
     },
     comments: {
@@ -38,11 +68,9 @@ export default defineLocale<LocaleMessages>({
         },
         actionMenu: 'Actions du commentaire',
       },
-      CommentConfirmDelete: {
+      CommentDeleteConfirmModal: {
         title: 'Supprimer le commentaire',
         description: 'Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action ne peut pas être annulée.',
-        successMessage: 'Le commentaire a été supprimé avec succès.',
-        errorMessage: 'Une erreur est survenue lors de la suppression du commentaire.',
       },
       CommentFormSection: {
         title: 'Ajouter un commentaire',
@@ -75,6 +103,9 @@ export default defineLocale<LocaleMessages>({
         delete: 'Une erreur est survenue lors de la suppression du commentaire.',
         like: 'Une erreur est survenue lors de l’ajout du like.',
         unlike: 'Une erreur est survenue lors de la suppression du like.',
+      },
+      success: {
+        delete: 'Le commentaire a bien été supprimé.',
       },
     },
     discussions: {

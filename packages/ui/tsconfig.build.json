@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["es2023"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "moduleDetection": "force",
     "module": "preserve",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": ["node"],
+    "types": ["node", "unplugin-icons/types/vue"],
+    "allowImportingTsExtensions": true,
     "strict": true,
     "noUnusedLocals": true,
     "declaration": true,
@@ -16,5 +17,11 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
-  "include": ["src"]
+  "include": [
+    "src/index.ts",
+    "src/ui.ts",
+    "src/vite-env.d.ts",
+    "src/wrapper-classes.ts",
+    "umami.d.ts"
+  ]
 }

@@ -1,7 +1,6 @@
 import { FetchError, ofetch } from 'ofetch'
 
 export const api = ofetch.create({
-  // TODO: add environment variable to DTS and add it to app tsconfig file
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
     Accept: 'application/json',

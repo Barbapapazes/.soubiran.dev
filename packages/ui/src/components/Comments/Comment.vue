@@ -1,24 +1,19 @@
 <script lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui/components/DropdownMenu.vue'
 import type { Comment } from '../../types/comment'
-import UAvatar from '@nuxt/ui/components/Avatar.vue'
-import UButton from '@nuxt/ui/components/Button.vue'
-import UDropdownMenu from '@nuxt/ui/components/DropdownMenu.vue'
-import { useOverlay } from '@nuxt/ui/composables/useOverlay'
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed, ref } from 'vue'
 import notePencil from '~icons/ph/note-pencil-duotone'
 import trash from '~icons/ph/trash-duotone'
-import { useCommentsContext } from '../../composables/comments/context'
+import { useCommentsContext } from '../../composables/comments/context.ts'
+import { useComments } from '../../composables/comments/useComments.ts'
 import { useLocale } from '../../composables/useLocale'
-import { useDeleteCommentMutation } from '../../mutations/comments'
 import { currentUserQuery } from '../../queries/users.ts'
 import CommentContent from './CommentContent.vue'
 import CommentHeader from './CommentHeader.vue'
 import CommentLike from './CommentLike.vue'
 import CommentRepliesCount from './CommentRepliesCount.vue'
-import CommentConfirmDelete from './Overlays/CommentConfirmDelete.vue'
 
 const comment = tv({
   slots: {
@@ -62,11 +57,9 @@ defineSlots<CommentSlots>()
 
 const { t } = useLocale()
 const { pageId, locale } = useCommentsContext()
+const { confirmDeleteComment } = useComments()
 
 const { data: user } = useQuery(currentUserQuery)
-
-// TODO: move mutation in this component
-const { mutateAsync: deleteComment } = useDeleteCommentMutation()
 
 const viewEditCommentEditor = ref(false)
 function onCommentEdited() {
@@ -75,7 +68,6 @@ function onCommentEdited() {
 
 const showActions = computed(() => user.value && (props.comment.can.update || props.comment.can.delete))
 
-const overlay = useOverlay()
 const actions = computed(() => {
   const items: DropdownMenuItem[] = []
 
@@ -93,37 +85,7 @@ const actions = computed(() => {
     items.push({
       icon: trash,
       label: t('comments.Comment.actions.delete'),
-      onSelect: () => {
-        overlay.create(CommentConfirmDelete, {
-          props: {
-            title: t('comments.CommentConfirmDelete.title'),
-            description: t('comments.CommentConfirmDelete.description'),
-            cancelLabel: t('ConfirmModal.actions.cancel'),
-            confirmLabel: t('ConfirmModal.actions.confirm'),
-            deleteComment: async () => {
-              try {
-                await deleteComment({
-                  pageId: pageId.value,
-                  locale: locale.value,
-                  commentId: props.comment.id,
-                  parentCommentId: props.parentComment?.id,
-                })
-                banner.show({
-                  kind: 'success',
-                  message: t('comments.CommentConfirmDelete.successMessage'),
-                })
-                return true
-              }
-              catch {
-                banner.show({ kind: 'error', message: t('comments.errors.delete') })
-                return false
-              }
-            },
-          },
-          destroyOnClose: true,
-        })
-          .open()
-      },
+      onSelect: () => confirmDeleteComment(pageId.value, props.comment.id, locale.value),
     })
   }
 
@@ -177,13 +139,12 @@ const ui = computed(() => comment({
       <div :class="ui.contentFooter({ class: props.ui?.contentFooter })">
         <CommentLike
           v-if="props.comment.can.like || props.comment.can.unlike"
-          :id="props.id"
           :parent-comment="props.parentComment"
           :comment="props.comment"
           :class="ui.like({ class: props.ui?.like })"
         />
         <CommentRepliesCount
-          v-if="!props.parentComment && props.comment.replies.length" :comment="props.comment"
+          v-if="!props.parentComment && props.comment.replies?.length" :comment="props.comment"
         />
       </div>
     </div>

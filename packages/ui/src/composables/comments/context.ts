@@ -1,10 +1,12 @@
 import type { InjectionKey, Ref } from 'vue'
 import type { LocaleCode } from '../../locale/type'
+import type { CommentsBannerController } from './useCommentsBanner'
 import { inject, provide } from 'vue'
 
 export interface CommentsContext {
   pageId: Readonly<Ref<string>>
   locale: Readonly<Ref<LocaleCode>>
+  banner: CommentsBannerController
 }
 
 const commentsContextInjectionKey: InjectionKey<CommentsContext> = Symbol('soubiran-ui.comments-context')

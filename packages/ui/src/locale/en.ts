@@ -1,5 +1,4 @@
 import type { LocaleMessages } from './type'
-import { defineLocale } from '@nuxt/ui/composables/defineLocale'
 
 export default defineLocale<LocaleMessages>({
   name: 'English',
@@ -23,11 +22,42 @@ export default defineLocale<LocaleMessages>({
     LoginRequired: {
       text: 'You need to be logged in to access this feature.',
       action: 'Log in',
+      errors: {
+        popupBlocked: 'The login window was blocked. Allow popups and try again.',
+        popupClosed: 'The login window was closed before authentication finished.',
+        refreshFailed: 'You are logged in, but your session could not be refreshed. Please try again.',
+      },
+    },
+    LoginCallback: {
+      success: 'Login complete. You can close this window.',
+      error: 'The login could not be completed. Close this window and try again.',
     },
     ConfirmModal: {
       actions: {
         cancel: 'Cancel',
         confirm: 'Confirm',
+      },
+    },
+    Feedback: {
+      action: 'Give feedback',
+    },
+    FeedbackCard: {
+      placeholder: 'Your feedback...',
+      action: 'Send',
+      ratings: {
+        hate: 'Hate it',
+        poor: 'Not great',
+        okay: 'It\'s ok',
+        love: 'Love it',
+      },
+      success: {
+        received: 'Your feedback has been received.',
+        thanks: 'Thanks for your help!',
+      },
+      errors: {
+        notFound: 'Page not found. Cannot send feedback. It\'s us, not you!',
+        unavailable: 'Service is currently unavailable. Please try again later.',
+        unexpected: 'An unexpected error occurred.',
       },
     },
     comments: {
@@ -38,11 +68,9 @@ export default defineLocale<LocaleMessages>({
         },
         actionMenu: 'Comment actions',
       },
-      CommentConfirmDelete: {
+      CommentDeleteConfirmModal: {
         title: 'Delete comment',
         description: 'Are you sure you want to delete this comment? This action cannot be undone.',
-        successMessage: 'The comment has been successfully deleted.',
-        errorMessage: 'An error occurred while deleting the comment.',
       },
       CommentFormSection: {
         title: 'Add a comment',
@@ -75,6 +103,9 @@ export default defineLocale<LocaleMessages>({
         delete: 'An error occurred while deleting the comment.',
         like: 'An error occurred while adding the like.',
         unlike: 'An error occurred while removing the like.',
+      },
+      success: {
+        delete: 'The comment was deleted successfully.',
       },
     },
     discussions: {

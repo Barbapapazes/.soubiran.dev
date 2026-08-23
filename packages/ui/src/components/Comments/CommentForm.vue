@@ -1,7 +1,6 @@
 <script lang="ts">
 import type { LocaleCode } from '../../locale/type.ts'
 import type { Comment } from '../../types/comment'
-import UButton from '@nuxt/ui/components/Button.vue'
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed, ref, useTemplateRef } from 'vue'
@@ -68,8 +67,6 @@ const { mutate: createComment, isLoading: isCreateCommentLoading } = useMutation
     else {
       contentError.value = t('comments.errors.create')
     }
-
-    console.error('Error creating comment:', error)
   },
   onSuccess: () => {
     clearFormData()
@@ -102,8 +99,6 @@ const { mutate: updateComment, isLoading: isUpdateCommentLoading } = useMutation
     else {
       contentError.value = t('comments.errors.update')
     }
-
-    console.error('Error updating comment:', error)
   },
   onSuccess: () => {
     clearFormData()

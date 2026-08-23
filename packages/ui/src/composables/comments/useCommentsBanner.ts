@@ -5,6 +5,8 @@ export interface CommentsBanner {
   message: string
 }
 
+export type CommentsBannerController = ReturnType<typeof useCommentsBanner>
+
 export function useCommentsBanner() {
   const banner = ref<CommentsBanner>()
   let timeout: ReturnType<typeof setTimeout> | undefined
@@ -24,7 +26,7 @@ export function useCommentsBanner() {
     timeout = setTimeout(() => {
       banner.value = undefined
       timeout = undefined
-    }, 5_000)
+    }, 4_000)
   }
 
   onScopeDispose(dismiss)

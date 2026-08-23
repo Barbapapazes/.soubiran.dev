@@ -3,6 +3,7 @@ import type { Comment } from '../../types/comment'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import { useLocale } from '../../composables/useLocale'
+import Subtitle from '../Subtitle.vue'
 
 const discussionsSectionSubtitle = tv({
   base: '',
@@ -32,7 +33,7 @@ const commentsSubtitle = computed(() => {
   return t('discussions.DiscussionsSectionSubtitle.comments.singular', { count })
 })
 const repliesSubtitle = computed(() => {
-  const count = props.comments.reduce((acc: number, comment: Comment) => acc + comment.replies.length, 0)
+  const count = props.comments.reduce((acc: number, comment: Comment) => acc + (comment.replies?.length ?? 0), 0)
 
   if (count !== 1) {
     return t('discussions.DiscussionsSectionSubtitle.replies.plural', { count })

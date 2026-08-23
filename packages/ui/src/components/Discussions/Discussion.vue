@@ -35,7 +35,7 @@ const ui = computed(() => discussion())
     <CommentVue :comment="comment" />
 
     <div
-      v-if="comment.replies.length"
+      v-if="comment.replies?.length"
       :class="ui.answers({ class: props.ui?.answers })"
     >
       <CommentVue

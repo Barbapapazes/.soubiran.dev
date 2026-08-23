@@ -31,11 +31,11 @@ defineSlots<CommentHeaderSlots>()
 
 const { code, t } = useLocale()
 const englishTimeAgo = useTimeAgoIntl(
-  () => props.comment.createdAt,
+  () => props.comment.created_at,
   { locale: 'en' },
 )
 const frenchTimeAgo = useTimeAgoIntl(
-  () => props.comment.createdAt,
+  () => props.comment.created_at,
   { locale: 'fr' },
 )
 const timeAgo = computed(() => code.value === 'fr' ? frenchTimeAgo.value : englishTimeAgo.value)
@@ -56,7 +56,7 @@ const ui = computed(() => commentHeader())
         {{ t('comments.CommentHeader.publishedAt') }}
       </dt>
       <dd :class="ui.time({ class: props.ui?.time })">
-        <time :datetime="props.comment.createdAt.toISOString()">
+        <time :datetime="new Date(props.comment.created_at).toISOString()">
           {{ timeAgo }}
         </time>
       </dd>

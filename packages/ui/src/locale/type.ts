@@ -25,11 +25,42 @@ export interface LocaleMessages {
   LoginRequired: {
     text: string
     action: string
+    errors: {
+      popupBlocked: string
+      popupClosed: string
+      refreshFailed: string
+    }
+  }
+  LoginCallback: {
+    success: string
+    error: string
   }
   ConfirmModal: {
     actions: {
       cancel: string
       confirm: string
+    }
+  }
+  Feedback: {
+    action: string
+  }
+  FeedbackCard: {
+    placeholder: string
+    action: string
+    ratings: {
+      hate: string
+      poor: string
+      okay: string
+      love: string
+    }
+    success: {
+      received: string
+      thanks: string
+    }
+    errors: {
+      notFound: string
+      unavailable: string
+      unexpected: string
     }
   }
   comments: {
@@ -40,11 +71,9 @@ export interface LocaleMessages {
       }
       actionMenu: string
     }
-    CommentConfirmDelete: {
+    CommentDeleteConfirmModal: {
       title: string
       description: string
-      successMessage: string
-      errorMessage: string
     }
     CommentFormSection: {
       title: string
@@ -77,6 +106,9 @@ export interface LocaleMessages {
       delete: string
       like: string
       unlike: string
+    }
+    success: {
+      delete: string
     }
   }
   discussions: {

@@ -1,8 +1,5 @@
 <script lang="ts">
 import type { TextareaProps } from '@nuxt/ui/components/Textarea.vue'
-import UFormField from '@nuxt/ui/components/FormField.vue'
-import UIcon from '@nuxt/ui/components/Icon.vue'
-import UTextArea from '@nuxt/ui/components/Textarea.vue'
 import { useQuery } from '@pinia/colada'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
 import { tv } from 'tailwind-variants'
@@ -10,6 +7,7 @@ import { computed, nextTick, useTemplateRef } from 'vue'
 import infoDuotone from '~icons/ph/info-duotone'
 import { getMarkdown } from '../api/comments'
 import { useLocale } from '../composables/useLocale'
+import { prose } from '../wrapper-classes'
 
 const editor = tv({
   slots: {
@@ -22,9 +20,14 @@ const editor = tv({
   },
 })
 
+type EditorTextareaProps = Omit<
+  TextareaProps<string>,
+  'modelValue' | 'defaultValue' | 'modelModifiers'
+>
+
 export interface EditorProps {
   class?: any
-  textarea?: TextareaProps
+  textarea?: EditorTextareaProps
   error?: string
   ui?: Partial<typeof editor.slots>
 }
@@ -37,7 +40,7 @@ const props = defineProps<EditorProps>()
 defineEmits<EditorEmits>()
 defineSlots<EditorSlots>()
 
-const content = defineModel<string>('content', { default: '' })
+const content = defineModel<string>('content', { default: '', required: true })
 
 const { code, t } = useLocale()
 
@@ -91,7 +94,7 @@ const ui = computed(() => editor())
 
     <TabsContent value="write" :class="ui.content({ class: props.ui?.content })" tabindex="-1">
       <UFormField :ui="{ help: 'flex items-center gap-1' }" :error="props.error" :help="t('Editor.write.help')">
-        <UTextArea
+        <UTextarea
           ref="textarea"
           v-model="content"
           variant="none"
@@ -108,13 +111,12 @@ const ui = computed(() => editor())
       </UFormField>
     </TabsContent>
     <TabsContent value="preview" :class="ui.content({ class: props.ui?.content })" tabindex="-1">
-      <!-- TODO: manage prose without-margin -->
-      <Prose without-margin :class="ui.prose({ class: props.ui?.prose })">
-        <p v-if="isPreviewLoading">
+      <div v-if="isPreviewLoading" :class="ui.prose({ class: [prose, props.ui?.prose] })">
+        <p>
           {{ t('Editor.preview.loading') }}
         </p>
-        <div v-else v-html="preview" />
-      </Prose>
+      </div>
+      <div v-else :class="ui.prose({ class: [prose, props.ui?.prose] })" v-html="preview" />
     </TabsContent>
   </TabsRoot>
 </template>

@@ -1,9 +1,8 @@
 <script lang="ts">
-import UButton from '@nuxt/ui/components/Button.vue'
 import { tv } from 'tailwind-variants'
-import { computed, toRef } from 'vue'
+import { computed } from 'vue'
 import { useLocale } from '../composables/useLocale'
-import { useLogin } from '../composables/useLogin'
+import { getLoginErrorMessageKey, useLogin } from '../composables/useLogin'
 
 const loginRequired = tv({
   slots: {
@@ -14,7 +13,6 @@ const loginRequired = tv({
 })
 
 export interface LoginRequiredProps {
-  fragment?: string
   class?: any
   ui?: Partial<typeof loginRequired.slots>
 }
@@ -28,28 +26,38 @@ defineEmits<LoginRequiredEmits>()
 defineSlots<LoginRequiredSlots>()
 
 const { t } = useLocale()
-const { loginLink } = useLogin(toRef(() => props.fragment))
+const toast = useToast()
+const { error, isPending, openLoginWindow } = useLogin()
+
+async function login() {
+  const isLoggedIn = await openLoginWindow()
+  if (!isLoggedIn && error.value) {
+    toast.add({
+      color: 'error',
+      description: t(getLoginErrorMessageKey(error.value)),
+    })
+  }
+}
 
 const ui = computed(() => loginRequired())
 </script>
 
 <template>
   <div :class="ui.base({ class: [props.ui?.base, props.class] })">
-    <!-- TODO: what to we do with the prose component? -->
-    <Prose
-      :class="ui.prose({ class: props.ui?.prose })" without-bottom-margin
+    <p
+      :class="ui.prose({ class: props.ui?.prose })"
     >
-      <p>
-        {{ t('LoginRequired.text') }}
-      </p>
-    </Prose>
+      {{ t('LoginRequired.text') }}
+    </p>
 
     <div :class="ui.actions({ class: props.ui?.actions })">
       <UButton
         color="neutral"
         variant="solid"
         :label="t('LoginRequired.action')"
-        :href="loginLink"
+        :loading="isPending"
+        :disabled="isPending"
+        @click="login"
       />
     </div>
   </div>

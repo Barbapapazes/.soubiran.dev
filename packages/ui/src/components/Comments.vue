@@ -1,9 +1,9 @@
 <script lang="ts">
 import type { LocaleCode } from '../locale/type'
 import type { DiscussionsSectionProps } from './Discussions/DiscussionsSection.vue'
-import { extendLocale } from '@nuxt/ui/composables/defineLocale'
 import { computed, provide, toRef } from 'vue'
 import { provideCommentsContext } from '../composables/comments/context'
+import { useCommentsBanner } from '../composables/comments/useCommentsBanner'
 import { localeContextInjectionKey } from '../composables/useLocale'
 import en from '../locale/en'
 import fr from '../locale/fr'
@@ -28,9 +28,12 @@ const resolvedLocale = computed(() => extendLocale(
 ))
 provide(localeContextInjectionKey, resolvedLocale)
 
+const banner = useCommentsBanner()
+
 provideCommentsContext({
   pageId: toRef(() => props.pageId),
   locale: toRef(() => props.locale),
+  banner,
 })
 </script>
 

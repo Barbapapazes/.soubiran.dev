@@ -6,7 +6,7 @@ export interface Comment {
   content: string
   content_html: string
   user: User
-  createdAt: Date
+  created_at: Date
   can: {
     update: boolean
     delete: boolean

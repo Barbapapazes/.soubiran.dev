@@ -1,12 +1,10 @@
 <script lang="ts">
 import type { Comment } from '../../types/comment'
-import UButton from '@nuxt/ui/components/Button.vue'
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed, nextTick, ref, useTemplateRef } from 'vue'
-import { useCommentsContext } from '../../composables/comments/context'
 import { useLocale } from '../../composables/useLocale'
-import { useLogin } from '../../composables/useLogin'
+import { getLoginErrorMessageKey, useLogin } from '../../composables/useLogin'
 import { currentUserQuery } from '../../queries/users.ts'
 import CommentForm from '../Comments/CommentForm.vue'
 
@@ -31,17 +29,24 @@ defineEmits<DiscussionReplyEmits>()
 defineSlots<DiscussionReplySlots>()
 
 const { t } = useLocale()
+const toast = useToast()
 const { data: user } = useQuery(currentUserQuery)
 
-const { navigateToLogin } = useLogin('comments')
+const { error: loginError, openLoginWindow } = useLogin()
 
 const form = useTemplateRef('form')
 
 const isFormShown = ref(false)
 
-function showForm() {
+async function showForm() {
   if (!user.value) {
-    navigateToLogin()
+    const isLoggedIn = await openLoginWindow()
+    if (!isLoggedIn && loginError.value) {
+      toast.add({
+        color: 'error',
+        description: t(getLoginErrorMessageKey(loginError.value)),
+      })
+    }
     return
   }
 

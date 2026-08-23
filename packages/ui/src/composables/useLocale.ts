@@ -1,5 +1,5 @@
 import type { Locale } from '@nuxt/ui'
-import type { InjectionKey, Ref } from 'vue'
+import type { InjectionKey, MaybeRef, Ref } from 'vue'
 import type { LocaleMessages } from '../locale/type'
 import { buildLocaleContext } from '@nuxt/ui/utils/locale'
 import { computed, inject } from 'vue'
@@ -10,5 +10,9 @@ export const localeContextInjectionKey: InjectionKey<Ref<Locale<LocaleMessages> 
 export function useLocale(localeOverrides?: Ref<Locale<LocaleMessages> | undefined>) {
   const locale = localeOverrides || inject(localeContextInjectionKey)
 
-  return buildLocaleContext<LocaleMessages>(computed(() => locale?.value || en))
+  const resolvedLocale = computed(() => locale?.value || en)
+
+  return buildLocaleContext<LocaleMessages>(
+    resolvedLocale as unknown as MaybeRef<Locale<LocaleMessages>>,
+  )
 }

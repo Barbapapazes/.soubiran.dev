@@ -8,16 +8,16 @@
   },
   "dependencies": {
     "@nuxt/ui": "^4.7.0",
-    "@pinia/colada": "^1.2.0",
+    "@pinia/colada": "^1.2.1",
     "@soubiran/ui": "workspace:*",
     "@unhead/vue": "^3.0.5",
-    "@vueuse/core": "^14.2.1",
+    "@vueuse/core": "^14.3.0",
     "markdown-it-github-alerts": "^1.0.1",
     "motion-v": "^2.2.1",
     "ofetch": "^1.5.1",
     "pinia": "^3.0.4",
     "tailwind-variants": "^3.2.2",
-    "vue": "^3.5.33"
+    "vue": "^3.5.35"
   },
   "devDependencies": {
     "@iconify-json/ph": "^1.2.2",
@@ -31,7 +31,7 @@
     "unplugin-icons": "^23.0.1",
     "vite": "^8.0.10",
     "vite-ssg": "^28.3.0",
-    "vue-router": "4.6.3",
-    "vue-tsc": "^3.1.4"
+    "vue-router": "^5.0.6",
+    "vue-tsc": "^3.2.7"
   }
 }

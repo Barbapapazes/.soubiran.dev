@@ -1,8 +1,7 @@
 <script lang="ts">
-import UButton from '@nuxt/ui/components/Button.vue'
-import UModal from '@nuxt/ui/components/Modal.vue'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
+import { useLocale } from '../composables/useLocale'
 
 const confirmModal = tv({
   slots: {
@@ -13,8 +12,8 @@ const confirmModal = tv({
 export interface ConfirmModalProps {
   title: string
   description: string
-  cancelLabel: string
-  confirmLabel: string
+  cancelLabel?: string
+  confirmLabel?: string
   loading?: boolean
   class?: any
   ui?: Partial<typeof confirmModal.slots>
@@ -32,6 +31,8 @@ const props = defineProps<ConfirmModalProps>()
 const emit = defineEmits<ConfirmModalEmits>()
 defineSlots<ConfirmModalSlots>()
 
+const { t } = useLocale()
+
 function onClose() {
   emit('close')
 }
@@ -47,18 +48,21 @@ const ui = computed(() => confirmModal())
   <UModal
     :title="title"
     :description="description"
-    :ui="{ content: 'space-y-4', footer: 'justify-end' }"
+    :ui="{
+      content: 'space-y-4',
+      footer: 'justify-end',
+    }"
     :class="ui.base({ class: [props.ui?.base, props.class] })"
   >
     <template #footer>
       <UButton
-        :label="props.cancelLabel"
+        :label="props.cancelLabel ?? t('ConfirmModal.actions.cancel')"
         variant="ghost"
         color="neutral"
         @click="onClose"
       />
       <UButton
-        :label="props.confirmLabel"
+        :label="props.confirmLabel ?? t('ConfirmModal.actions.confirm')"
         variant="solid"
         color="neutral"
         :loading="props.loading"

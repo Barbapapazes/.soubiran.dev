@@ -3,6 +3,7 @@ import type { Comment } from '../../types/comment'
 import type Editor from '../Editor.vue'
 import { tv } from 'tailwind-variants'
 import { computed, nextTick, ref, watch } from 'vue'
+import { prose } from '../../wrapper-classes.ts'
 import CommentForm from './CommentForm.vue'
 
 const commentContent = tv({
@@ -56,8 +57,5 @@ const ui = computed(() => commentContent({ class: props.class }))
     @success="onSuccess"
     @cancel="viewEditor = false"
   />
-  <!-- TODO: manage prose without-margin -->
-  <Prose v-else without-margin class="text-sm">
-    <div v-html="comment.content_html" />
-  </Prose>
+  <div v-else class="text-sm" :class="prose" v-html="comment.content_html" />
 </template>

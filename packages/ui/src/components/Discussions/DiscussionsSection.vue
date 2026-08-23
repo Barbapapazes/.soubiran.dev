@@ -1,15 +1,12 @@
 <script lang="ts">
-import UAlert from '@nuxt/ui/components/Alert.vue'
 import { useQuery } from '@pinia/colada'
 import { AnimatePresence, Motion, useReducedMotion } from 'motion-v'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import { getComments } from '../../api/comments.ts'
 import { useCommentsContext } from '../../composables/comments/context.ts'
-import { useCommentsBanner } from '../../composables/comments/useCommentsBanner.ts'
 import { useLocale } from '../../composables/useLocale'
 import { COMMENT_QUERY_KEYS } from '../../keys/comments.ts'
-import { mapCommentResponse } from '../../mappers/comments.ts'
 import CommentFormSection from '../Comments/CommentFormSection.vue'
 import StateEmpty from '../State/StateEmpty.vue'
 import StateError from '../State/StateError.vue'
@@ -43,12 +40,12 @@ defineSlots<DiscussionsSectionSlots>()
 const { t } = useLocale()
 const reducedMotion = useReducedMotion()
 
-const { pageId, locale } = useCommentsContext()
-const { banner, isActive, dismiss } = useCommentsBanner()
+const { pageId, locale, banner: bannerController } = useCommentsContext()
+const { banner, isActive, dismiss } = bannerController
 
 const { data: comments, error: commentsError, isPending: isCommentsPending } = useQuery({
   key: COMMENT_QUERY_KEYS.byPageId(pageId.value, locale.value),
-  query: () => getComments(pageId.value, locale.value).then(response => response.data.map(mapCommentResponse)),
+  query: () => getComments(pageId.value, locale.value).then(response => response.data),
   enabled: typeof window !== 'undefined',
 })
 

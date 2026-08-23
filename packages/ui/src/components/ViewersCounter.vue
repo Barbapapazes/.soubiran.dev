@@ -1,7 +1,7 @@
 <script lang="ts">
 import PartySocket from 'partysocket'
 import { tv } from 'tailwind-variants'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const viewersCounter = tv({
   slots: {
@@ -12,7 +12,7 @@ const viewersCounter = tv({
 
 interface Data {
   count: number
-  connections: { [key: string]: number }
+  connections: Record<string, number>
 }
 
 export interface ViewersCounterProps {
@@ -29,7 +29,8 @@ defineEmits<ViewersCounterEmits>()
 defineSlots<ViewersCounterSlots>()
 
 const count = ref<number>(0)
-const connections = ref<{ [key: string]: number }>({})
+const connections = ref<Record<string, number>>({})
+let socket: PartySocket | undefined
 
 function connect() {
   return new PartySocket({
@@ -38,15 +39,36 @@ function connect() {
   })
 }
 
+function handleMessage(event: MessageEvent) {
+  if (typeof event.data !== 'string') {
+    return
+  }
+
+  let data: Data
+  try {
+    data = JSON.parse(event.data) as Data
+  }
+  catch {
+    return
+  }
+
+  count.value = data.count
+  connections.value = data.connections
+}
+
 onMounted(() => {
-  const ws = connect()
+  socket = connect()
+  socket.addEventListener('message', handleMessage)
+})
 
-  ws.addEventListener('message', (event) => {
-    const data = JSON.parse(event.data) as Data
+onBeforeUnmount(() => {
+  if (!socket) {
+    return
+  }
 
-    count.value = data.count
-    connections.value = data.connections
-  })
+  socket.removeEventListener('message', handleMessage)
+  socket.close()
+  socket = undefined
 })
 
 const title = computed(() => {

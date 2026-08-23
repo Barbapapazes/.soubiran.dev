@@ -3,6 +3,7 @@ import type { ComponentResolver } from 'unplugin-vue-components'
 const components: string[] = [
   'Comments',
   'Feedback',
+  'LoginCallback',
   'Page',
   'PageTitle',
   'PageHeader',
@@ -14,15 +15,14 @@ const components: string[] = [
   'TableOfContents',
 ]
 
-// TODO: Add a S previx, like U for Nuxt UI
 export default function (): ComponentResolver {
   return {
     type: 'component',
     resolve: (name: string) => {
       if (components.includes(name)) {
         return {
-          name: 'default',
-          from: `@soubiran/ui/components/${name}.vue`,
+          name,
+          from: '@soubiran/ui',
         }
       }
     },

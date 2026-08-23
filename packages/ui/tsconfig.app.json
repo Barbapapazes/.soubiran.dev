@@ -20,8 +20,11 @@
   "include": [
     "./umami.d.ts",
     "./typed-router.d.ts",
+    "./src/auto-imports.d.ts",
+    "./src/components.d.ts",
     "./src/index.ts",
     "./src/main.ts",
+    "./src/wrapper-classes.ts",
     "./src/ui.ts",
     "./src/App.vue",
     "./src/vite-env.d.ts",
@@ -32,8 +35,7 @@
     "./src/hooks/**/*.ts",
     "./src/keys/**/*.ts",
     "./src/queries/**/*.ts",
-    "./src/mappers/**/*.ts",
-    "./src/mutations/**/*.ts",
+    "./src/pages/**/*.ts",
     "./src/components/**/*.vue",
     "./src/composables/**/*.ts"
   ]

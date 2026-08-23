@@ -24,18 +24,18 @@ defineSlots<CommentRepliesCountSlots>()
 const { t } = useLocale()
 
 const replies = computed(() => {
-  if (props.comment.replies.length > 1) {
+  if (props.comment.replies && props.comment.replies?.length > 1) {
     return t('comments.CommentRepliesCount.replies', { count: props.comment.replies.length })
   }
 
-  return t('comments.CommentRepliesCount.reply', { count: props.comment.replies.length })
+  return t('comments.CommentRepliesCount.reply', { count: props.comment.replies?.length ?? 0 })
 })
 
 const ui = computed(() => commentRepliesCount({ class: props.class }))
 </script>
 
 <template>
-  <span v-if="props.comment.replies.length" :class="ui">
+  <span v-if="props.comment.replies?.length" :class="ui">
     {{ replies }}
   </span>
 </template>
