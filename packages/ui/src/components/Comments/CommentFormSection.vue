@@ -1,4 +1,5 @@
 <script lang="ts">
+import UAvatar from '@nuxt/ui/components/Avatar.vue'
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'

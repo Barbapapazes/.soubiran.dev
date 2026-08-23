@@ -1,5 +1,8 @@
 <script lang="ts">
 import type { TextareaProps } from '@nuxt/ui/components/Textarea.vue'
+import UFormField from '@nuxt/ui/components/FormField.vue'
+import UIcon from '@nuxt/ui/components/Icon.vue'
+import UTextarea from '@nuxt/ui/components/Textarea.vue'
 import { useQuery } from '@pinia/colada'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
 import { tv } from 'tailwind-variants'

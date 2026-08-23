@@ -1,5 +1,8 @@
 <script lang="ts">
 import type { FunctionalComponent, SVGAttributes } from 'vue'
+import UButton from '@nuxt/ui/components/Button.vue'
+import USeparator from '@nuxt/ui/components/Separator.vue'
+import UTooltip from '@nuxt/ui/components/Tooltip.vue'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import discord from '~icons/simple-icons/discord'

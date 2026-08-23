@@ -10,10 +10,10 @@ export default defineConfig({
     vue(),
     ui({
       autoImport: {
-        dts: 'src/auto-imports.d.ts',
+        dts: false, // Can't be enabled when building a package.
       },
       components: {
-        dts: 'src/components.d.ts',
+        dts: false, // Can't be enabled when building a package.
       },
     }),
     icons({

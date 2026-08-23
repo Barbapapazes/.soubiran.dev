@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import UApp from '@nuxt/ui/components/App.vue'
+import UContainer from '@nuxt/ui/components/Container.vue'
 import App from './components/App.vue'
 import Comments from './components/Comments.vue'
 </script>

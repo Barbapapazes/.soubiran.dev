@@ -20,8 +20,6 @@
   "include": [
     "./umami.d.ts",
     "./typed-router.d.ts",
-    "./src/auto-imports.d.ts",
-    "./src/components.d.ts",
     "./src/index.ts",
     "./src/main.ts",
     "./src/wrapper-classes.ts",
@@ -35,7 +33,7 @@
     "./src/hooks/**/*.ts",
     "./src/keys/**/*.ts",
     "./src/queries/**/*.ts",
-    "./src/pages/**/*.ts",
+    "./src/pages/**/*.vue",
     "./src/components/**/*.vue",
     "./src/composables/**/*.ts"
   ]

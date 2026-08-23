@@ -1,4 +1,6 @@
 <script lang="ts">
+import UButton from '@nuxt/ui/components/Button.vue'
+import UModal from '@nuxt/ui/components/Modal.vue'
 import { tv } from 'tailwind-variants'
 import { computed } from 'vue'
 import { useLocale } from '../composables/useLocale'

@@ -1,4 +1,5 @@
 <script lang="ts">
+import UAlert from '@nuxt/ui/components/Alert.vue'
 import { useQuery } from '@pinia/colada'
 import { AnimatePresence, Motion, useReducedMotion } from 'motion-v'
 import { tv } from 'tailwind-variants'

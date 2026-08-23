@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { LocaleCode } from '../../locale/type.ts'
 import type { Comment } from '../../types/comment'
+import UButton from '@nuxt/ui/components/Button.vue'
 import { useMutation, useQueryCache } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed, ref, useTemplateRef } from 'vue'

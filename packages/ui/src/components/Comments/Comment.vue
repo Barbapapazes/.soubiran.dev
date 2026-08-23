@@ -1,6 +1,9 @@
 <script lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui/components/DropdownMenu.vue'
 import type { Comment } from '../../types/comment'
+import UAvatar from '@nuxt/ui/components/Avatar.vue'
+import UButton from '@nuxt/ui/components/Button.vue'
+import UDropdownMenu from '@nuxt/ui/components/DropdownMenu.vue'
 import { useQuery } from '@pinia/colada'
 import { tv } from 'tailwind-variants'
 import { computed, ref } from 'vue'
