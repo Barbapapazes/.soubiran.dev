@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { LocaleCode } from '../locale/type'
 import type { DiscussionsSectionProps } from './Discussions/DiscussionsSection.vue'
+import { extendLocale } from '@nuxt/ui/composables/defineLocale'
 import { computed, provide, toRef } from 'vue'
 import { provideCommentsContext } from '../composables/comments/context'
 import { useCommentsBanner } from '../composables/comments/useCommentsBanner'
