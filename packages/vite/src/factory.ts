@@ -21,6 +21,7 @@ import { markdownFrontmatterFactory } from './markdown/frontmatter'
 import { markdownRulesFactory } from './markdown/rules'
 import api from './plugins/api'
 import config from './plugins/config'
+import deadLinks from './plugins/dead-links'
 import meta from './plugins/meta'
 import promise from './plugins/promise'
 import rawMarkdown from './plugins/raw-markdown'
@@ -115,6 +116,8 @@ export function factory(options: Options): Plugin[] {
   )
 
   if (options.markdown !== false) {
+    plugins.push(deadLinks())
+
     plugins.push(
       markdown({
         headEnabled: true,
