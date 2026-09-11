@@ -15,7 +15,7 @@
     "markdown-it-github-alerts": "^1.0.1",
     "motion-v": "^2.2.1",
     "ofetch": "^1.5.1",
-    "pinia": "^3.0.4",
+    "pinia": "^4.0.3",
     "tailwind-variants": "^3.2.2",
     "vue": "^3.5.35"
   },
@@ -27,7 +27,7 @@
     "@types/node": "^25.5.0",
     "@vue/tsconfig": "^0.9.1",
     "tailwindcss": "^4.2.4",
-    "typescript": "~5.9.3",
+    "typescript": "~7.0.2",
     "unplugin-icons": "^23.0.1",
     "vite": "^8.0.10",
     "vite-ssg": "28.3.0",
