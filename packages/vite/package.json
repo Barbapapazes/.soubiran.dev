@@ -49,7 +49,7 @@
     "defu": "^6.1.7",
     "fs-extra": "^11.3.4",
     "gray-matter": "^4.0.3",
-    "markdown-it": "^14.1.1",
+    "markdown-it": "^14.2.0",
     "markdown-it-async": "^2.2.0",
     "markdown-it-github-alerts": "^1.0.1",
     "markdown-it-image-figures": "^2.1.1",
